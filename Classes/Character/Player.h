@@ -21,6 +21,7 @@ public:
 	};
 	void update(float dt);
 	void changeState(PlayerState newState);
+	Sprite* getSprite() const { return characterSprite; };
 private:
 	MovementState *currentState = nullptr;
 	IdleState *idleState;
