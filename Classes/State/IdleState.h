@@ -5,11 +5,14 @@
 #include "MovementState.h"
 
 USING_NS_CC;
+class Player;
 class IdleState : public MovementState {
 public:
-    virtual void enter() override {}
-    virtual void update(float dt) override {}
-    virtual void exit() override {}
+    IdleState(Player* crt) : MovementState(crt) {}
+    virtual void enter() override;
+    virtual void update(float dt) override;
+    virtual void exit() override;
+
 };
 
 

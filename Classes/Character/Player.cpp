@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "../Utilities/Utilities.h"
 Player* Player::createPlayer() {
     Player* player = new (std::nothrow) Player();
@@ -19,13 +19,17 @@ bool Player::init() {
         return false;
     }
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "skull_relax");
-    auto idleAnimation = Utilities::createAnimation("skull_relax", 20, 0.2f);
-    auto walkAnimation = Utilities::createAnimation("skull_move", 20, 0.2f);
+    auto walkAnimation = Utilities::createAnimation("skull_relax", 20, 0.2f);
+    auto idleAnimation = Utilities::createAnimation("skull_move", 20, 0.2f);
     AnimationCache::getInstance()->addAnimation(idleAnimation, "IDLE_ANIM");
     AnimationCache::getInstance()->addAnimation(walkAnimation, "MOVE_ANIM");
     characterSprite = Sprite::create("object/fb_object_skull.png");
+    //Sprite::createWithSpriteFrameName("fighter_armed_idle_E_0.0_0.png");
+
     characterSprite->runAction(RepeatForever::create(Animate::create(idleAnimation)));
     this->addChild(characterSprite);
+    this->idleState = new IdleState(this);
+    changeState(PlayerState::IDLE); // Bỏ comment để test
     return true;
 }
 
@@ -34,7 +38,7 @@ void Player::update(float dt) {
 }
 
 void Player::changeState(PlayerState newState) {
-    /*if (currentState)
+    if (currentState)
         currentState->exit();
 
     switch (newState) {
@@ -48,10 +52,10 @@ void Player::changeState(PlayerState newState) {
         currentState = moveRightState;
         break;
     case PlayerState::JUMPING:
-        currentState = jumpingState;
+        //currentState = jumpingState;KKKKKCKC
         break;
     }
 
-    currentState->enter();*/
+    currentState->enter();
 
 }

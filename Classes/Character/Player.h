@@ -15,17 +15,18 @@ public:
 	virtual bool init();
 	enum class PlayerState {
 		IDLE,
-	    MOVE_LEFT,
+		MOVE_LEFT,
 		MOVE_RIGHT,
 		JUMPING
 	};
 	void update(float dt);
 	void changeState(PlayerState newState);
+	Sprite* getSprite() const { return characterSprite; };
 private:
-	MovementState *currentState = nullptr;
-	IdleState *idleState;
-	MoveLeftState *moveLeftState;
-	MoveRightState *moveRightState;
+	MovementState* currentState = nullptr;
+	IdleState* idleState;
+	MoveLeftState* moveLeftState;
+	MoveRightState* moveRightState;
 	//JumpingState *jumpingState;
 	Sprite* characterSprite;
 };
