@@ -29,7 +29,7 @@ bool Player::init() {
     characterSprite->runAction(RepeatForever::create(Animate::create(idleAnimation)));
     this->addChild(characterSprite);
     this->idleState = new IdleState(this);
-    changeState(PlayerState::IDLE); // Bỏ comment để test
+    //changeState(PlayerState::IDLE); // Bỏ comment để test
     return true;
 }
 

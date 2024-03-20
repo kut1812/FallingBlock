@@ -26,6 +26,8 @@ bool GameScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
 
     auto uiMenu = CSLoader::getInstance()->createNode("csb/Layer.csb");
+    //uiMenu->setAnchorPoint(Vec2(0.5, 0.5));
+    //uiMenu->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     this->addChild(uiMenu);
     /*
     auto block = Sprite::create("block.png");
