@@ -1,0 +1,47 @@
+
+list(APPEND GAME_SOURCE
+     Classes/AppDelegate.cpp
+     Classes/Utilities/Utilities.cpp
+     Classes/Utilities/Joystick.cpp
+     Classes/Utilities/JumpButton.cpp
+     Classes/Scenes/GameScene.cpp
+     Classes/Character/Player.cpp
+     Classes/State/IdleState.cpp
+     Classes/State/IdleLeftState.cpp
+     Classes/State/JumpingState.cpp
+     Classes/State/MoveLeftState.cpp
+     Classes/State/MoveRightState.cpp
+     Classes/State/MovementState.cpp
+     Classes/Actor/Coin.cpp
+     Classes/Actor/Block.cpp
+     Classes/CoinManager/CoinManager.cpp
+     Classes/Scenes/MainMenuScene.cpp
+     Classes/LayerManager.cpp
+     )
+list(APPEND GAME_HEADER
+     Classes/AppDelegate.h
+     Classes/Utilities/Utilities.h
+     Classes/Utilities/Joystick.h
+     Classes/Utilities/JumpButton.h
+     Classes/Scenes/GameScene.h
+     Classes/Character/Player.h
+     Classes/State/IdleState.h
+     Classes/State/IdleLeftState.h
+     Classes/State/JumpingState.h
+     Classes/State/MoveLeftState.h
+     Classes/State/MoveRightState.h
+     Classes/State/MovementState.h
+     Classes/Actor/Coin.h
+     Classes/Actor/Block.h
+     Classes/CoinManager/CoinManager.h
+     Classes/Scenes/MainMenuScene.h
+     Classes/LayerManager.h
+     )
+
+10 player have hightscore
+Quantity skill x2 coin, x2 jump, sheild
+coin
+level skull speed : .../300
+level life spawn : .../300
+level block speed : .../300
+level skill duration : .../300
