@@ -3,7 +3,12 @@
 #include <ctime>  
 #include "AudioEngine.h"
 
+
 Utilities* Utilities::_instance;
+
+void Utilities::initRandomSeed() {
+    srand(time(NULL));
+}
 
 Utilities* Utilities::getInstance()
 {
@@ -14,8 +19,7 @@ Utilities* Utilities::getInstance()
     return _instance;
 }
 
-int generateNumber(int min, int max) {
-    srand(time(NULL));
+int Utilities::generateNumber(int min, int max) {
     int randomNumber = rand() % (max - min + 1) + min;
     return randomNumber;
 }

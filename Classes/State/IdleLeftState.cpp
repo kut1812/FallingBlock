@@ -1,20 +1,21 @@
-#include "IdleState.h"
+#include "IdleLeftState.h"
 #include "../Character/Player.h"
-void IdleState::enter() {
+void IdleLeftState::enter() {
 	if (player) {
 		player->getSprite()->runAction(RepeatForever::create(Animate::create(AnimationCache::getInstance()->getAnimation("IDLE_ANIM"))));
+		player->getSprite()->setFlippedX(true);
 	}
 }
 
-void IdleState::exit() {
+void IdleLeftState::exit() {
 	if (player->getSprite()->getNumberOfRunningActions() > 0)
 	{
 		player->getSprite()->stopAllActions();
+		player->getSprite()->setFlippedX(false);
 	}
 
-	if (player->getSprite()->getNumberOfRunningActions() > 0) player->getSprite()->stopAllActions();
 }
 
-void IdleState::update(float dt) {
+void IdleLeftState::update(float dt) {
 
 }

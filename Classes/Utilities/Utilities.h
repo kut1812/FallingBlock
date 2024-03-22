@@ -10,7 +10,7 @@ class Utilities
 public:
 	static Utilities* getInstance();
 	int generateNumber(int min, int max);
-
+	void initRandomSeed();
 	void playMusic(std::string fileName);
 	void playSFX(std::string fileName);
 	void setMusicVolume(float newVolume);
@@ -24,7 +24,7 @@ public:
 private:
 	static Utilities* _instance;
 
-	float _musicVolume=0.5f, _sfxVolume=0.5f;
+	float _musicVolume = 0.5f, _sfxVolume = 0.5f;
 
 	int _bgmID;
 };
