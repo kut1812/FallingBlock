@@ -47,7 +47,7 @@ bool GameScene::init()
     Utilities::getInstance()->initRandomSeed();
 
     _player = Player::createPlayer();
-    _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+    _player->setPosition(Vec2(visibleSize.width / 2, 2));
     this->addChild(_player, 5);
 
     _joystick = Joystick::create();
@@ -65,55 +65,106 @@ bool GameScene::init()
         GameScene::updatePlayer(dt);
         }, "update_player");
 
-    this->schedule(CC_SCHEDULE_SELECTOR(GameScene::spawnBlocks), 0.50f);
+    this->schedule(CC_SCHEDULE_SELECTOR(GameScene::spawnBlocks), 1.50f);
+    this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updateMeter), 0.0f);
 
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(GameScene::OnContactBegan, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-
+    mileageCounter = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", std::to_string(0), 24);
+    mileageCounter->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+    this->addChild(mileageCounter, 1999);
     return true;
 }
 
 void GameScene::spawnBlocks(float dt) {
+
     auto randomNum = Utilities::getInstance()->generateNumber(0, 13);
-    auto block = Block::create("fb_object_block_1");
-    auto spawnX = columnWidth / 2 + block->getContentSize().width/2 * randomNum;
+    while (listPositionYBlock[randomNum]-findMin(listPositionYBlock,14)>=3)
+    {
+        randomNum = Utilities::getInstance()->generateNumber(0, 13);
+    }
+    listPositionYBlock[randomNum] += 1;
+
+    auto randomTyle = Utilities::getInstance()->generateNumber(0, 3);
+
+    Block* block;
+    if (randomTyle==0)
+    {
+        block= Block::create("fb_object_block_1");
+    }
+    else if (randomTyle == 1)
+    {
+        block = Block::create("fb_object_block_2");
+    }
+    else if (randomTyle == 2)
+    {
+        block = Block::create("fb_object_block_3");
+    }
+    else if (randomTyle == 3)
+    {
+        block = Block::create("fb_object_block_4");
+    }
+    auto spawnX = columnWidth / 2 + block->getContentSize().width / 2 * randomNum;
     block->setAnchorPoint(Vec2(0, 0));
     block->setPosition(Vec2(spawnX, visibleSize.height / 1.3));
     this->addChild(block);
+    listOfBlocks.push_back(block);
+
+}
+
+void GameScene::updateMeter(float dt) {
+    currentMeter = savedMeterBe4Reset + _player->getPositionY() / 10;
+    mileageCounter->setMileage(currentMeter - 1);
+    if (currentMeter > limitMeter && _player->getPositionY() <= (visibleSize.height - (visibleSize.height / 5)) && _player->getPhysicsBody()->getVelocity().y >= -0.5 && _player->getPhysicsBody()->getVelocity().y <= 0.5) {
+        std::vector<Block*> listToRemove;
+        for (auto i : listOfBlocks) {
+            if (i->getPositionY() <= i->getSpriteSize().height && i->getPositionY() >= 0) {
+                i->setFlop();
+                listToRemove.push_back(i);
+            }
+        }
+        limitMeter += 20;
+        savedMeterBe4Reset = currentMeter - ((currentMeter - limitMeter) > currentMeter ? (currentMeter - limitMeter) : 0);
+    }
 }
 
 bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
 {
-    auto bodyA = contact.getShapeA()->getBody();
-    auto bodyB = contact.getShapeB()->getBody();
+    auto bodyA = contact.getShapeA()->getBody()->getNode();
+    auto bodyB = contact.getShapeB()->getBody()->getNode();
 
-    if (bodyA->getCategoryBitmask()==0x01 && bodyB->getCategoryBitmask()==0x02 ||
-        bodyB->getCategoryBitmask() == 0x01 && bodyA->getCategoryBitmask() == 0x02)
+    if (bodyA->getPhysicsBody()->getCollisionBitmask() == 10 && bodyB->getPhysicsBody()->getShape(5)->getCollisionBitmask() == 20 ||
+        bodyA->getPhysicsBody()->getShape(5)->getCollisionBitmask() == 20 && bodyB->getPhysicsBody()->getCollisionBitmask() == 10
+        )
     {
-        CCLOG("Var");
-        CCLOG("Var");
-        CCLOG("Var");
-        CCLOG("Var");
-        CCLOG("Var");
-        CCLOG("Var");
-        CCLOG("Var");
-        CCLOG("Var");
-        CCLOG("Var");
+        CCLOG("lose");
     }
+
+  /*  if (bodyA->getPhysicsBody()->getCollisionBitmask() == 30 && bodyB->getPhysicsBody()->getShape(5)->getCollisionBitmask() == 20)
+    {
+        auto block = bodyB->getPhysicsBody()->getNode();
+        auto anim = Sprite::create("animation/block_falled (1).png");
+        anim->runAction(Animate::create(AnimationCache::getInstance()->getAnimation("MOVE_ANIM")));
+        block->addChild(anim);
+
+    }
+    if (bodyB->getPhysicsBody()->getCollisionBitmask() == 30 && bodyA->getPhysicsBody()->getShape(5)->getCollisionBitmask() == 20)
+    {
+        CCLOG("lose");
+    }*/
+
     return true;
 }
 
-
-
 void GameScene::setupPhysicBorder() {
     auto origin = Director::getInstance()->getVisibleOrigin();
-
     auto edgeBody = PhysicsBody::createEdgeBox(Size(visibleSize.width - columnWidth, visibleSize.height), PHYSICSBODY_MATERIAL_DEFAULT, 3);
+    edgeBody->setCategoryBitmask(0x08);
     auto edgeNode = Node::create();
     edgeNode->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-    edgeNode->setPhysicsBody(edgeBody);
+    edgeNode->addComponent(edgeBody);
     this->addChild(edgeNode);
 }
 

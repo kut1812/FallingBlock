@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>frames</key>
+    <dict>
+      <key>skill_sheild (1)</key>
+      <dict>
+        <key>frame</key>
+        <string>{{0,0},{43.199999999999996,24.84}}</string>
+        <key>offset</key>
+        <string>{0,0.5399999999999991}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{0,1.44},{43.199999999999996,24.84}}</string>
+        <key>sourceSize</key>
+        <string>{43.199999999999996,28.799999999999997}</string>
+      </dict>
+      <key>skill_sheild (2)</key>
+      <dict>
+        <key>frame</key>
+        <string>{{43.199999999999996,0},{43.199999999999996,23.759999999999998}}</string>
+        <key>offset</key>
+        <string>{0,1.4399999999999995}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{0,1.08},{43.199999999999996,23.759999999999998}}</string>
+        <key>sourceSize</key>
+        <string>{43.199999999999996,28.799999999999997}</string>
+      </dict>
+      <key>skill_sheild (3)</key>
+      <dict>
+        <key>frame</key>
+        <string>{{86.39999999999999,0},{43.199999999999996,23.4}}</string>
+        <key>offset</key>
+        <string>{0,1.9799999999999986}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{0,0.72},{43.199999999999996,23.4}}</string>
+        <key>sourceSize</key>
+        <string>{43.199999999999996,28.799999999999997}</string>
+      </dict>
+      <key>skill_sheild (6)</key>
+      <dict>
+        <key>frame</key>
+        <string>{{129.6,0},{43.199999999999996,23.4}}</string>
+        <key>offset</key>
+        <string>{0,1.6199999999999992}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{0,1.08},{43.199999999999996,23.4}}</string>
+        <key>sourceSize</key>
+        <string>{43.199999999999996,28.799999999999997}</string>
+      </dict>
+      <key>skill_sheild (4)</key>
+      <dict>
+        <key>frame</key>
+        <string>{{172.79999999999998,0},{43.199999999999996,23.04}}</string>
+        <key>offset</key>
+        <string>{0,2.5199999999999996}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{0,0.36},{43.199999999999996,23.04}}</string>
+        <key>sourceSize</key>
+        <string>{43.199999999999996,28.799999999999997}</string>
+      </dict>
+      <key>skill_sheild (5)</key>
+      <dict>
+        <key>frame</key>
+        <string>{{216,0},{43.199999999999996,23.04}}</string>
+        <key>offset</key>
+        <string>{0,2.1599999999999984}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{0,0.72},{43.199999999999996,23.04}}</string>
+        <key>sourceSize</key>
+        <string>{43.199999999999996,28.799999999999997}</string>
+      </dict>
+    </dict>
+    <key>metadata</key>
+    <dict>
+      <key>format</key>
+      <integer>2</integer>
+      <key>pixelFormat</key>
+      <string>RGBA8888</string>
+      <key>premultiplyAlpha</key>
+      <false/>
+      <key>realTextureFileName</key>
+      <string>skill_sheild.png</string>
+      <key>size</key>
+      <string>{259,25}</string>
+      <key>textureFileName</key>
+      <string>skill_sheild</string>
+    </dict>
+  </dict>
+</plist>

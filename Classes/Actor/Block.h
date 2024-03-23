@@ -9,11 +9,16 @@ class Block : public Sprite
 public:
 	static Block* create(std::string tyleBlock);
 	virtual bool init(std::string tyleBlock);
-
+	void setFlop();
 	bool addPhysics();
-	PhysicsBody* getPhysicsBody() { return physics; }
+	PhysicsBody* getPhysicsBody() { return blockBody; };
+	Size getSpriteSize() const { return this->getContentSize(); };
+	void setStatus(std::string stt) { status = stt; };
+	std::string getStatus() const { return status; };
 private:
 	PhysicsBody* physics;
+	PhysicsBody* blockBody;
+	std::string status = "active";
 };
 
 #endif // !__BLOCK_H__
