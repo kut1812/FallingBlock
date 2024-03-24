@@ -7,6 +7,8 @@
 #include "../Utilities/JumpButton.h"
 #include "../Actor/Block.h"
 #include "../Utilities/MileageCounter.h"
+#include "../Actor/Coin.h"
+#include "../CoinManager/CoinManager.h"
 
 class GameScene : public cocos2d::Scene
 {
@@ -15,6 +17,7 @@ public:
     virtual bool init();
     void updatePlayer(float dt);
     void updateMeter(float dt);
+    void updateCoin(float dt);
     void setupPhysicBorder();
     void spawnBlocks(float dt);
 
@@ -23,17 +26,15 @@ private:
     float limitMeter = 20;
     float savedMeterBe4Reset = 0;
     MileageCounter* mileageCounter;
+    bool OnContactBegan(cocos2d::PhysicsContact& contact);
     Joystick* _joystick;
     JumpButton* _jumpButton;
     Player* _player;
     cocos2d::PhysicsWorld* world;
     float columnWidth;
     Size visibleSize;
-    bool flag = false;
-    std::vector<Block*> listOfBlocks;
     float listPositionYBlock[14];
-    
-    bool OnContactBegan(cocos2d::PhysicsContact& contact);
+
     void setPhysicsWorld(cocos2d::PhysicsWorld* m_world) {
         m_world = world;
     }
@@ -46,6 +47,11 @@ private:
         }
         return minValue;
     }
+
+    std::vector<Block*> listOfBlocks;
+    std::vector<Coin*> listOfCoins;
+    Size blockSize = Size(0, 0);
+
 };
 
 #endif // __GAME_SCENE_H__

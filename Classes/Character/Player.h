@@ -28,8 +28,10 @@ public:
 	void setDirection(Vec2 dir) { this->direction = dir; };
 	Vec2 getDirection() const { return direction; };
 	void setJump(bool isJump) { this->isJumping = isJump; };
-
+	bool isX2Coin() const { return x2Coin; };
+	void setX2Coin(bool isTrue) { x2Coin = isTrue; };
 private:
+	bool x2Coin = false;
 	MovementState* currentState = nullptr;
 	IdleState* idleState;
 	IdleLeftState* idleLeftState;

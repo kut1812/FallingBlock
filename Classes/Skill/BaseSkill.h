@@ -7,9 +7,9 @@ USING_NS_CC;
 class Player;
 class BaseSkill {
 public:
-    //BaseSkill(Player* plr) : _player(plr) {}
-    //virtual bool init();
-    //CREATE_FUNC(BaseSkill);
+    BaseSkill(Player* plr) : _player(plr) {}
+    virtual bool init() = 0;
+    virtual void use() = 0;
 protected:
     std::string skillName;
     float skillCooldown;

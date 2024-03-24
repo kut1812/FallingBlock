@@ -39,14 +39,15 @@ bool Block::addPhysics()
      Vec2(this->getContentSize().width / 2 ,-this->getContentSize().height / 2 - 10),
      Vec2(this->getContentSize().width / 2 ,0)
     };
-    blockBody = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0.1f, 0.5f, 0.1f));
+    blockBody = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0.1f, 0.1f, 1.0f));
     blockBody->setDynamic(true);
-    blockBody->setMass(500);
+    blockBody->setMass(50);
     blockBody->setRotationEnable(false);
     blockBody->setContactTestBitmask(5);
     blockBody->setCollisionBitmask(30);
     blockBody->setVelocity(Vec2(0, -90));
-    auto edgeShape = PhysicsShapePolygon::create(lowerEdge, 4, PhysicsMaterial(0.1f, 0.5f, 0.1f));
+
+    auto edgeShape = PhysicsShapePolygon::create(lowerEdge, 4, PhysicsMaterial(0.1f, 0.1f, 1.0f));
     edgeShape->setCollisionBitmask(20);
     edgeShape->setContactTestBitmask(true);
     edgeShape->setTag(5);

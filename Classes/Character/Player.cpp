@@ -18,7 +18,7 @@ bool Player::init() {
         return false;
     }
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "block_falled");
-    auto sfx_block_falled = Utilities::createAnimation("block_falled",19,0.2f);
+    auto sfx_block_falled = Utilities::createAnimation("block_falled", 19, 0.2f);
     AnimationCache::getInstance()->addAnimation(sfx_block_falled, "block_falled");
 
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "skull_relax");
@@ -32,7 +32,7 @@ bool Player::init() {
     this->addChild(characterSprite);
     auto physicsBody = PhysicsBody::createBox(characterSprite->getContentSize(), PhysicsMaterial(0.1f, 0.0f, 0.5f));
     physicsBody->setDynamic(true);
-    physicsBody->setMass(5);
+    physicsBody->setMass(1);
     physicsBody->setRotationEnable(false);
     physicsBody->setCollisionBitmask(10);
     physicsBody->setContactTestBitmask(true);
@@ -50,7 +50,7 @@ void Player::update(float dt, float leftBorder, float rightBorder) {
 
     // impulse physicsBody to jump
     if (isJumping == true)
-        this->getPhysicsBody()->applyImpulse(Vec2(0, 300));
+        this->getPhysicsBody()->applyImpulse(Vec2(0, 100));
     // handle 
     Vec2 currentVelocity = this->getPhysicsBody()->getVelocity();
     if (currentVelocity.y < 0) {
@@ -74,9 +74,6 @@ void Player::changeState(PlayerState newState) {
         break;
     case PlayerState::MOVE_RIGHT:
         currentState = moveRightState;
-        break;
-    case PlayerState::JUMPING:
-        //currentState = jumpingState;
         break;
     }
 

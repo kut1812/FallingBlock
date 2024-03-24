@@ -8,9 +8,9 @@ USING_NS_CC;
 class Player;
 class ShieldSkill : BaseSkill {
 public:
-    //ShieldSkill(Player* plr) : BaseSkill(plr) {}
-    virtual bool init();
-    //CREATE_FUNC(ShieldSkill);
+    ShieldSkill(Player* plr) : BaseSkill(plr) {}
+    virtual bool init() override;
+    virtual void use() override;
 };
 
 

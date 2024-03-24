@@ -1,8 +1,10 @@
 #include "Shield.h"
 
-//bool ShieldSkill::init() {
-//	if (!BaseSkill::init()) return false;
-//
-//
-//	return true;
-//}
+bool ShieldSkill::init() {
+
+
+	return true;
+}
+
+void ShieldSkill::use() {
+}

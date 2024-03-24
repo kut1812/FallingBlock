@@ -8,9 +8,9 @@ USING_NS_CC;
 class Player;
 class X2JumpSkill : BaseSkill {
 public:
-    //X2JumpSkill(Player* plr) : BaseSkill(plr) {}
-    //virtual bool init() override;
-    //CREATE_FUNC(X2JumpSkill);
+    X2JumpSkill(Player* plr) : BaseSkill(plr) {}
+    virtual bool init() override;
+    virtual void use() override;
 };
 
 

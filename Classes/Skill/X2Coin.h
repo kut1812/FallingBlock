@@ -3,14 +3,15 @@
 
 #include "cocos2d.h"
 #include "BaseSkill.h"
+#include "../Character/Player.h"
 
 USING_NS_CC;
 class Player;
 class X2CoinSkill : BaseSkill {
 public:
-    //X2CoinSkill(Player* plr) : BaseSkill(plr) {}
-    virtual bool init();
-    //CREATE_FUNC(X2CoinSkill);
+    X2CoinSkill(Player* plr) : BaseSkill(plr) {}
+    virtual bool init() override;
+    virtual void use() override;
 };
 
 

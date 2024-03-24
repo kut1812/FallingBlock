@@ -2,6 +2,7 @@
 #define __COIN_H__
 
 #include "cocos2d.h"
+#include "Utilities/Utilities.h"
 
 USING_NS_CC;
 class Coin : public Sprite

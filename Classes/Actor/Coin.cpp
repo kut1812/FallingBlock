@@ -1,11 +1,11 @@
-#include "Coin.h"
+#include "./Coin.h"
 #include "Scenes/GameScene.h"
 
 USING_NS_CC;
 
 Coin* Coin::create() {
     auto newObject = new Coin();
-    if (newObject != nullptr && newObject->init() ){
+    if (newObject != nullptr && newObject->init()) {
 
         newObject->autorelease();
         return newObject;
@@ -20,11 +20,19 @@ bool Coin::init()
     {
         return false;
     }
-   
-    if (addPhysics()!=true)
+
+    if (addPhysics() != true)
     {
         CCLOG("add physics coin failed");
     }
+
+
+    Utilities::getInstance()->loadSpriteFrameCache("animation/", "coin_double");
+    auto coinAnimation = Utilities::createAnimation("coin_double", 20, 0.2f);
+
+    this->createWithSpriteFrameName("coin_double (1)");
+
+    this->runAction(RepeatForever::create(Animate::create(coinAnimation)));
 
     this->scheduleUpdate();
 
@@ -34,7 +42,7 @@ bool Coin::init()
 bool Coin::addPhysics()
 {
     physics = PhysicsBody::createBox(this->getContentSize());
-    if (physics==nullptr)
+    if (physics == nullptr)
     {
         CCLOG("add physics coin failed");
         return false;
