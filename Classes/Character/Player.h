@@ -36,6 +36,7 @@ public:
 	int getMaxJumpCount() { return maxJumpCount; };
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 	Sprite* getWingSprite() const { return wingSprite; };
+	X2JumpSkill* getX2Jump() { return x2JumpSkill; }
 private:
 	X2JumpSkill *x2JumpSkill;
 	bool x2Coin = false;

@@ -63,7 +63,7 @@ bool GameScene::init()
     auto doubleJump = uiButton->getChildByName<ui::Button*>("Button_6");
     doubleJump->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            //thêm sự kiện
+            _player->getX2Jump()->use();
         }
         });
     //button upgrade

@@ -23,8 +23,8 @@ bool Player::init() {
 
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "skull_relax");
     auto walkAnimation = Utilities::createAnimation("skull_relax", 20, 0.2f);
-    auto idleAnimation = Utilities::createAnimation("skull_move", 20, 0.2f);
-    auto wingAnimation = Utilities::createAnimationPng("double_jump", 20, 0.2f);
+    auto idleAnimation = Utilities::createAnimation("skull_move", 20, 0.1f);
+    auto wingAnimation = Utilities::createAnimationPng("double_jump", 20, 0.1f);
     AnimationCache::getInstance()->addAnimation(idleAnimation, "IDLE_ANIM");
     AnimationCache::getInstance()->addAnimation(walkAnimation, "MOVE_ANIM");
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "wing");
@@ -36,11 +36,11 @@ bool Player::init() {
     //Sprite::createWithSpriteFrameName("fighter_armed_idle_E_0.0_0.png");
     wingSprite = Sprite::createWithSpriteFrameName("double_jump (1).png");
     wingSprite->runAction(RepeatForever::create(Animate::create(wingAnimation)));
-    wingSprite->setPosition(Vec2(characterSprite->getPositionX() - 20, characterSprite->getPositionY() + 20));
-    wingSprite->setScale(0.6);
+    characterSprite->addChild(wingSprite);
+    wingSprite->setPosition(Vec2(0, characterSprite->getContentSize().height * 0.9));
+    wingSprite->setScale(0.4);
     wingSprite->setVisible(false);
 
-    characterSprite->addChild(wingSprite);
 
     auto physicsBody = PhysicsBody::createBox(characterSprite->getContentSize(), PhysicsMaterial(0.1f, 0.0f, 0.5f));
     physicsBody->setDynamic(true);

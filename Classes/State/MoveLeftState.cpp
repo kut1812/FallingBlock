@@ -5,7 +5,7 @@ void MoveLeftState::enter() {
 		player->getSprite()->runAction(RepeatForever::create(Animate::create(AnimationCache::getInstance()->getAnimation("MOVE_ANIM"))));
 		player->getSprite()->setFlippedX(true);
 		player->getWingSprite()->setFlippedX(true);
-		player->getWingSprite()->setPosition(Vec2(player->getSprite()->getPositionX() + player->getSprite()->getContentSize().width + 20, player->getSprite()->getPositionY() + 20));
+		player->getWingSprite()->setPosition(Vec2(player->getSprite()->getContentSize().width, player->getSprite()->getContentSize().height * 0.9));
 	}
 }
 
