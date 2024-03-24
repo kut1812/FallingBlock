@@ -12,6 +12,7 @@ public:
 	Node* pauseLayer();
 	void tutorialLayer1(Scene* scene);
 	void tutorialLayer2(Scene* scene);
+	Node* loseLayer();
 private:
 	static LayerManager* _instance;
 

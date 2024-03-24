@@ -171,3 +171,38 @@ void LayerManager::tutorialLayer2(Scene* scene)
         });
     scene->addChild(tutorialLayer2);
 }
+
+Node* LayerManager::loseLayer()
+{
+    Node* loseLayer = CSLoader::getInstance()->createNode("csb/Lose.csb");
+    Director::getInstance()->pause();
+    auto home = loseLayer->getChildByName<ui::Button*>("Button_6");
+    home->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+            auto newScene = MainMenuScene::createScene();
+            TransitionScene* transition = TransitionFade::create(0.5f, newScene, Color3B::WHITE);
+            Director::getInstance()->resume();
+            Director::getInstance()->replaceScene(transition);
+        }
+        });
+
+    auto resume = loseLayer->getChildByName<ui::Button*>("Button_7");
+    resume->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+            Director::getInstance()->resume();
+            loseLayer->removeFromParentAndCleanup(true);
+        }
+        });
+
+    auto restart = loseLayer->getChildByName<ui::Button*>("Button_6_0");
+    restart->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+            auto newScene = GameScene::create();
+            TransitionScene* transition = TransitionFade::create(0.5f, newScene, Color3B::WHITE);
+            Director::getInstance()->resume();
+            Director::getInstance()->replaceScene(transition);
+        }
+        });
+    
+    return loseLayer;
+}

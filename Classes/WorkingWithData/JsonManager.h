@@ -28,7 +28,7 @@ public:
     };
 
     static JSONManager* getInstance();
-    PlayerData loadJSONData(const std::string& filename);
+    //PlayerData loadJSONData(const std::string& filename);
 
 private:
     static JSONManager* instance;

@@ -3,6 +3,8 @@
 #include "GameScene.h"
 #include "ui/CocosGUI.h"
 #include "Utilities/Utilities.h"
+#include "LayerManager.h"
+
 USING_NS_CC;
 
 Scene* GameScene::create()
@@ -82,8 +84,6 @@ bool GameScene::init()
         });
     //label life
     auto life = uiButton->getChildByName<Label*>("Text_1");
-    //label height
-    auto height = uiButton->getChildByName<Label*>("Text_2");
      //label coin
     auto coin = uiButton->getChildByName<Label*>("Text_3");
      //label x2jump
@@ -116,7 +116,7 @@ bool GameScene::init()
         GameScene::updatePlayer(dt);
         }, "update_player");
 
-    this->schedule(CC_SCHEDULE_SELECTOR(GameScene::spawnBlocks), 2.50f);
+    this->schedule(CC_SCHEDULE_SELECTOR(GameScene::spawnBlocks), 5.0f);
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updateMeter), 0.0f);
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updateCoin), 10.0f);
 
@@ -125,9 +125,9 @@ bool GameScene::init()
     contactListener->onContactBegin = CC_CALLBACK_1(GameScene::OnContactBegan, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-    mileageCounter = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", std::to_string(0), 24);
-    mileageCounter->setPosition(visibleSize.width / 2, visibleSize.height / 2);
-    this->addChild(mileageCounter, 1999);
+    mileageCounter = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", std::to_string(0), 20);
+    uiButton->addChild(mileageCounter, 1999);
+    mileageCounter->setPosition(visibleSize.width *0.33, visibleSize.height *0.92);
 
     return true;
 }
@@ -168,17 +168,25 @@ void GameScene::spawnBlocks(float dt) {
         block->setPosition(Vec2(spawnX, visibleSize.height / 1.3));
         this->addChild(block);
         listOfBlocks.push_back(block);
-
-        listOfBlocks.push_back(block);
-
         count++;
     } while (count <= randomQuantityBlock);
 
 }
 
+void GameScene::setDynamicAllBlock(bool x)
+{
+    for (auto i : listOfBlocks) {
+        i->setDynamic(x);
+    }
+}
+
 void GameScene::updateMeter(float dt) {
     currentMeter = savedMeterBe4Reset + _player->getPositionY() / 10;
-    mileageCounter->setMileage(currentMeter - 1);
+    float myFloat = std::atof(mileageCounter->getString().c_str());
+    if (currentMeter-2 > myFloat)
+    {
+        mileageCounter->setMileage(currentMeter - 1);
+    }
     if (currentMeter > limitMeter && _player->getPositionY() <= (visibleSize.height - (visibleSize.height / 5)) && _player->getPhysicsBody()->getVelocity().y >= -0.5 && _player->getPhysicsBody()->getVelocity().y <= 0.5) {
         std::vector<Block*> listToRemove;
         for (auto i : listOfBlocks) {
@@ -202,6 +210,9 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
         )
     {
         CCLOG("lose");
+      /*  this->addChild(LayerManager::getInstance()->loseLayer());
+        this->setDynamicAllBlock(false);
+        _player->getPhysicsBody()->setDynamic(false);*/
     }
 
 

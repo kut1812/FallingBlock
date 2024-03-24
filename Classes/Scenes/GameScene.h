@@ -20,7 +20,7 @@ public:
     void updateCoin(float dt);
     void setupPhysicBorder();
     void spawnBlocks(float dt);
-
+    void setDynamicAllBlock(bool x);
 private:
     float currentMeter = 0;
     float limitMeter = 20;
