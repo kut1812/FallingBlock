@@ -11,6 +11,7 @@ public:
     ShieldSkill(Player* plr) : BaseSkill(plr) {}
     virtual bool init() override;
     virtual void use() override;
+    ~ShieldSkill();
 };
 
 
