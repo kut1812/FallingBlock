@@ -10,7 +10,6 @@ public:
 	static Block* create(std::string tyleBlock);
 	virtual bool init(std::string tyleBlock);
 	void setFlop();
-	void setDynamic(bool x) { blockBody->setDynamic(x); }
 	bool addPhysics();
 	PhysicsBody* getPhysicsBody() { return blockBody; };
 	Size getSpriteSize() const { return this->getContentSize(); };

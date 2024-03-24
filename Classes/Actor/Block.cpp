@@ -34,12 +34,12 @@ bool Block::init(std::string tyleBlock)
 bool Block::addPhysics()
 {
     Vec2 lowerEdge[4] = {
-     Vec2(-this->getContentSize().width / 2,-this->getContentSize().height / 2 - 10),
-     Vec2(-this->getContentSize().width / 2,0),
-     Vec2(this->getContentSize().width / 2 ,-this->getContentSize().height / 2 - 10),
-     Vec2(this->getContentSize().width / 2 ,0)
+     Vec2(-this->getContentSize().width / 3,-this->getContentSize().height / 2 ),
+     Vec2(-this->getContentSize().width / 3,-10),
+     Vec2(this->getContentSize().width / 3 ,-this->getContentSize().height / 2 ),
+     Vec2(this->getContentSize().width / 3 ,-10)
     };
-    blockBody = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0.1f, 0.1f, 1.0f));
+    blockBody = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(1.0f, 0.1f, 1.0f));
     blockBody->setDynamic(true);
     blockBody->setMass(50);
     blockBody->setRotationEnable(false);
@@ -47,7 +47,7 @@ bool Block::addPhysics()
     blockBody->setCollisionBitmask(30);
     blockBody->setVelocity(Vec2(0, -90));
 
-    auto edgeShape = PhysicsShapePolygon::create(lowerEdge, 4, PhysicsMaterial(0.1f, 0.1f, 1.0f));
+    auto edgeShape = PhysicsShapePolygon::create(lowerEdge, 4, PhysicsMaterial(1.0f, 0.1f, 1.0f));
     edgeShape->setCollisionBitmask(20);
     edgeShape->setContactTestBitmask(true);
     edgeShape->setTag(5);

@@ -42,7 +42,7 @@ bool Player::init() {
     wingSprite->setVisible(false);
 
 
-    auto physicsBody = PhysicsBody::createBox(characterSprite->getContentSize(), PhysicsMaterial(0.1f, 0.0f, 0.5f));
+    auto physicsBody = PhysicsBody::createBox(characterSprite->getContentSize(), PhysicsMaterial(1.0f, 0.1f, 1.0f));
     physicsBody->setDynamic(true);
     physicsBody->setMass(1);
     physicsBody->setRotationEnable(false);

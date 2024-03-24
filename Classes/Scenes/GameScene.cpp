@@ -39,7 +39,7 @@ bool GameScene::init()
     columnWidth = column->getContentSize().width;
 
     auto uiButton = CSLoader::getInstance()->createNode("csb/ButtonGameScene.csb");
-    this->addChild(uiButton,100);
+    this->addChild(uiButton,1);
 
     auto pause = uiButton->getChildByName<ui::Button*>("Button_3");
     pause->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
@@ -99,16 +99,16 @@ bool GameScene::init()
 
     _player = Player::createPlayer();
     _player->setPosition(Vec2(visibleSize.width / 2, 2));
-    this->addChild(_player, 5);
+    this->addChild(_player, 1);
 
     _joystick = Joystick::create();
     if (_joystick)
-        this->addChild(_joystick, 5000);
+        this->addChild(_joystick, 1);
     _joystick->setPosition(visibleSize.width / 8, visibleSize.height *0.15);
 
     _jumpButton = JumpButton::create();
     if (_jumpButton) {
-        this->addChild(_jumpButton, 5000);
+        this->addChild(_jumpButton, 1);
     }
     _jumpButton->setPosition(visibleSize.width *0.85, visibleSize.height *0.15);
 
@@ -176,7 +176,11 @@ void GameScene::spawnBlocks(float dt) {
 void GameScene::setDynamicAllBlock(bool x)
 {
     for (auto i : listOfBlocks) {
-        i->setDynamic(x);
+        if (i!=nullptr)
+        {
+
+            i->removeAllComponents();
+        }
     }
 }
 
@@ -210,9 +214,12 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
         )
     {
         CCLOG("lose");
-      /*  this->addChild(LayerManager::getInstance()->loseLayer());
+        this->addChild(LayerManager::getInstance()->loseLayer(),2);
         this->setDynamicAllBlock(false);
-        _player->getPhysicsBody()->setDynamic(false);*/
+        _player->removeAllComponents();
+        auto score = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf",mileageCounter->getString(), 20);
+        this->addChild(score, 2);
+        score->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
     }
 
 
