@@ -17,7 +17,7 @@ public:
 	void setSFXVolume(float newVolume);
 	float getMusicVolume() { return _musicVolume; }
 	float getSFXVolume() { return _sfxVolume; }
-
+	static Animation* createAnimationPng(std::string name, int numFrame, float duration);
 	static Animation* createAnimation(std::string name, int numFrame, float duration);
 	static std::pair<Animation*, int> createAnimation(std::string name, float duration);
 	static bool loadSpriteFrameCache(std::string path, std::string fileName);

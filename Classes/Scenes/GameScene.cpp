@@ -238,9 +238,8 @@ void GameScene::updatePlayer(float dt) {
     if (_jumpButton) {
         if (_jumpButton->getIsPress()) {
             _player->setJump(true);
-        }
-        else {
-            _player->setJump(false);
+            _player->increaseJumpCount();
+            _jumpButton->resetPressed();
         }
     }
 

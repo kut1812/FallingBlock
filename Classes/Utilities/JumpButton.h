@@ -15,10 +15,11 @@ public:
     void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 
     bool getIsPress() const { return isPressed; };
+    void resetPressed() { isPressed = false; };
     CREATE_FUNC(JumpButton);
 
 private:
-    bool isPressed;
+    bool isPressed = false;
     Sprite* btnSprite;
 };
 

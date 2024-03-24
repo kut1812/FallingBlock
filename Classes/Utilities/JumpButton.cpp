@@ -33,7 +33,7 @@ bool JumpButton::onTouchBegan(Touch* touch, Event* event)
 
     if (btnSprite->getBoundingBox().containsPoint(touchLocationInNode))
     {
-        isPressed = true;
+        isPressed = false;
         return true;
     }
     return false;
@@ -45,5 +45,10 @@ void JumpButton::onTouchMoved(Touch* touch, Event* event)
 
 void JumpButton::onTouchEnded(Touch* touch, Event* event)
 {
-    isPressed = false;
+    Vec2 touchLocationInNode = this->convertToNodeSpace(touch->getLocation());
+
+    if (btnSprite->getBoundingBox().containsPoint(touchLocationInNode))
+    {
+        isPressed = true;
+    }
 }

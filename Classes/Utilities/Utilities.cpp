@@ -66,6 +66,24 @@ Animation* Utilities::createAnimation(std::string name, int numFrame, float dura
     AnimationCache::getInstance()->addAnimation(animation, name);
     return animation;
 }
+Animation* Utilities::createAnimationPng(std::string name, int numFrame, float duration)
+{
+    Vector<SpriteFrame*> frames;
+    for (int i = 0; i <= numFrame; i++)
+    {
+        char buffer[100];
+        sprintf(buffer, "%s (%d).png", name.c_str(), i + 1);
+        SpriteFrame* frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(buffer);
+        if (frame == nullptr)
+        {
+            break;
+        }
+        frames.pushBack(frame);
+    }
+    Animation* animation = Animation::createWithSpriteFrames(frames, duration);
+    AnimationCache::getInstance()->addAnimation(animation, name);
+    return animation;
+}
 //
 std::pair<Animation*, int> Utilities::createAnimation(std::string name, float duration)
 {
