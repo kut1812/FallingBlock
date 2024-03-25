@@ -108,8 +108,8 @@ Node* LayerManager::pauseLayer()
         }
         });
 
-    auto resume = pauseLayer->getChildByName<ui::Button*>("Button_7");
-    resume->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+    auto toplist = pauseLayer->getChildByName<ui::Button*>("Button_7");
+    toplist->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             Director::getInstance()->resume();
             pauseLayer->removeFromParentAndCleanup(true);
@@ -186,11 +186,10 @@ Node* LayerManager::loseLayer()
         }
         });
 
-    auto resume = loseLayer->getChildByName<ui::Button*>("Button_7");
-    resume->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+    auto topList = loseLayer->getChildByName<ui::Button*>("Button_7");
+    topList->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            Director::getInstance()->resume();
-            loseLayer->removeFromParentAndCleanup(true);
+            loseLayer->addChild(LayerManager::getInstance()->topListLayer());
         }
         });
 
@@ -205,4 +204,20 @@ Node* LayerManager::loseLayer()
         });
     
     return loseLayer;
+}
+
+Node* LayerManager::topListLayer()
+{
+
+    Node* topListLayer = CSLoader::getInstance()->createNode("csb/LeaderBoard.csb");
+    Director::getInstance()->pause();
+
+    auto cancel = topListLayer->getChildByName<ui::Button*>("Button_3");
+    cancel->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+            Director::getInstance()->resume();
+            topListLayer->removeFromParentAndCleanup(true);
+        }
+        });
+    return topListLayer;
 }

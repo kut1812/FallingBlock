@@ -13,10 +13,10 @@ public:
 	void tutorialLayer1(Scene* scene);
 	void tutorialLayer2(Scene* scene);
 	Node* loseLayer();
+	Node* topListLayer();
+
 private:
 	static LayerManager* _instance;
-
-	int _amount;
 };
 
 #endif // !__LAYER_MANAGER_H__

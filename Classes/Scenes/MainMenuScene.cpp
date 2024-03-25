@@ -27,14 +27,11 @@ bool MainMenuScene::init() {
 	SQLiteManager* dbManager = SQLiteManager::getInstance();
 	if (dbManager->init()) {
 		CCLOG("false to loading db");
-		CCLOG("playerId %d: %f", dbManager->getPlayerById(1).id, dbManager->getPlayerById(1).movement_speed);
 		for (auto i : dbManager->getTop10Highscore())
 		{
 			CCLOG("score %d: %d", i.playerId, i.score);
 		}
 	}
-	
-
 
 	auto uiMenu = CSLoader::getInstance()->createNode("csb/MainMenu.csb");
 	this->addChild(uiMenu);
