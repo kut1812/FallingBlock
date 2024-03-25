@@ -50,6 +50,7 @@ public:
 	Vec2 getPrevDir() const { return prevDirection; };
 	~Player();
 private:
+	std::string playerName;
 	bool _isCanMove = true;
 	bool usingShield = false;
 	X2CoinSkill* x2CoinSkill;

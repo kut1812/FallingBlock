@@ -29,6 +29,7 @@ bool GameScene::init()
         return false;
     }
     visibleSize = Director::getInstance()->getVisibleSize();
+
     this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     this->getPhysicsWorld()->setGravity(Vec2(0, -980));
 
