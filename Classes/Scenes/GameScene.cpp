@@ -51,7 +51,7 @@ bool GameScene::init()
     auto coinDouble = uiButton->getChildByName<ui::Button*>("Button_4");
     coinDouble->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            //thêm sự kiện
+            _player->getX2Coin()->use();
         }
         });
     //button shield

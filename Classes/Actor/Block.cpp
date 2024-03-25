@@ -41,7 +41,7 @@ bool Block::addPhysics()
     };
     blockBody = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(1.0f, 0.1f, 1.0f));
     blockBody->setDynamic(true);
-    blockBody->setMass(50);
+    blockBody->setMass(30);
     blockBody->setRotationEnable(false);
     blockBody->setContactTestBitmask(true);
     blockBody->setCollisionBitmask(30);

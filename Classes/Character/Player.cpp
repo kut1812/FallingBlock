@@ -77,6 +77,7 @@ bool Player::init() {
     this->moveLeftState = new MoveLeftState(this);
     this->moveRightState = new MoveRightState(this);
     this->x2JumpSkill = new X2JumpSkill(this);
+    this->x2CoinSkill = new X2CoinSkill(this);
     this->shieldSkill = new ShieldSkill(this);
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = CC_CALLBACK_2(Player::onKeyPressed, this);
