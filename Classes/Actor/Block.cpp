@@ -41,17 +41,12 @@ bool Block::addPhysics()
     };
     blockBody = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(1.0f, 0.1f, 1.0f));
     blockBody->setDynamic(true);
-    blockBody->setMass(50);
+    blockBody->setMass(30);
     blockBody->setRotationEnable(false);
-    blockBody->setContactTestBitmask(5);
+    blockBody->setContactTestBitmask(true);
     blockBody->setCollisionBitmask(30);
-    blockBody->setVelocity(Vec2(0, -90));
-
-    auto edgeShape = PhysicsShapePolygon::create(lowerEdge, 4, PhysicsMaterial(1.0f, 0.1f, 1.0f));
-    edgeShape->setCollisionBitmask(20);
-    edgeShape->setContactTestBitmask(true);
-    edgeShape->setTag(5);
-    blockBody->addShape(edgeShape);
+    blockBody->setVelocity(Vec2(0, 100));
+    blockBody->retain();
     this->addComponent(blockBody);
 
     return true;

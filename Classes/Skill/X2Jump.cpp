@@ -11,7 +11,12 @@ void X2JumpSkill::use() {
 	_player->getWingSprite()->setVisible(true);
 	Director::getInstance()->getScheduler()->schedule([this](float dt) {
 		_player->setMaxJumpCount(1);
-		_player->getWingSprite()->setVisible(false);
+		if(_player->getWingSprite())
+			_player->getWingSprite()->setVisible(false);
 		}, this, 5.0, 5.0, 5.0, false, "reset_max_jump_count");
 
+}
+
+X2JumpSkill::~X2JumpSkill() {
+	Director::getInstance()->getScheduler()->unschedule("reset_max_jump_count", this);
 }

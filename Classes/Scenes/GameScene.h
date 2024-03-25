@@ -26,6 +26,8 @@ private:
     float limitMeter = 20;
     float savedMeterBe4Reset = 0;
     MileageCounter* mileageCounter;
+    Node* leftColumnNode;
+    Node* rightColumnNode;
     bool OnContactBegan(cocos2d::PhysicsContact& contact);
     Joystick* _joystick;
     JumpButton* _jumpButton;

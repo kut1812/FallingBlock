@@ -50,6 +50,13 @@ bool MainMenuScene::init() {
 		 }
 		 });
 
+	 auto buttonTopList = uiMenu->getChildByName<ui::Button*>("Button_7");
+	 buttonTopList->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		 if (type == ui::Widget::TouchEventType::ENDED) {
+			 this->addChild(LayerManager::getInstance()->topListLayer());
+		 }
+		 });
+
 	return true;
 }
 

@@ -11,6 +11,7 @@ public:
     X2JumpSkill(Player* plr) : BaseSkill(plr) {}
     virtual bool init() override;
     virtual void use() override;
+    ~X2JumpSkill();
 };
 
 
