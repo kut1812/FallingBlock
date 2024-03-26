@@ -48,8 +48,23 @@ public:
 	bool isCanMove() const { return _isCanMove; };
 	void setIsCanMove(bool isTrue) { _isCanMove = isTrue; };
 	Vec2 getPrevDir() const { return prevDirection; };
+	int getMoney() const { return money; };
+	void increaseMoney(int amount) { money += amount; };
+	void decreaseMoney(int amount) { money -= amount; };
+	float getLifeSpawnTime() const { return lifeSpawnTime; };
+	void setLifeSpawnTime(float newTime) { lifeSpawnTime = newTime; };
+	void setSkillDuration(float newTime) { skillDuration = newTime; };
+	float getSkillDuration() { return skillDuration; };
 	~Player();
 private:
+	void decreaseCurrentLifeSpawnTime(float dt) { currentLifeSpawnTime -= dt; };
+	void resetCurrentLifeSpawnTime(float dt) { currentLifeSpawnTime -= dt; };
+	int money;
+	float skillDuration = 1;
+	float lifeSpawnTime = 320.0f;
+	float currentLifeSpawnTime = 320.0f;
+	int maxLifeSpawn = 3;
+
 	bool _isCanMove = true;
 	bool usingShield = false;
 	X2CoinSkill* x2CoinSkill;

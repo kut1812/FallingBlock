@@ -27,16 +27,31 @@ bool Coin::init()
     }
 
 
+    Utilities::getInstance()->loadSpriteFrameCache("animation/", "coin_normal");
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "coin_double");
-    auto coinAnimation = Utilities::createAnimation("coin_double", 20, 0.2f);
-
-    this->createWithSpriteFrameName("coin_double (1)");
+    auto coinAnimation = Utilities::createAnimation("coin_normal", 20, 0.2f);
+    auto coinDoubleAnim = Utilities::createAnimation("coin_double", 20, 0.2f);
+    AnimationCache::getInstance()->addAnimation(coinAnimation, "COIN NORMAL");
+    AnimationCache::getInstance()->addAnimation(coinDoubleAnim, "COIN DOUBLE");
+    this->createWithSpriteFrameName("coin_normal (1)");
 
     this->runAction(RepeatForever::create(Animate::create(coinAnimation)));
 
     this->scheduleUpdate();
 
     return true;
+}
+
+void Coin::setCoinDouble() {
+    this->stopAllActions();
+    this->runAction(RepeatForever::create(Animate::create(AnimationCache::getInstance()->getAnimation("COIN DOUBLE"))));
+    isDoub = true;
+}
+
+void Coin::setCoinNormal() {
+    this->stopAllActions();
+    this->runAction(RepeatForever::create(Animate::create(AnimationCache::getInstance()->getAnimation("COIN NORMAL"))));
+    isDoub = false;
 }
 
 bool Coin::addPhysics()

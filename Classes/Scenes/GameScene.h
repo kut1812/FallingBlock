@@ -36,7 +36,7 @@ private:
     float columnWidth;
     Size visibleSize;
     float listPositionYBlock[14];
-
+    float banSpawnCoinMeter;
     void setPhysicsWorld(cocos2d::PhysicsWorld* m_world) {
         m_world = world;
     }

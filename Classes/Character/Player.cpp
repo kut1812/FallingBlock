@@ -1,5 +1,6 @@
 ﻿#include "Player.h"
 #include "../Utilities/Utilities.h"
+#include "WorkingWithData/SQLiteManager.h"
 Player* Player::createPlayer() {
     Player* player = new (std::nothrow) Player();
     if (player && player->init()) {
@@ -17,6 +18,12 @@ bool Player::init() {
     if (!Node::init()) {
         return false;
     }
+    SQLiteManager* dbManager = SQLiteManager::getInstance();
+    SQLiteManager::PlayerInfo playerInfo = dbManager->getPlayerById(1);
+    this->movementSpeed = playerInfo.movement_speed;
+    
+
+
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "block_falled");
     auto sfx_block_falled = Utilities::createAnimation("block_falled", 19, 0.2f);
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "skull_relax");

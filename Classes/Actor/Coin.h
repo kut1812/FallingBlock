@@ -10,11 +10,14 @@ class Coin : public Sprite
 public:
 	static Coin* create();
 	virtual bool init();
-
+	void setCoinDouble();
+	void setCoinNormal();
 	bool addPhysics();
 	PhysicsBody* getPhysicsBody() { return physics; }
+	bool isDouble() const { return isDoub; };
 private:
 	PhysicsBody* physics;
+	bool isDoub = false;
 };
 
 #endif // !__COIN_H__

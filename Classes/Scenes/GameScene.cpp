@@ -118,7 +118,7 @@ bool GameScene::init()
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updatePlayer), 0.1f);
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::spawnBlocks), 5.0f);
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updateMeter), 0.0f);
-    this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updateCoin), 10.0f);
+    this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updateCoin), 0.0f);
 
 
     auto contactListener = EventListenerPhysicsContact::create();
@@ -137,6 +137,7 @@ void GameScene::spawnBlocks(float dt) {
     int count = 0;
     do {
         auto randomNum = Utilities::getInstance()->generateNumber(0, 13);
+        
         while (listPositionYBlock[randomNum] - findMin(listPositionYBlock, 14) >= 3)
         {
             randomNum = Utilities::getInstance()->generateNumber(0, 13);
@@ -163,6 +164,17 @@ void GameScene::spawnBlocks(float dt) {
             block = Block::create("fb_object_block_4");
         }
         auto spawnX = columnWidth / 2 + block->getContentSize().width / 2 * randomNum;
+        while (true) {
+            bool flag = true;
+            spawnX = columnWidth / 2 + block->getContentSize().width / 2 * randomNum;
+            for (auto i : listOfBlocks)
+            {
+                if (i->getBoundingBox().containsPoint(Vec2(spawnX, visibleSize.height / 1.3))) {
+                    flag = false;
+                }
+            }   
+            if (flag) break;
+        }
         blockSize = Size(block->getContentSize());
         block->setAnchorPoint(Vec2(0, 0));
         block->setPosition(Vec2(spawnX, visibleSize.height / 1.3));
@@ -347,8 +359,23 @@ void GameScene::updatePlayer(float dt) {
 }
 
 void GameScene::updateCoin(float dt) {
-    if (blockSize.width != 0 && blockSize.height != 0) {
-        auto randomQuantityCoin = Utilities::getInstance()->generateNumber(2, 5);
+    if (_player->isX2Coin()) {
+        for (auto c : listOfCoins)
+        {
+            if(!c->isDouble())
+                c->setCoinDouble();
+        }
+    }
+    else {
+        for (auto c : listOfCoins)
+        {
+            if (c->isDouble())
+                c->setCoinNormal();
+        }
+    }
+    if (blockSize.width != 0 && blockSize.height != 0 && mileageCounter->getMileage() != banSpawnCoinMeter && mileageCounter->getMileage() % 20 == 0) {
+        banSpawnCoinMeter = mileageCounter->getMileage();
+        auto randomQuantityCoin = Utilities::getInstance()->generateNumber(1, 4);
         int count = 0;
         do {
             auto randomX = Utilities::getInstance()->generateNumber(0, 16);
@@ -361,12 +388,13 @@ void GameScene::updateCoin(float dt) {
                 auto randomY = Utilities::getInstance()->generateNumber(3, 16);
                 spawnX = columnWidth / 2 + blockSize.width / 2 * randomX;
                 spawnY = blockSize.height / 2 * randomY;
+            };
+            if (!coinRect.containsPoint(Vec2(spawnX, spawnY))) {
+                auto coin = Coin::create();
+                coin->setPosition(spawnX, spawnY);
+                this->addChild(coin, 1000);
+                listOfCoins.push_back(coin);
             }
-
-            auto coin = Coin::create();
-            coin->setPosition(spawnX, spawnY);
-            this->addChild(coin, 1000);
-            listOfCoins.push_back(coin);
 
             count++;
         } while (count <= randomQuantityCoin);
