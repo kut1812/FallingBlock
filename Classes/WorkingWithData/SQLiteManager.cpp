@@ -28,7 +28,7 @@ bool SQLiteManager::init() {
         }
         CCLOG("Database opened successfully");
 
-        const char* createTableQuery = "CREATE TABLE IF NOT EXISTS player (id INTEGER PRIMARY KEY AUTOINCREMENT, money INTEGER, movement_speed REAL, life_spawn INTEGER, block_speed REAL, skill_duration REAL)";
+        const char* createTableQuery = "CREATE TABLE IF NOT EXISTS player (id INTEGER PRIMARY KEY AUTOINCREMENT, money INTEGER, movement_speed int, life_spawn int, block_speed int, skill_duration int)";
         executeQuery(createTableQuery);
         const char* createTable2Query = "CREATE TABLE IF NOT EXISTS topscores  (id INTEGER PRIMARY KEY AUTOINCREMENT, playerid INTEGER, score INTEGER)";
         executeQuery(createTable2Query);
@@ -59,7 +59,7 @@ void SQLiteManager::executeQuery(const std::string& query) {
     }
 }
 
-void SQLiteManager::setPlayerInfo(const int playerId, float movement_speed, int life_spawn, float block_speed, float skill_duration) {
+void SQLiteManager::setPlayerInfo(const int playerId, int movement_speed, int life_spawn, int block_speed, int skill_duration) {
     std::string checkQuery = "SELECT * FROM player WHERE id = " + std::to_string(playerId);
     sqlite3_stmt* stmt;
     int result = sqlite3_prepare_v2(_database, checkQuery.c_str(), -1, &stmt, nullptr);

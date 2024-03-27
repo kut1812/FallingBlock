@@ -19,8 +19,8 @@ bool Player::init() {
         return false;
     }
     SQLiteManager* dbManager = SQLiteManager::getInstance();
-    SQLiteManager::PlayerInfo playerInfo = dbManager->getPlayerById(1);
-    this->movementSpeed = playerInfo.movement_speed;
+   // SQLiteManager::PlayerInfo playerInfo = dbManager->getPlayerById(1);
+    //this->movementSpeed = playerInfo.movement_speed;
     
 
 

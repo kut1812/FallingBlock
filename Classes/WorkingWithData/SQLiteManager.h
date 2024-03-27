@@ -13,10 +13,10 @@ public:
     struct PlayerInfo {
         int id;
         int money;
-        float movement_speed;
+        int movement_speed;
         int life_spawn;
-        float block_speed;
-        float skill_duration;
+        int block_speed;
+        int skill_duration;
     };
     struct ScoreInfo {
         int id;
@@ -27,7 +27,7 @@ public:
     bool init();
     void closeDatabase();
     void executeQuery(const std::string& query);
-    void setPlayerInfo(const int playerId, float movement_speed, int life_spawn, float block_speed, float skill_duration);
+    void setPlayerInfo(const int playerId, int movement_speed, int life_spawn, int block_speed, int skill_duration);
     PlayerInfo getPlayerById(int playerId);
     void addScore(int playerId, int score);
     std::vector<ScoreInfo> getTop10Highscore();

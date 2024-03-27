@@ -55,6 +55,14 @@ public:
 	void setLifeSpawnTime(float newTime) { lifeSpawnTime = newTime; };
 	void setSkillDuration(float newTime) { skillDuration = newTime; };
 	float getSkillDuration() { return skillDuration; };
+	int getSkillDurationLevel() { return maxJumpCount; };
+	int getLifeSpawnLevel() { return maxJumpCount; };
+	int getMovementLevel() { return maxJumpCount; };
+	int getBlockSpeedLevel() { return maxJumpCount; };
+	void setSkillDurationLevel(int lv) { skillDurationLevel = lv; };
+	void setLifeSpawnLevel(int lv) { lifeSpawnLevel = lv; };
+	void setMovementLevel(int lv) { movementLevel = lv; };
+	void setBlockSpeedLevel(int lv) { blockSpeed = lv; };
 	~Player();
 private:
 	void decreaseCurrentLifeSpawnTime(float dt) { currentLifeSpawnTime -= dt; };
@@ -64,6 +72,10 @@ private:
 	float lifeSpawnTime = 320.0f;
 	float currentLifeSpawnTime = 320.0f;
 	int maxLifeSpawn = 3;
+	int skillDurationLevel = 0;
+	int lifeSpawnLevel = 0;
+	int movementLevel = 0;
+	int blockSpeed = 0;
 
 	bool _isCanMove = true;
 	bool usingShield = false;

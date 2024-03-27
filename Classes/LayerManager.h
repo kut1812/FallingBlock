@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include"Scenes/GameScene.h"
+#include "Character/Player.h"
 USING_NS_CC;
 class LayerManager
 {
@@ -14,7 +15,8 @@ public:
 	void tutorialLayer2(Scene* scene);
 	Node* loseLayer();
 	Node* topListLayer();
-
+	Node* upgradeLayer();
+	Node* storeLayer();
 private:
 	static LayerManager* _instance;
 };

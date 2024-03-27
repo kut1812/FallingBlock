@@ -27,7 +27,7 @@ bool MainMenuScene::init() {
 	SQLiteManager* dbManager = SQLiteManager::getInstance();
 	if (dbManager->init()) {
 
-		//dbManager->setPlayerInfo(1,3.0,3,2.5,5.0); // set or reset player 
+		dbManager->setPlayerInfo(1,3,3,2,5); // set or reset player 
 	/*	dbManager->addScore(1, 3222);
 		dbManager->addScore(1, 2222);
 		dbManager->addScore(1, 31222);
@@ -84,6 +84,13 @@ bool MainMenuScene::init() {
 	 buttonTopList->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		 if (type == ui::Widget::TouchEventType::ENDED) {
 			 this->addChild(LayerManager::getInstance()->topListLayer());
+		 }
+		 });
+
+	 auto buttonUpgrade = uiMenu->getChildByName<ui::Button*>("Button_3");
+	 buttonUpgrade->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		 if (type == ui::Widget::TouchEventType::ENDED) {
+			 this->addChild(LayerManager::getInstance()->upgradeLayer());
 		 }
 		 });
 

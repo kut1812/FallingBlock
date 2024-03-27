@@ -40,7 +40,7 @@ bool GameScene::init()
     columnWidth = column->getContentSize().width;
 
     auto uiButton = CSLoader::getInstance()->createNode("csb/ButtonGameScene.csb");
-    this->addChild(uiButton,1);
+    this->addChild(uiButton, 1);
 
     auto pause = uiButton->getChildByName<ui::Button*>("Button_3");
     pause->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
@@ -85,15 +85,15 @@ bool GameScene::init()
         });
     //label life
     auto life = uiButton->getChildByName<Label*>("Text_1");
-     //label coin
+    //label coin
     auto coin = uiButton->getChildByName<Label*>("Text_3");
-     //label x2jump
+    //label x2jump
     auto x2jump = uiButton->getChildByName<Label*>("Text_4");
-     //label shield
+    //label shield
     auto textShield = uiButton->getChildByName<Label*>("Text_5");
-     //label x2coin
+    //label x2coin
     auto x2coin = uiButton->getChildByName<Label*>("Text_6");
-    
+
 
     GameScene::setupPhysicBorder();
     Utilities::getInstance()->initRandomSeed();
@@ -106,13 +106,13 @@ bool GameScene::init()
     _joystick = Joystick::create();
     if (_joystick)
         this->addChild(_joystick, 1);
-    _joystick->setPosition(visibleSize.width / 8, visibleSize.height *0.15);
+    _joystick->setPosition(visibleSize.width / 8, visibleSize.height * 0.15);
 
     _jumpButton = JumpButton::create();
     if (_jumpButton) {
         this->addChild(_jumpButton, 1);
     }
-    _jumpButton->setPosition(visibleSize.width *0.85, visibleSize.height *0.15);
+    _jumpButton->setPosition(visibleSize.width * 0.85, visibleSize.height * 0.15);
 
 
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updatePlayer), 0.1f);
@@ -127,17 +127,17 @@ bool GameScene::init()
 
     mileageCounter = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", std::to_string(0), 20);
     uiButton->addChild(mileageCounter, 1999);
-    mileageCounter->setPosition(visibleSize.width *0.33, visibleSize.height *0.92);
+    mileageCounter->setPosition(visibleSize.width * 0.33, visibleSize.height * 0.92);
 
     return true;
 }
 
 void GameScene::spawnBlocks(float dt) {
-    auto randomQuantityBlock = Utilities::getInstance()->generateNumber(1, 3);
+    auto randomQuantityBlock = Utilities::getInstance()->generateNumber(0, 1);
     int count = 0;
     do {
         auto randomNum = Utilities::getInstance()->generateNumber(0, 13);
-        
+
         while (listPositionYBlock[randomNum] - findMin(listPositionYBlock, 14) >= 3)
         {
             randomNum = Utilities::getInstance()->generateNumber(0, 13);
@@ -164,17 +164,6 @@ void GameScene::spawnBlocks(float dt) {
             block = Block::create("fb_object_block_4");
         }
         auto spawnX = columnWidth / 2 + block->getContentSize().width / 2 * randomNum;
-        while (true) {
-            bool flag = true;
-            spawnX = columnWidth / 2 + block->getContentSize().width / 2 * randomNum;
-            for (auto i : listOfBlocks)
-            {
-                if (i->getBoundingBox().containsPoint(Vec2(spawnX, visibleSize.height / 1.3))) {
-                    flag = false;
-                }
-            }   
-            if (flag) break;
-        }
         blockSize = Size(block->getContentSize());
         block->setAnchorPoint(Vec2(0, 0));
         block->setPosition(Vec2(spawnX, visibleSize.height / 1.3));
@@ -188,7 +177,7 @@ void GameScene::spawnBlocks(float dt) {
 void GameScene::setDynamicAllBlock(bool x)
 {
     for (auto i : listOfBlocks) {
-        if (i!=nullptr)
+        if (i != nullptr)
         {
 
             i->removeAllComponents();
@@ -200,7 +189,7 @@ void GameScene::updateMeter(float dt) {
     if (_player) {
         currentMeter = savedMeterBe4Reset + _player->getPositionY() / 10;
         float myFloat = std::atof(mileageCounter->getString().c_str());
-        if (currentMeter-2 > myFloat)
+        if (currentMeter - 2 > myFloat)
         {
             mileageCounter->setMileage(currentMeter - 1);
         }
@@ -231,11 +220,12 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
             this->setDynamicAllBlock(false);
             _player->getShield()->~ShieldSkill();
             _player->getX2Jump()->~X2JumpSkill();
-            this->addChild(LayerManager::getInstance()->loseLayer(),2);
-            auto score = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf",mileageCounter->getString(), 20);
-            this->addChild(score, 2);
+            auto loseLayer = LayerManager::getInstance()->loseLayer();
+            this->addChild(loseLayer, 2);
+            auto score = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", mileageCounter->getString(), 20);
+            loseLayer->addChild(score, 2);
             score->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
-        } 
+        }
     }
 
     return true;
@@ -251,7 +241,7 @@ void GameScene::setupPhysicBorder() {
     edgeNode->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     edgeNode->addComponent(edgeBody);
     this->addChild(edgeNode);
-    
+
     leftColumnNode = Node::create();
     leftColumnNode->setPosition(Vec2(0, visibleSize.height / 2));
     auto leftBox = PhysicsBody::createBox(Size(columnWidth, visibleSize.height));
@@ -263,7 +253,7 @@ void GameScene::setupPhysicBorder() {
     this->addChild(leftColumnNode);
 
     rightColumnNode = Node::create();
-    rightColumnNode->setPosition(Vec2(visibleSize.width , visibleSize.height / 2));
+    rightColumnNode->setPosition(Vec2(visibleSize.width, visibleSize.height / 2));
     auto rightBox = PhysicsBody::createBox(Size(columnWidth, visibleSize.height));
     rightBox->setDynamic(false);
     rightBox->setCategoryBitmask(15);
@@ -288,6 +278,7 @@ void GameScene::updatePlayer(float dt) {
                 _player->changeState(Player::PlayerState::IDLE);
             }
         }
+
 
         // update jump action
         if (_jumpButton) {
@@ -330,9 +321,9 @@ void GameScene::updatePlayer(float dt) {
         {
             Rect plrRect(_player->getPosition() + (_player->getPhysicsBody()->getVelocity() * dt) - Vec2(70, 30), Size(90, 50));
             if (plrRect.containsPoint(bl->getPosition())) {
-                
+
                 _player->setIsCanMove(false);
-                
+
             }
             else {
 
@@ -362,7 +353,7 @@ void GameScene::updateCoin(float dt) {
     if (_player->isX2Coin()) {
         for (auto c : listOfCoins)
         {
-            if(!c->isDouble())
+            if (!c->isDouble())
                 c->setCoinDouble();
         }
     }
@@ -372,31 +363,5 @@ void GameScene::updateCoin(float dt) {
             if (c->isDouble())
                 c->setCoinNormal();
         }
-    }
-    if (blockSize.width != 0 && blockSize.height != 0 && mileageCounter->getMileage() != banSpawnCoinMeter && mileageCounter->getMileage() % 20 == 0) {
-        banSpawnCoinMeter = mileageCounter->getMileage();
-        auto randomQuantityCoin = Utilities::getInstance()->generateNumber(1, 4);
-        int count = 0;
-        do {
-            auto randomX = Utilities::getInstance()->generateNumber(0, 16);
-            auto randomY = Utilities::getInstance()->generateNumber(3, 16);
-            auto spawnX = columnWidth / 2 + blockSize.width / 2 * randomX;
-            auto spawnY = blockSize.height / 2 * randomY;
-            Rect coinRect(Vec2(spawnX, spawnY), blockSize);
-            while (coinRect.containsPoint(Vec2(spawnX, spawnY))) {
-                auto randomX = Utilities::getInstance()->generateNumber(0, 16);
-                auto randomY = Utilities::getInstance()->generateNumber(3, 16);
-                spawnX = columnWidth / 2 + blockSize.width / 2 * randomX;
-                spawnY = blockSize.height / 2 * randomY;
-            };
-            if (!coinRect.containsPoint(Vec2(spawnX, spawnY))) {
-                auto coin = Coin::create();
-                coin->setPosition(spawnX, spawnY);
-                this->addChild(coin, 1000);
-                listOfCoins.push_back(coin);
-            }
-
-            count++;
-        } while (count <= randomQuantityCoin);
     }
 }

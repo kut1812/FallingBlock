@@ -1,9 +1,11 @@
-#include "LayerManager.h"
+﻿#include "LayerManager.h"
 #include "AudioEngine.h"
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
 #include "Scenes/GameScene.h"
 #include "Scenes/MainMenuScene.h"
+#include "StatsManager/StatsManager.h"
+#include "WorkingWithData/SQLiteManager.h"
 
 LayerManager* LayerManager::_instance;
 
@@ -208,7 +210,6 @@ Node* LayerManager::loseLayer()
 
 Node* LayerManager::topListLayer()
 {
-
     Node* topListLayer = CSLoader::getInstance()->createNode("csb/LeaderBoard.csb");
     Director::getInstance()->pause();
 
@@ -220,4 +221,158 @@ Node* LayerManager::topListLayer()
         }
         });
     return topListLayer;
+}
+
+Node* LayerManager::upgradeLayer()
+{
+    SQLiteManager* dbManager = SQLiteManager::getInstance();
+
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Node* upgradeLayer = CSLoader::getInstance()->createNode("csb/Upgrade.csb");
+    Director::getInstance()->pause();
+
+    auto cancel = upgradeLayer->getChildByName<ui::Button*>("Button_3");
+    cancel->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+            Director::getInstance()->resume();
+            upgradeLayer->removeFromParentAndCleanup(true);
+        }
+        });
+
+    auto textLevelSkullSpeed = Label::createWithTTF("  0/300","font/Baloo2/Baloo2-Bold.ttf",20);
+    textLevelSkullSpeed->setPosition(Vec2(visibleSize.width * 0.31, visibleSize.height * 0.56));
+    textLevelSkullSpeed->setAnchorPoint(Vec2(0, 0.5));
+    upgradeLayer->addChild(textLevelSkullSpeed);
+    auto textLifeSpawn = Label::createWithTTF("  0/300","font/Baloo2/Baloo2-Bold.ttf",20);
+    textLifeSpawn->setPosition(Vec2(visibleSize.width * 0.53, visibleSize.height * 0.56));
+    textLifeSpawn->setAnchorPoint(Vec2(0, 0.5));
+    upgradeLayer->addChild(textLifeSpawn);
+    auto textBlockSpeed = Label::createWithTTF("  0/300", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    textBlockSpeed->setPosition(Vec2(visibleSize.width * 0.31, visibleSize.height * 0.35));
+    textBlockSpeed->setAnchorPoint(Vec2(0, 0.5));
+    upgradeLayer->addChild(textBlockSpeed);
+    auto textSkillDuration = Label::createWithTTF("  0/300", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    textSkillDuration->setPosition(Vec2(visibleSize.width * 0.53, visibleSize.height * 0.35));
+    textSkillDuration->setAnchorPoint(Vec2(0, 0.5));
+    upgradeLayer->addChild(textSkillDuration);
+    
+    auto textCoin = Label::createWithTTF("0", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    textCoin->setPosition(Vec2(visibleSize.width * 0.51, visibleSize.height * 0.20));
+    upgradeLayer->addChild(textCoin);
+
+
+    //SkullSpeed
+    int levelSkullSpeed = dbManager->getPlayerById(1).movement_speed;
+
+    Vector<Sprite*> loadingSkullSpeed;
+    for (int i = 0; i < 10; ++i) {
+        auto section = Sprite::create("popup/fb_popup_upgrade_cell_b.png"); // Hình ảnh mặc định là màu đen
+        section->setPosition(Vec2(visibleSize.width * 0.33 + (i*visibleSize.width*0.013), visibleSize.height * 0.62)); // Đặt vị trí cho từng khúc
+        section->setScale(0.5);
+        upgradeLayer->addChild(section);
+        loadingSkullSpeed.pushBack(section);
+    }
+    for (int i = 0; i < levelSkullSpeed%10; ++i) {
+        loadingSkullSpeed.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
+    }
+    
+    auto buttonAddSS= upgradeLayer->getChildByName<ui::Button*>("fb_popup_upgrade_plus_a_10");
+    buttonAddSS->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+            //levelSkullSpeed += 1;
+            //loadingSkullSpeed.at(levelSkullSpeed % 10 + 1);
+        }
+        });
+    
+        //LifeSpawn
+    int levelLifeSpawn = dbManager->getPlayerById(1).life_spawn;
+
+    Vector<Sprite*> loadingLifeSpawn;
+    for (int i = 0; i < 10; ++i) {
+        auto section = Sprite::create("popup/fb_popup_upgrade_cell_b.png"); // Hình ảnh mặc định là màu đen
+        section->setPosition(Vec2(visibleSize.width * 0.55 + (i*visibleSize.width*0.013), visibleSize.height * 0.62)); // Đặt vị trí cho từng khúc
+        section->setScale(0.5);
+        upgradeLayer->addChild(section);
+        loadingLifeSpawn.pushBack(section);
+    }
+    for (int i = 0; i < levelLifeSpawn % 10; ++i) {
+        loadingLifeSpawn.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
+    }
+    
+
+    //BlockSpeed
+    int levelBlockSpeed = dbManager->getPlayerById(1).block_speed;
+
+    Vector<Sprite*> loadingBlockSpeed;
+    for (int i = 0; i < 10; ++i) {
+        auto section = Sprite::create("popup/fb_popup_upgrade_cell_b.png"); // Hình ảnh mặc định là màu đen
+        section->setPosition(Vec2(visibleSize.width * 0.33 + (i*visibleSize.width*0.013), visibleSize.height * 0.40)); // Đặt vị trí cho từng khúc
+        section->setScale(0.5);
+        upgradeLayer->addChild(section);
+        loadingBlockSpeed.pushBack(section);
+    }
+    for (int i = 0; i < levelBlockSpeed % 10; ++i) {
+        loadingBlockSpeed.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
+    }
+    
+    
+    //SkillDuration
+    int levelSkillDuration = dbManager->getPlayerById(1).skill_duration;
+
+    Vector<Sprite*> loadingSkillDuration;
+    for (int i = 0; i < 10; ++i) {
+        auto section = Sprite::create("popup/fb_popup_upgrade_cell_b.png"); // Hình ảnh mặc định là màu đen
+        section->setPosition(Vec2(visibleSize.width * 0.55 + (i*visibleSize.width*0.013), visibleSize.height * 0.40)); // Đặt vị trí cho từng khúc
+        section->setScale(0.5);
+        upgradeLayer->addChild(section);
+        loadingSkillDuration.pushBack(section);
+    }
+    for (int i = 0; i < levelSkillDuration % 10; ++i) {
+        loadingSkillDuration.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
+    }
+
+    return upgradeLayer;
+}
+
+Node* LayerManager::storeLayer()
+{
+    Node* storeLayer = CSLoader::getInstance()->createNode("csb/LeaderBoard.csb");
+    Director::getInstance()->pause();
+
+    auto cancel = storeLayer->getChildByName<ui::Button*>("Button_3");
+    cancel->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+            Director::getInstance()->resume();
+            storeLayer->removeFromParentAndCleanup(true);
+        }
+        });
+
+    auto watch = storeLayer->getChildByName<ui::Button*>("Button_2");
+    watch->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+           //ads
+        }
+        });
+
+    auto buyCoin = storeLayer->getChildByName<ui::Button*>("Button_4");
+    buyCoin->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+           //
+        }
+        });
+
+    auto buyJump = storeLayer->getChildByName<ui::Button*>("Button_4");
+    buyCoin->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+           //
+        }
+        });
+
+    auto buySheild = storeLayer->getChildByName<ui::Button*>("Button_4");
+    buyCoin->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+           //
+        }
+        });
+    return storeLayer;
 }
