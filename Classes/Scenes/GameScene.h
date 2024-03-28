@@ -13,14 +13,14 @@
 class GameScene : public cocos2d::Scene
 {
 public:
-    static cocos2d::Scene* create();
-    virtual bool init();
+    static cocos2d::Scene* create(Player* _plr);
+    virtual bool init(Player* _plr);
     void updatePlayer(float dt);
     void updateMeter(float dt);
     void updateCoin(float dt);
     void setupPhysicBorder();
     void spawnBlocks(float dt);
-    void setDynamicAllBlock(bool x);
+    void setDynamicAllBlock(int x);
 private:
     float currentMeter = 0;
     float limitMeter = 20;
@@ -31,7 +31,7 @@ private:
     bool OnContactBegan(cocos2d::PhysicsContact& contact);
     Joystick* _joystick;
     JumpButton* _jumpButton;
-    Player* _player;
+    Player* _player ;
     cocos2d::PhysicsWorld* world;
     float columnWidth;
     Size visibleSize;

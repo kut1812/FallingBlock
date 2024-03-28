@@ -2,9 +2,9 @@
 #define __LAYER_MANAGER_H__
 
 #include "cocos2d.h"
-#include"Scenes/GameScene.h"
 #include "Character/Player.h"
 USING_NS_CC;
+class SQLiteManager;
 class LayerManager
 {
 public:
@@ -15,10 +15,12 @@ public:
 	void tutorialLayer2(Scene* scene);
 	Node* loseLayer();
 	Node* topListLayer();
-	Node* upgradeLayer();
+	//Node* upgradeLayer();
 	Node* storeLayer();
 private:
 	static LayerManager* _instance;
+	SQLiteManager* dbManager;
+	Player* _player;
 };
 
 #endif // !__LAYER_MANAGER_H__

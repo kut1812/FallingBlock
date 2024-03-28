@@ -19,11 +19,16 @@ bool Player::init() {
         return false;
     }
     SQLiteManager* dbManager = SQLiteManager::getInstance();
-   // SQLiteManager::PlayerInfo playerInfo = dbManager->getPlayerById(1);
-    //this->movementSpeed = playerInfo.movement_speed;
-    
+    SQLiteManager::PlayerInfo playerInfo = dbManager->getPlayerById(1);
+    this->movementLevel = playerInfo.movement_speed;
+    this->money = playerInfo.money;
+    this->lifeSpawnLevel = playerInfo.life_spawn;
+    this->blockSpeed = playerInfo.block_speed;
+    this->skillDurationLevel = playerInfo.skill_duration;
+    this->movementSpeed = 3;
+    CCLOG("player money %d", playerInfo.money);
 
-
+    this->retain();
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "block_falled");
     auto sfx_block_falled = Utilities::createAnimation("block_falled", 19, 0.2f);
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "skull_relax");
@@ -83,9 +88,13 @@ bool Player::init() {
     this->idleLeftState = new IdleLeftState(this);
     this->moveLeftState = new MoveLeftState(this);
     this->moveRightState = new MoveRightState(this);
-    this->x2JumpSkill = new X2JumpSkill(this);
-    this->x2CoinSkill = new X2CoinSkill(this);
-    this->shieldSkill = new ShieldSkill(this);
+
+    if(playerInfo.x2JumpActive == 1)
+        this->x2JumpSkill = new X2JumpSkill(this);
+    if (playerInfo.x2CoinActive == 1)
+        this->x2CoinSkill = new X2CoinSkill(this);
+    if (playerInfo.shieldActive == 1)
+        this->shieldSkill = new ShieldSkill(this);
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = CC_CALLBACK_2(Player::onKeyPressed, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);

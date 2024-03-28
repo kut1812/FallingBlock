@@ -4,13 +4,13 @@
 #include "ui/CocosGUI.h"
 #include "Utilities/Utilities.h"
 #include "LayerManager.h"
-
+#include "UpgradeLayer.h"
 USING_NS_CC;
 
-Scene* GameScene::create()
+Scene* GameScene::create(Player* _plr)
 {
     GameScene* scene = new GameScene();
-    if (scene && scene->init())
+    if (scene && scene->init(_plr))
     {
         scene->autorelease();
         return scene;
@@ -22,7 +22,7 @@ Scene* GameScene::create()
     }
 }
 
-bool GameScene::init()
+bool GameScene::init(Player* _plr)
 {
     if (!Scene::initWithPhysics())
     {
@@ -52,32 +52,39 @@ bool GameScene::init()
     auto coinDouble = uiButton->getChildByName<ui::Button*>("Button_4");
     coinDouble->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            _player->getX2Coin()->use();
+            if(_plr->getX2Coin())
+                _plr->getX2Coin()->use();
         }
         });
+    if (!_plr->getX2Coin()) coinDouble->setVisible(false);
     //button shield
     auto shield = uiButton->getChildByName<ui::Button*>("Button_5");
     shield->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            _player->getShield()->use();
+            if(_plr->getShield())
+                _plr->getShield()->use();
         }
         });
+    if (!_plr->getShield()) shield->setVisible(false);
     //button doubleJump
     auto doubleJump = uiButton->getChildByName<ui::Button*>("Button_6");
     doubleJump->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            _player->getX2Jump()->use();
+            if(_plr->getX2Jump())
+                _plr->getX2Jump()->use();
         }
         });
+    if (!_plr->getX2Jump()) doubleJump->setVisible(false);
     //button upgrade
     auto upgrade = uiButton->getChildByName<ui::Button*>("Button_1");
     upgrade->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            //thêm sự kiện
+            auto upgradeLayer = UpgradeLayer::create(_player);
+            this->addChild(upgradeLayer,3);
         }
         });
     //button shop
-    auto shop = uiButton->getChildByName<ui::Button*>("Button_1");
+    auto shop = uiButton->getChildByName<ui::Button*>("Button_2");
     shop->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             //thêm sự kiện
@@ -97,8 +104,7 @@ bool GameScene::init()
 
     GameScene::setupPhysicBorder();
     Utilities::getInstance()->initRandomSeed();
-
-    _player = Player::createPlayer();
+    _player = _plr;
     _player->setPosition(Vec2(visibleSize.width / 2, 2));
     _player->setTag(909);
     this->addChild(_player, 1);
@@ -174,13 +180,12 @@ void GameScene::spawnBlocks(float dt) {
 
 }
 
-void GameScene::setDynamicAllBlock(bool x)
+void GameScene::setDynamicAllBlock(int x)
 {
     for (auto i : listOfBlocks) {
         if (i != nullptr)
         {
-
-            i->removeAllComponents();
+            i->getPhysicsBody()->setVelocity(Vec2(i->getPhysicsBody()->getVelocity().x,x));
         }
     }
 }
@@ -217,14 +222,14 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
             bodyA->getPhysicsBody() && bodyB->getPhysicsBody() && bodyA->getPhysicsBody()->getCollisionBitmask() == 11 && bodyB->getPhysicsBody()->getCollisionBitmask() == 30
             )
         {
-            this->setDynamicAllBlock(false);
+            this->setDynamicAllBlock(200);
             _player->getShield()->~ShieldSkill();
             _player->getX2Jump()->~X2JumpSkill();
             auto loseLayer = LayerManager::getInstance()->loseLayer();
             this->addChild(loseLayer, 2);
             auto score = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", mileageCounter->getString(), 20);
             loseLayer->addChild(score, 2);
-            score->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
+            score->setPosition(Vec2(visibleSize.width * 0.51, visibleSize.height * 0.5));
         }
     }
 

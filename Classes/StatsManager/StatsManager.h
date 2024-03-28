@@ -11,8 +11,7 @@ class StatsManager
 public:
 	static StatsManager* getInstance(Player* _plr);
 
-	void active(std::string tyleStat);
-	void upgrade(std::string tyleStat);
+	bool upgrade(std::string tyleStat);
 private:
 	SQLiteManager* dbManager;
 	static StatsManager* _instance;
