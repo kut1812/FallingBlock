@@ -12,7 +12,7 @@ Scene* MainMenuScene::createScene()
 {
 	SQLiteManager* dbManager = SQLiteManager::getInstance();
 	if (dbManager->init()) {
-		dbManager->setPlayerInfo(1, 3, 300, 3, 2, 5, 1, 1, 0); // set or reset player 
+			dbManager->setPlayerInfo(1, 3, 300, 3, 2, 5, 0, 0, 0); // set or reset player 
 			dbManager->addScore(1, 3222);
 			dbManager->addScore(1, 2222);
 			dbManager->addScore(1, 31222);
@@ -62,7 +62,8 @@ bool MainMenuScene::init() {
 	 auto buttonPlay = uiMenu->getChildByName<ui::Button*>("Button_2");
 	 buttonPlay->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		 if (type == ui::Widget::TouchEventType::ENDED) {
-			 _player = Player::createPlayer();
+			 //_player = Player::createPlayer(); // <-
+
 			 auto newScene = GameScene::create(_player);
 			 TransitionScene* transition = TransitionFade::create(0.5f, newScene, Color3B::WHITE);
 			 Director::getInstance()->replaceScene(transition);
@@ -94,7 +95,6 @@ bool MainMenuScene::init() {
 	 buttonUpgrade->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		 if (type == ui::Widget::TouchEventType::ENDED) {
 			 //this->addChild(LayerManager::getInstance()->upgradeLayer());
-			 _player = Player::createPlayer();
 			 auto upgradeLayer = UpgradeLayer::create(_player);
 			 this->addChild(upgradeLayer);
 		 }

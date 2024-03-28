@@ -46,7 +46,6 @@ bool StoreLayer::init(Player* _plr)
     auto buyCoin = storeLayer->getChildByName<ui::Button*>("Button_4");
     buyCoin->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            CCLOG("abcdef");
             if (unlockSkill("X2Coin")) {
                 CCLOG("successfully!");
             }
@@ -58,7 +57,6 @@ bool StoreLayer::init(Player* _plr)
 
     auto buyJump = storeLayer->getChildByName<ui::Button*>("Button_4_0");
     buyCoin->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
-        CCLOG("ghijk");
         if (type == ui::Widget::TouchEventType::ENDED) {
             if (unlockSkill("X2Jump")) {
                 CCLOG("successfully!");
@@ -71,7 +69,6 @@ bool StoreLayer::init(Player* _plr)
 
     auto buySheild = storeLayer->getChildByName<ui::Button*>("Button_4_1");
     buyCoin->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
-        CCLOG("lmnop");
         if (type == ui::Widget::TouchEventType::ENDED) {
             if (unlockSkill("Shield")) {
                 CCLOG("successfully!");
@@ -88,6 +85,7 @@ bool StoreLayer::init(Player* _plr)
 
 bool StoreLayer::unlockSkill(std::string skillName) {
     CCLOG("%d moneymoney", _player->getMoney());
+    CCLOG("%s skillName", skillName.c_str());
     if (skillName == "X2Coin" && _player->getMoney() >= 10) {
         CCLOG("unlock x2 coin");
         if (!_player->getX2Coin()) {
@@ -95,13 +93,13 @@ bool StoreLayer::unlockSkill(std::string skillName) {
             _player->setSkillCoin(new X2CoinSkill(_player));
         }
     }
-    else if (skillName == "X2Jump" && _player->getMoney() >= 10) {
+    else if (skillName == "X2Jump" && _player->getMoney() >= 15) {
         if (!_player->getX2Jump()) {
-            _player->decreaseMoney(15); //ksao a đg fix
+            _player->decreaseMoney(15); 
             _player->setSkillJump(new X2JumpSkill(_player));
         }
     }
-    else if (skillName == "Shield" && _player->getMoney() >= 10) {
+    else if (skillName == "Shield" && _player->getMoney() >= 20) {
         if (!_player->getX2Jump()) {
             _player->decreaseMoney(20);
             _player->setSkillShield(new ShieldSkill(_player));

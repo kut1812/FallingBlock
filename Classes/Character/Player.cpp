@@ -26,7 +26,6 @@ bool Player::init() {
     this->blockSpeed = playerInfo.block_speed;
     this->skillDurationLevel = playerInfo.skill_duration;
     this->movementSpeed = 3;
-    CCLOG("player money %d", playerInfo.money);
 
     this->retain();
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "block_falled");

@@ -30,6 +30,11 @@ bool GameScene::init(Player* _plr)
     }
     visibleSize = Director::getInstance()->getVisibleSize();
 
+    _player = _plr;
+    _player->setPosition(Vec2(visibleSize.width / 2, 2));
+    _player->setTag(909);
+    this->addChild(_player, 1);
+
     this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     this->getPhysicsWorld()->setGravity(Vec2(0, -980));
 
@@ -52,29 +57,29 @@ bool GameScene::init(Player* _plr)
     auto coinDouble = uiButton->getChildByName<ui::Button*>("Button_4");
     coinDouble->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            if(_plr->getX2Coin())
-                _plr->getX2Coin()->use();
+            if(_player->getX2Coin())
+                _player->getX2Coin()->use();
         }
         });
-    if (!_plr->getX2Coin()) coinDouble->setVisible(false);
+    if (!_player->getX2Coin()) coinDouble->setVisible(false);
     //button shield
     auto shield = uiButton->getChildByName<ui::Button*>("Button_5");
     shield->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            if(_plr->getShield())
-                _plr->getShield()->use();
+            if(_player->getShield())
+                _player->getShield()->use();
         }
         });
-    if (!_plr->getShield()) shield->setVisible(false);
+    if (!_player->getShield()) shield->setVisible(false);
     //button doubleJump
     auto doubleJump = uiButton->getChildByName<ui::Button*>("Button_6");
     doubleJump->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            if(_plr->getX2Jump())
-                _plr->getX2Jump()->use();
+            if(_player->getX2Jump())
+                _player->getX2Jump()->use();
         }
         });
-    if (!_plr->getX2Jump()) doubleJump->setVisible(false);
+    if (!_player->getX2Jump()) doubleJump->setVisible(false);
     //button upgrade
     auto upgrade = uiButton->getChildByName<ui::Button*>("Button_1");
     upgrade->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
@@ -104,10 +109,6 @@ bool GameScene::init(Player* _plr)
 
     GameScene::setupPhysicBorder();
     Utilities::getInstance()->initRandomSeed();
-    _player = _plr;
-    _player->setPosition(Vec2(visibleSize.width / 2, 2));
-    _player->setTag(909);
-    this->addChild(_player, 1);
 
     _joystick = Joystick::create();
     if (_joystick)
