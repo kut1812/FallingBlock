@@ -49,7 +49,7 @@ bool UpgradeLayer::init(Player* _plr) {
         }
         });
     SQLiteManager::PlayerInfo playerInfo = dbManager->getPlayerById(1);
-    auto textLevelSkullSpeed = Label::createWithTTF("  " + std::to_string(_plr->movementLevel) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    auto textLevelSkullSpeed = Label::createWithTTF("  " + std::to_string(_plr->getMovementLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
     textLevelSkullSpeed->setPosition(Vec2(visibleSize.width * 0.31, visibleSize.height * 0.56));
     textLevelSkullSpeed->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(textLevelSkullSpeed);
@@ -141,13 +141,16 @@ bool UpgradeLayer::init(Player* _plr) {
             if (StatsManager::getInstance(_plr)->upgrade("skull speed")) {
 
                 CCLOG("Successfully!");
-                int levelSkullSpeed = _plr->movementLevel;
+                int levelSkullSpeed = _plr->getMovementLevel();
                 for (int i = 0; i < 10; ++i) {
                     loadingSkullSpeed.at(i)->setTexture("popup/fb_popup_upgrade_cell_b.png");
                 }
                 for (int i = 0; i < levelSkullSpeed % 10; ++i) {
                     loadingSkullSpeed.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
                 }
+                textLevelSkullSpeed->setString("  " + std::to_string(_plr->getMovementLevel()) + " / 300");
+                textCoin->setString(std::to_string(_plr->getMoney()));
+                
             }
             else {
                 CCLOG("Not enough money!");
@@ -158,19 +161,21 @@ bool UpgradeLayer::init(Player* _plr) {
 
     //button + life spawn
 
-    auto buttonAddSP = upgradeLayer->getChildByName<ui::Button*>("Button_3_0_0");
-    buttonAddSP->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+    auto buttonAddLS = upgradeLayer->getChildByName<ui::Button*>("Button_3_0_0");
+    buttonAddLS->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             if (StatsManager::getInstance(_plr)->upgrade("life spawn")) {
 
                 CCLOG("Successfully!");
-                int levelLifeSpawn = _plr->movementLevel;
+                int levelLifeSpawn = _plr->getLifeSpawnLevel();
                 for (int i = 0; i < 10; ++i) {
                     loadingLifeSpawn.at(i)->setTexture("popup/fb_popup_upgrade_cell_b.png");
                 }
                 for (int i = 0; i < levelLifeSpawn % 10; ++i) {
                     loadingLifeSpawn.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
                 }
+                textLifeSpawn->setString("  " + std::to_string(_plr->getLifeSpawnLevel()) + " / 300");
+                textCoin->setString(std::to_string(_plr->getMoney()));
             }
             else {
                 CCLOG("Not enough money!");
@@ -186,13 +191,15 @@ bool UpgradeLayer::init(Player* _plr) {
             if (StatsManager::getInstance(_plr)->upgrade("block speed")) {
 
                 CCLOG("Successfully!");
-                int levelBlockSpeed = _plr->movementLevel;
+                int levelBlockSpeed = _plr->getBlockSpeedLevel();
                 for (int i = 0; i < 10; ++i) {
                     loadingBlockSpeed.at(i)->setTexture("popup/fb_popup_upgrade_cell_b.png");
                 }
                 for (int i = 0; i < levelBlockSpeed % 10; ++i) {
                     loadingBlockSpeed.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
                 }
+                textBlockSpeed->setString("  " + std::to_string(_plr->getBlockSpeedLevel()) + " / 300");
+                textCoin->setString(std::to_string(_plr->getMoney()));
             }
             else {
                 CCLOG("Not enough money!");
@@ -208,13 +215,15 @@ bool UpgradeLayer::init(Player* _plr) {
             if (StatsManager::getInstance(_plr)->upgrade("skill duration")) {
 
                 CCLOG("Successfully!");
-                int levelSkillDuration = _plr->movementLevel;
+                int levelSkillDuration = _plr->getSkillDurationLevel();
                 for (int i = 0; i < 10; ++i) {
                     loadingSkillDuration.at(i)->setTexture("popup/fb_popup_upgrade_cell_b.png");
                 }
                 for (int i = 0; i < levelSkillDuration % 10; ++i) {
                     loadingSkillDuration.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
                 }
+                textSkillDuration->setString("  " + std::to_string(_plr->getSkillDurationLevel()) + " / 300");
+                textCoin->setString(std::to_string(_plr->getMoney()));
             }
             else {
                 CCLOG("Not enough money!");
