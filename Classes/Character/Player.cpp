@@ -22,11 +22,12 @@ bool Player::init() {
     SQLiteManager::PlayerInfo playerInfo = dbManager->getPlayerById(1);
     this->movementLevel = playerInfo.movement_speed;
     this->money = playerInfo.money;
+    this->blockSpeedLv = playerInfo.block_speed;
     this->lifeSpawnLevel = playerInfo.life_spawn;
-    this->blockSpeed = playerInfo.block_speed;
     this->skillDurationLevel = playerInfo.skill_duration;
-    this->movementSpeed = 3;
-
+    this->movementSpeed = 140 + (movementLevel / 3);
+    this->currentLifeSpawnTime -= this->lifeSpawnLevel / 8;
+    CCLOG("%f movementSpeed", movementSpeed);
     this->retain();
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "block_falled");
     auto sfx_block_falled = Utilities::createAnimation("block_falled", 19, 0.2f);
@@ -88,16 +89,20 @@ bool Player::init() {
     this->moveLeftState = new MoveLeftState(this);
     this->moveRightState = new MoveRightState(this);
 
-    if(playerInfo.x2JumpActive == 1)
+    //if(playerInfo.x2JumpActive == 1)
         this->x2JumpSkill = new X2JumpSkill(this);
-    if (playerInfo.x2CoinActive == 1)
+        this->x2JumpSkill->init();
+    //if (playerInfo.x2CoinActive == 1)
         this->x2CoinSkill = new X2CoinSkill(this);
-    if (playerInfo.shieldActive == 1)
+        this->x2CoinSkill->setSkillCooldown(0);
+    //if (playerInfo.shieldActive == 1)
         this->shieldSkill = new ShieldSkill(this);
+        this->shieldSkill->setSkillCooldown(0);
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = CC_CALLBACK_2(Player::onKeyPressed, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-
+    
+    this->schedule(CC_SCHEDULE_SELECTOR(Player::spawnLife), currentLifeSpawnTime, CC_REPEAT_FOREVER, 0.0f);
 
     return true;
 }
@@ -109,6 +114,9 @@ void Player::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
     }
 }
 
+void Player::spawnLife(float dt) {
+    currentSpawnLife++;
+}
 
 void Player::update(float dt, float leftBorder, float rightBorder) {
     // handle move physicsBody by velocity
@@ -158,6 +166,25 @@ void Player::changeState(PlayerState newState) {
 
     if (currentState != nullptr)
         currentState->enter();
+}
+
+
+void Player::setSkillDurationLevel(int lv) { 
+    skillDurationLevel = lv;
+    if (this->x2JumpSkill)
+        this->x2JumpSkill->setMaxSkillCooldown(this->x2JumpSkill->getSkillCooldown() - lv / 60);
+    if (this->x2CoinSkill)
+        this->x2CoinSkill->setMaxSkillCooldown(this->x2CoinSkill->getSkillCooldown() - lv / 60);
+    if (this->shieldSkill)
+        this->shieldSkill->setMaxSkillCooldown(this->shieldSkill->getSkillCooldown() - lv / 60);
+}
+void Player::setLifeSpawnLevel(int lv) { 
+    lifeSpawnLevel = lv; 
+    currentLifeSpawnTime -= lifeSpawnLevel / 8;
+}
+void Player::setMovementLevel(int lv) { 
+    movementLevel = lv;
+    this->movementSpeed = 140 + (movementLevel / 3);
 }
 
 Player::~Player() {

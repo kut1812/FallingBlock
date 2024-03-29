@@ -51,34 +51,37 @@ public:
 	int getMoney()  { return money; };
 	void increaseMoney(int amount) { money += amount; };
 	void decreaseMoney(int amount) { money -= amount; };
-	float getLifeSpawnTime() const { return lifeSpawnTime; };
-	void setLifeSpawnTime(float newTime) { lifeSpawnTime = newTime; };
 	void setSkillDuration(float newTime) { skillDuration = newTime; };
 	float getSkillDuration() { return skillDuration; };
 	int getSkillDurationLevel() { return skillDurationLevel; };
 	int getLifeSpawnLevel() { return lifeSpawnLevel; };
 	int getMovementLevel() { return movementLevel; };
-	int getBlockSpeedLevel() { return blockSpeed; };
-	void setSkillDurationLevel(int lv) { skillDurationLevel = lv; };
-	void setLifeSpawnLevel(int lv) { lifeSpawnLevel = lv; };
-	void setMovementLevel(int lv) { movementLevel = lv; };
-	void setBlockSpeedLevel(int lv) { blockSpeed = lv; };
+	void setSkillDurationLevel(int lv);
+	void setLifeSpawnLevel(int lv);
+	void setMovementLevel(int lv);
 	void setSkillShield(ShieldSkill* newSkill) { this->shieldSkill = newSkill; };
 	void setSkillJump(X2JumpSkill* newSkill) { this->x2JumpSkill = newSkill; };
 	void setSkillCoin(X2CoinSkill* newSkill) { this->x2CoinSkill = newSkill; };
+	int getSpawnLife() const { return currentSpawnLife; };
+	void decreaseSpawnLife() { currentSpawnLife--; }
+	void setBlockSpeedLevel(int newlv) { this->blockSpeedLv = newlv; };
+	int getBlockSpeedLevel() const { return this->blockSpeedLv; };
+	void spawnLife(float dt); 
+	void resetSkill() {
+		x2CoinSkill = nullptr;
+		x2JumpSkill = nullptr;
+		shieldSkill = nullptr;
+	}
 	int money = 0;
 	int movementLevel = 0;
 	~Player();
 private:
-	void decreaseCurrentLifeSpawnTime(float dt) { currentLifeSpawnTime -= dt; };
-	void resetCurrentLifeSpawnTime(float dt) { currentLifeSpawnTime -= dt; };
 	float skillDuration = 1;
-	float lifeSpawnTime = 320.0f;
-	float currentLifeSpawnTime = 320.0f;
-	int maxLifeSpawn = 3;
+	float currentLifeSpawnTime = 50.0f;
+	int currentSpawnLife = 1;
 	int skillDurationLevel = 0;
 	int lifeSpawnLevel = 0;
-	int blockSpeed = 0;
+	int blockSpeedLv = 0;
 
 	bool _isCanMove = true;
 	bool usingShield = false;
@@ -96,7 +99,7 @@ private:
 	//JumpingState *jumpingState;
 	Sprite* characterSprite;
 	Vec2 direction = Vec2::ZERO;
-	float movementSpeed = 3.0f;
+	float movementSpeed = 200.0f;
 	bool isJumping = false;
 	int jumpCount = 0;
 	float jumpHeight = 30.0f;

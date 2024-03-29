@@ -97,6 +97,7 @@ bool GameScene::init(Player* _plr)
         });
     //label life
     auto life = uiButton->getChildByName<Label*>("Text_1");
+   
     //label coin
     auto coin = uiButton->getChildByName<Label*>("Text_3");
     //label x2jump
@@ -157,18 +158,22 @@ void GameScene::spawnBlocks(float dt) {
         if (randomTyle == 0)
         {
             block = Block::create("fb_object_block_1");
+            block->setBlockSpeedLevel(_player->getBlockSpeedLevel());
         }
         else if (randomTyle == 1)
         {
             block = Block::create("fb_object_block_2");
+            block->setBlockSpeedLevel(_player->getBlockSpeedLevel());
         }
         else if (randomTyle == 2)
         {
             block = Block::create("fb_object_block_3");
+            block->setBlockSpeedLevel(_player->getBlockSpeedLevel());
         }
         else if (randomTyle == 3)
         {
             block = Block::create("fb_object_block_4");
+            block->setBlockSpeedLevel(_player->getBlockSpeedLevel());
         }
         auto spawnX = columnWidth / 2 + block->getContentSize().width / 2 * randomNum;
         blockSize = Size(block->getContentSize());
@@ -178,7 +183,6 @@ void GameScene::spawnBlocks(float dt) {
         listOfBlocks.push_back(block);
         count++;
     } while (count <= randomQuantityBlock);
-
 }
 
 void GameScene::setDynamicAllBlock(int x)
@@ -199,12 +203,14 @@ void GameScene::updateMeter(float dt) {
         {
             mileageCounter->setMileage(currentMeter - 1);
         }
-        if (currentMeter > limitMeter && _player->getPositionY() <= (visibleSize.height - (visibleSize.height / 5)) && _player->getPhysicsBody()->getVelocity().y >= -0.5 && _player->getPhysicsBody()->getVelocity().y <= 0.5) {
+        if (currentMeter > limitMeter && _player->getPositionY() <= (visibleSize.height - (visibleSize.height / 5)) && _player->getPhysicsBody()->getVelocity().y >= -0.1 && _player->getPhysicsBody()->getVelocity().y <= 0.1) {
             std::vector<Block*> listToRemove;
+            int count = 0;
             for (auto i : listOfBlocks) {
-                if (i->getPositionY() <= i->getSpriteSize().height && i->getPositionY() >= 0) {
+                if (i->getPositionY() <= i->getSpriteSize().height && i->getPositionY() >= 0 && count <= 14) {
                     i->setFlop();
                     listToRemove.push_back(i);
+                    count++;
                 }
             }
             limitMeter += 20;
@@ -223,14 +229,37 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
             bodyA->getPhysicsBody() && bodyB->getPhysicsBody() && bodyA->getPhysicsBody()->getCollisionBitmask() == 11 && bodyB->getPhysicsBody()->getCollisionBitmask() == 30
             )
         {
-            this->setDynamicAllBlock(200);
-            _player->getShield()->~ShieldSkill();
-            _player->getX2Jump()->~X2JumpSkill();
-            auto loseLayer = LayerManager::getInstance()->loseLayer();
-            this->addChild(loseLayer, 2);
-            auto score = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", mileageCounter->getString(), 20);
-            loseLayer->addChild(score, 2);
-            score->setPosition(Vec2(visibleSize.width * 0.51, visibleSize.height * 0.5));
+            if(_player->getSpawnLife() <= 0) {
+                this->setDynamicAllBlock(200);
+                if (_player->getShield()) {
+                    _player->getShield()->~ShieldSkill();
+                    _player->resetSkill();
+                }
+                if (_player->getX2Jump()) {
+                    _player->getX2Jump()->~X2JumpSkill();
+                    _player->resetSkill();
+                }
+                if (_player->getX2Coin()) {
+                    _player->getX2Coin()->~X2CoinSkill();
+                    _player->resetSkill();
+                }
+                auto loseLayer = LayerManager::getInstance()->loseLayer();
+                this->addChild(loseLayer, 2);
+                auto score = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", mileageCounter->getString(), 20);
+                loseLayer->addChild(score, 2);
+                score->setPosition(Vec2(visibleSize.width * 0.51, visibleSize.height * 0.5));
+            }
+            else {
+                _player->decreaseSpawnLife();
+                if (bodyA->getPhysicsBody()->getCollisionBitmask() == 30) {
+                    bodyA->getPhysicsBody()->removeFromWorld();
+                    bodyA->setVisible(false);
+                }
+                else if (bodyB->getPhysicsBody()->getCollisionBitmask() == 30) {
+                    bodyB->getPhysicsBody()->removeFromWorld();
+                    bodyB->setVisible(false);
+                }
+            }
         }
     }
 
@@ -285,6 +314,18 @@ void GameScene::updatePlayer(float dt) {
             }
         }
 
+        if (_player->getX2Coin()) {
+            if(_player->getX2Coin()->getSkillCooldown() >= 0)
+            _player->getX2Coin()->setSkillCooldown(_player->getX2Coin()->getSkillCooldown() - dt);
+        } 
+        if (_player->getX2Jump()) {
+            if (_player->getX2Jump()->getSkillCooldown() >= 0)
+                _player->getX2Jump()->setSkillCooldown(_player->getX2Jump()->getSkillCooldown() - dt);
+        }
+        if (_player->getShield()) {
+            if (_player->getShield()->getSkillCooldown() >= 0)
+                _player->getShield()->setSkillCooldown(_player->getShield()->getSkillCooldown() - dt);
+        }
 
         // update jump action
         if (_jumpButton) {

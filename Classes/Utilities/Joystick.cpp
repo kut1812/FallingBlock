@@ -78,8 +78,11 @@ void Joystick::onTouchEnded(Touch* touch, Event* event)
 
 Vec2 Joystick::getDirection()
 {
-    if (isPressed)
-        return joystickBtn->getPosition() - centerPos;
+    if (isPressed) {
+        auto result = joystickBtn->getPosition() - centerPos;
+        result.normalize();
+        return result;
+    }
     else
     {
         return Vec2::ZERO;

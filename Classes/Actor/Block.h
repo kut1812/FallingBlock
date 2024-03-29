@@ -15,9 +15,11 @@ public:
 	Size getSpriteSize() const { return this->getContentSize(); };
 	void setStatus(std::string stt) { status = stt; };
 	std::string getStatus() const { return status; };
+	void setBlockSpeedLevel(int level);
 private:
 	PhysicsBody* physics;
 	PhysicsBody* blockBody;
+	int blockSpeedLevel;
 	std::string status = "active";
 
 };

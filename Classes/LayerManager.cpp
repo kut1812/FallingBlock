@@ -227,46 +227,60 @@ Node* LayerManager::topListLayer()
 
     std::vector<SQLiteManager::ScoreInfo> top10 = dbManager->getTop10Highscore();
     
-    auto textp1 = Label::createWithTTF(std::to_string(top10[0].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
-    textp1->setPosition(Vec2(visibleSize.width * 0.49, visibleSize.height * 0.62));
-    textp1->setAnchorPoint(Vec2(1, 0.5));
-    topListLayer->addChild(textp1);
-     auto textp2 = Label::createWithTTF(std::to_string(top10[1].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
-    textp2->setPosition(Vec2(visibleSize.width * 0.49, visibleSize.height * 0.55));
-    textp2->setAnchorPoint(Vec2(1, 0.5));
-    topListLayer->addChild(textp2);
-     auto textp3 = Label::createWithTTF(std::to_string(top10[2].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
-    textp3->setPosition(Vec2(visibleSize.width * 0.49, visibleSize.height * 0.48));
-    textp3->setAnchorPoint(Vec2(1, 0.5));
-    topListLayer->addChild(textp3);
-     auto textp4 = Label::createWithTTF(std::to_string(top10[3].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
-    textp4->setPosition(Vec2(visibleSize.width * 0.49, visibleSize.height * 0.41));
-    textp4->setAnchorPoint(Vec2(1, 0.5));
-    topListLayer->addChild(textp4);
-     auto textp5 = Label::createWithTTF(std::to_string(top10[4].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
-    textp5->setPosition(Vec2(visibleSize.width * 0.49, visibleSize.height * 0.34));
-    textp5->setAnchorPoint(Vec2(1, 0.5));
-    topListLayer->addChild(textp5);
-     auto textp6 = Label::createWithTTF(std::to_string(top10[5].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
-    textp6->setPosition(Vec2(visibleSize.width * 0.71, visibleSize.height * 0.62));
-    textp6->setAnchorPoint(Vec2(1, 0.5));
-    topListLayer->addChild(textp6);
-     auto textp7 = Label::createWithTTF(std::to_string(top10[6].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
-    textp7->setPosition(Vec2(visibleSize.width * 0.71, visibleSize.height * 0.55));
-    textp7->setAnchorPoint(Vec2(1, 0.5));
-    topListLayer->addChild(textp7);
-     auto textp8 = Label::createWithTTF(std::to_string(top10[7].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
-    textp8->setPosition(Vec2(visibleSize.width * 0.71, visibleSize.height * 0.48));
-    textp8->setAnchorPoint(Vec2(1, 0.5));
-    topListLayer->addChild(textp8);
-     auto textp9 = Label::createWithTTF(std::to_string(top10[8].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
-    textp9->setPosition(Vec2(visibleSize.width * 0.71, visibleSize.height * 0.41));
-    textp9->setAnchorPoint(Vec2(1, 0.5));
-    topListLayer->addChild(textp9);
-    auto textp10 = Label::createWithTTF(std::to_string((top10[9].id != -1 ? top10[89].score : 0)), "font/Baloo2/Baloo2-Bold.ttf", 20);
-    textp10->setPosition(Vec2(visibleSize.width * 0.71, visibleSize.height * 0.34));
-    textp10->setAnchorPoint(Vec2(1, 0.5));
-    topListLayer->addChild(textp10);
+    float offsetX = 0.49;
+    float offsetY = 0.62;
+    for (int i = 0; i < top10.size(); i++) {
+        auto textp1 = Label::createWithTTF(std::to_string(top10[i].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
+        textp1->setPosition(Vec2(visibleSize.width * offsetX, visibleSize.height * offsetY));
+        textp1->setAnchorPoint(Vec2(1, 0.5));
+        topListLayer->addChild(textp1);
+        if (i == 4) {
+            offsetY = 0.69;
+            offsetX = 0.71;
+        }
+        offsetY -= 0.07;
+    }
+
+    //auto textp1 = Label::createWithTTF(std::to_string(top10[0].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    //textp1->setPosition(Vec2(visibleSize.width * 0.49, visibleSize.height * 0.62));
+    //textp1->setAnchorPoint(Vec2(1, 0.5));
+    //topListLayer->addChild(textp1);
+    // auto textp2 = Label::createWithTTF(std::to_string(top10[1].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    //textp2->setPosition(Vec2(visibleSize.width * 0.49, visibleSize.height * 0.55));
+    //textp2->setAnchorPoint(Vec2(1, 0.5));
+    //topListLayer->addChild(textp2);
+    // auto textp3 = Label::createWithTTF(std::to_string(top10[2].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    //textp3->setPosition(Vec2(visibleSize.width * 0.49, visibleSize.height * 0.48));
+    //textp3->setAnchorPoint(Vec2(1, 0.5));
+    //topListLayer->addChild(textp3);
+    // auto textp4 = Label::createWithTTF(std::to_string(top10[3].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    //textp4->setPosition(Vec2(visibleSize.width * 0.49, visibleSize.height * 0.41));
+    //textp4->setAnchorPoint(Vec2(1, 0.5));
+    //topListLayer->addChild(textp4);
+    // auto textp5 = Label::createWithTTF(std::to_string(top10[4].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    //textp5->setPosition(Vec2(visibleSize.width * 0.49, visibleSize.height * 0.34));
+    //textp5->setAnchorPoint(Vec2(1, 0.5));
+    //topListLayer->addChild(textp5);
+    // auto textp6 = Label::createWithTTF(std::to_string(top10[5].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    //textp6->setPosition(Vec2(visibleSize.width * 0.71, visibleSize.height * 0.62));
+    //textp6->setAnchorPoint(Vec2(1, 0.5));
+    //topListLayer->addChild(textp6);
+    // auto textp7 = Label::createWithTTF(std::to_string(top10[6].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    //textp7->setPosition(Vec2(visibleSize.width * 0.71, visibleSize.height * 0.55));
+    //textp7->setAnchorPoint(Vec2(1, 0.5));
+    //topListLayer->addChild(textp7);
+    // auto textp8 = Label::createWithTTF(std::to_string(top10[7].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    //textp8->setPosition(Vec2(visibleSize.width * 0.71, visibleSize.height * 0.48));
+    //textp8->setAnchorPoint(Vec2(1, 0.5));
+    //topListLayer->addChild(textp8);
+    // auto textp9 = Label::createWithTTF(std::to_string(top10[8].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    //textp9->setPosition(Vec2(visibleSize.width * 0.71, visibleSize.height * 0.41));
+    //textp9->setAnchorPoint(Vec2(1, 0.5));
+    //topListLayer->addChild(textp9);
+    //auto textp10 = Label::createWithTTF(std::to_string((top10[9].id != -1 ? top10[89].score : 0)), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    //textp10->setPosition(Vec2(visibleSize.width * 0.71, visibleSize.height * 0.34));
+    //textp10->setAnchorPoint(Vec2(1, 0.5));
+    //topListLayer->addChild(textp10);
 
     return topListLayer;
 }
