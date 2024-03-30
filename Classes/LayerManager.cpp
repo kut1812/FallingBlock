@@ -69,6 +69,7 @@ Node* LayerManager::pauseLayer()
     auto cancel = pauseLayer->getChildByName<ui::Button*>("Button_3");
     cancel->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
+            Director::getInstance()->resume();
             pauseLayer->removeFromParentAndCleanup(true);
         }
         });
@@ -176,13 +177,15 @@ void LayerManager::tutorialLayer2(Scene* scene)
     scene->addChild(tutorialLayer2);
 }
 
-Node* LayerManager::loseLayer()
+Node* LayerManager::loseLayer(int score)
 {
     Node* loseLayer = CSLoader::getInstance()->createNode("csb/Lose.csb");
     Director::getInstance()->pause();
     auto home = loseLayer->getChildByName<ui::Button*>("Button_6");
     home->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
+            auto dbManager = SQLiteManager::getInstance();
+            dbManager->addScore(1, score);
             auto newScene = MainMenuScene::createScene();
             TransitionScene* transition = TransitionFade::create(0.5f, newScene, Color3B::WHITE);
             Director::getInstance()->resume();
@@ -193,6 +196,8 @@ Node* LayerManager::loseLayer()
     auto topList = loseLayer->getChildByName<ui::Button*>("Button_7");
     topList->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
+            auto dbManager = SQLiteManager::getInstance();
+            dbManager->addScore(1, score);
             loseLayer->addChild(LayerManager::getInstance()->topListLayer());
         }
         });
@@ -200,6 +205,8 @@ Node* LayerManager::loseLayer()
     auto restart = loseLayer->getChildByName<ui::Button*>("Button_6_0");
     restart->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
+            auto dbManager = SQLiteManager::getInstance();
+            dbManager->addScore(1, score);
             _player = Player::createPlayer();
             auto newScene = GameScene::create(_player);
             TransitionScene* transition = TransitionFade::create(0.5f, newScene, Color3B::WHITE);

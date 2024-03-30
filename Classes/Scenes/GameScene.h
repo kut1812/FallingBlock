@@ -9,6 +9,7 @@
 #include "../Utilities/MileageCounter.h"
 #include "../Actor/Coin.h"
 #include "../CoinManager/CoinManager.h"
+#include "WorkingWithData/SQLiteManager.h"
 
 class GameScene : public cocos2d::Scene
 {
@@ -20,15 +21,16 @@ public:
     void updateCoin(float dt);
     void setupPhysicBorder();
     void spawnBlocks(float dt);
+    void spawnCoins(float dt);
     void setDynamicAllBlock(int x);
 private:
+    SQLiteManager* dbManager;
     float currentMeter = 0;
     float limitMeter = 20;
     float savedMeterBe4Reset = 0;
     MileageCounter* mileageCounter;
     Node* leftColumnNode;
     Node* rightColumnNode;
-    bool OnContactBegan(cocos2d::PhysicsContact& contact);
     Joystick* _joystick;
     JumpButton* _jumpButton;
     Player* _player ;
@@ -37,6 +39,15 @@ private:
     Size visibleSize;
     float listPositionYBlock[14];
     float banSpawnCoinMeter;
+    float coolDownCoin;
+    float coolDownShield;
+    float coolDownJump;
+    float minSpawnCoin=0;
+    std::vector<Block*> listOfBlocks;
+    std::vector<Coin*> listOfCoins;
+    Size blockSize = Size(0, 0);
+    Label* lifeLabel;
+    bool OnContactBegan(cocos2d::PhysicsContact& contact);
     void setPhysicsWorld(cocos2d::PhysicsWorld* m_world) {
         m_world = world;
     }
@@ -49,10 +60,6 @@ private:
         }
         return minValue;
     }
-
-    std::vector<Block*> listOfBlocks;
-    std::vector<Coin*> listOfCoins;
-    Size blockSize = Size(0, 0);
 
 };
 

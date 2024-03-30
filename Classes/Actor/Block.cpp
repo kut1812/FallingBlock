@@ -59,3 +59,10 @@ bool Block::addPhysics()
 void Block::setFlop() {
     blockBody->setVelocity(Vec2(0, -2600));
 }
+void Block::update(float dt)
+{
+    if (this->getPositionX() != this->getPosX())
+    {
+        this->setPositionX(this->getPosX());
+    }
+}

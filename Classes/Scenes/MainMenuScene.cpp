@@ -13,13 +13,13 @@ Scene* MainMenuScene::createScene()
 	SQLiteManager* dbManager = SQLiteManager::getInstance();
 	if (dbManager->init()) {
 		if (dbManager->getPlayerById(1).id == -1) {
-			dbManager->setPlayerInfo(1, 3, 300, 3, 2, 5, 0, 0, 0); // set or reset player 
-			dbManager->addScore(1, 3222);
+			dbManager->setPlayerInfo(1, 3, 300, 3, 2, 5, 1, 1, 1); // set or reset player 
+		/*	dbManager->addScore(1, 3222);
 			dbManager->addScore(1, 2222);
 			dbManager->addScore(1, 31222);
 			dbManager->addScore(1, 53222);
 			dbManager->addScore(1, 63222);
-			dbManager->addScore(1, 73222);
+			dbManager->addScore(1, 73222);*/
 		}
 			/*SQLiteManager::PlayerInfo playerI4 = dbManager->getPlayerById(1);
 			CCLOG("player id %d\nmoney %d\nmovement speed %f\nskill duration %f\nlife spawn %d", playerI4.id, playerI4.money, playerI4.movement_speed, playerI4.skill_duration, playerI4.life_spawn);*/

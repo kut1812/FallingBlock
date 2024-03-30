@@ -16,12 +16,17 @@ public:
 	void setStatus(std::string stt) { status = stt; };
 	std::string getStatus() const { return status; };
 	void setBlockSpeedLevel(int level);
+	float getPosX() { return posX; }
+	void setPosX(float pos) { posX = pos; }
+
 private:
 	PhysicsBody* physics;
 	PhysicsBody* blockBody;
 	int blockSpeedLevel;
 	std::string status = "active";
+	float posX;
 
+	void update(float dt);	
 };
 
 #endif // !__BLOCK_H__

@@ -12,6 +12,8 @@ Scene* GameScene::create(Player* _plr)
     GameScene* scene = new GameScene();
     if (scene && scene->init(_plr))
     {
+
+        scene->dbManager = SQLiteManager::getInstance();
         scene->autorelease();
         return scene;
     }
@@ -96,16 +98,25 @@ bool GameScene::init(Player* _plr)
         }
         });
     //label life
-    auto life = uiButton->getChildByName<Label*>("Text_1");
-   
+    lifeLabel = Label::createWithTTF(std::to_string(_player->getSpawnLife()), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    lifeLabel->setPosition(Vec2(visibleSize.width*0.24,visibleSize.height*0.92));
+    this->addChild(lifeLabel,1);
     //label coin
-    auto coin = uiButton->getChildByName<Label*>("Text_3");
+    auto coin = Label::createWithTTF("1", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    coin->setPosition(Vec2(visibleSize.width * 0.44, visibleSize.height * 0.92));
+    this->addChild(coin, 1);
     //label x2jump
-    auto x2jump = uiButton->getChildByName<Label*>("Text_4");
+    auto x2jump = Label::createWithTTF("1", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    x2jump->setPosition(Vec2(visibleSize.width * 0.53, visibleSize.height * 0.92));
+    this->addChild(x2jump, 1);
     //label shield
-    auto textShield = uiButton->getChildByName<Label*>("Text_5");
+    auto textShield = Label::createWithTTF("1", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    textShield->setPosition(Vec2(visibleSize.width * 0.6, visibleSize.height * 0.92));
+    this->addChild(textShield, 1);
     //label x2coin
-    auto x2coin = uiButton->getChildByName<Label*>("Text_6");
+    auto x2coin = Label::createWithTTF("1", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    x2coin->setPosition(Vec2(visibleSize.width * 0.67, visibleSize.height * 0.92));
+    this->addChild(x2coin, 1);
 
 
     GameScene::setupPhysicBorder();
@@ -124,6 +135,7 @@ bool GameScene::init(Player* _plr)
 
 
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updatePlayer), 0.1f);
+    this->schedule(CC_SCHEDULE_SELECTOR(GameScene::spawnCoins), 0.0f);
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::spawnBlocks), 5.0f);
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updateMeter), 0.0f);
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updateCoin), 0.0f);
@@ -141,7 +153,7 @@ bool GameScene::init(Player* _plr)
 }
 
 void GameScene::spawnBlocks(float dt) {
-    auto randomQuantityBlock = Utilities::getInstance()->generateNumber(0, 1);
+    auto randomQuantityBlock = Utilities::getInstance()->generateNumber(1, 3);
     int count = 0;
     do {
         auto randomNum = Utilities::getInstance()->generateNumber(0, 13);
@@ -177,12 +189,38 @@ void GameScene::spawnBlocks(float dt) {
         }
         auto spawnX = columnWidth / 2 + block->getContentSize().width / 2 * randomNum;
         blockSize = Size(block->getContentSize());
+        block->setPosX(spawnX);
         block->setAnchorPoint(Vec2(0, 0));
         block->setPosition(Vec2(spawnX, visibleSize.height / 1.3));
         this->addChild(block);
         listOfBlocks.push_back(block);
         count++;
     } while (count <= randomQuantityBlock);
+}
+
+void GameScene::spawnCoins(float dt)
+{
+    float myFloat = std::atof(mileageCounter->getString().c_str());
+    if (myFloat-minSpawnCoin>=0)
+    {
+        minSpawnCoin += 50;
+        auto quantityCoin = Utilities::getInstance()->generateNumber(3, 6);
+        for (int i = 0; i < quantityCoin; i++)
+        {
+        auto coin = Coin::create();
+        coin->setScale(1.4);
+        auto randomX = Utilities::getInstance()->generateNumber(0, 13);
+        auto randomY = Utilities::getInstance()->generateNumber(3, 8);
+        auto spawnX = columnWidth / 2 + coin->getContentSize().width / 2 * randomX;
+        float a = randomY;
+        int posY = a / 10 * visibleSize.height;
+        CCLOG("%d", posY);
+        coin->setPosition(Vec2(spawnX,posY));
+        coin->setAnchorPoint(Vec2(0, 0));
+        this->addChild(coin,10);
+        listOfCoins.push_back(coin);
+        }
+    }
 }
 
 void GameScene::setDynamicAllBlock(int x)
@@ -243,10 +281,10 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
                     _player->getX2Coin()->~X2CoinSkill();
                     _player->resetSkill();
                 }
-                auto loseLayer = LayerManager::getInstance()->loseLayer();
-                this->addChild(loseLayer, 2);
                 auto score = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", mileageCounter->getString(), 20);
-                loseLayer->addChild(score, 2);
+                auto loseLayer = LayerManager::getInstance()->loseLayer(std::stoi(mileageCounter->getString()));
+                this->addChild(loseLayer, 2);
+                loseLayer->addChild(score, 0);
                 score->setPosition(Vec2(visibleSize.width * 0.51, visibleSize.height * 0.5));
             }
             else {
@@ -312,6 +350,10 @@ void GameScene::updatePlayer(float dt) {
             else {
                 _player->changeState(Player::PlayerState::IDLE);
             }
+        }
+
+        if (std::to_string(_player->getSpawnLife()) != lifeLabel->getString()) {
+            lifeLabel->setString(std::to_string(_player->getSpawnLife()));
         }
 
         if (_player->getX2Coin()) {

@@ -1,7 +1,9 @@
 #include "Shield.h"
 #include "../Character/Player.h"
 bool ShieldSkill::init() {
-	this->skillCooldown = 10.0f;
+	this->skillCooldown = 0.0f;
+	this->effectiveTime = 5.0f;
+	this->maxSkillCooldown = 10.0f;
 	return true;
 }
 
@@ -22,8 +24,8 @@ void ShieldSkill::use() {
 				_player->getShieldSprite()->setVisible(false);
 				_player->getShieldSprite()->removeComponent(shieldBody);
 			}
-			}, this, this->skillCooldown, this->skillCooldown, this->skillCooldown, false, "reset_shield_skill");
-		this->skillCooldown = 10;
+			}, this, effectiveTime, effectiveTime, effectiveTime, false, "reset_shield_skill");
+		this->skillCooldown = maxSkillCooldown;
 	}
 }
 ShieldSkill::~ShieldSkill() {
