@@ -19,7 +19,6 @@ protected:
     float skillCooldown;
     float maxSkillCooldown;
     float effectiveTime;
-    Sprite* skillSprite;
     Player* _player;
 };
 

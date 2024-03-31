@@ -15,7 +15,11 @@ public:
     virtual float getSkillCooldown() override { return this->skillCooldown; };
     virtual void setMaxSkillCooldown(float newTime) override { this->maxSkillCooldown = newTime; };
     virtual float getMaxSkillCooldown() override { return this->maxSkillCooldown; };
+    
     ~X2JumpSkill();
+    Sprite* skillSprite;
+private:
+
 };
 
 

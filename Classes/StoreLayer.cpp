@@ -36,16 +36,17 @@ bool StoreLayer::init(Player* _plr)
         }
         });
 
-    auto watch = storeLayer->getChildByName<ui::Button*>("Button_2");
+    auto watch = storeLayer->getChildByName<ui::Button*>("Button_1");
     watch->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            //ads
+            CCLOG("1");
         }
         });
 
-    auto buyCoin = storeLayer->getChildByName<ui::Button*>("Button_4");
+    auto buyCoin = storeLayer->getChildByName<ui::Button*>("Button_1_0");
     buyCoin->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
+            CCLOG("2");
             if (unlockSkill("X2Coin")) {
                 CCLOG("successfully!");
             }
@@ -55,9 +56,10 @@ bool StoreLayer::init(Player* _plr)
         }
         });
 
-    auto buyJump = storeLayer->getChildByName<ui::Button*>("Button_4_0");
-    buyCoin->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+    auto buyJump = storeLayer->getChildByName<ui::Button*>("Button_1_0_0");
+    buyJump->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
+            CCLOG("3");
             if (unlockSkill("X2Jump")) {
                 CCLOG("successfully!");
             }
@@ -67,9 +69,10 @@ bool StoreLayer::init(Player* _plr)
         }
         });
 
-    auto buySheild = storeLayer->getChildByName<ui::Button*>("Button_4_1");
-    buyCoin->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+    auto buySheild = storeLayer->getChildByName<ui::Button*>("Button_1_0_0_0");
+    buySheild->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
+            CCLOG("4");
             if (unlockSkill("Shield")) {
                 CCLOG("successfully!");
             }

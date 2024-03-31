@@ -61,6 +61,25 @@ bool GameScene::init(Player* _plr)
         if (type == ui::Widget::TouchEventType::ENDED) {
             if(_player->getX2Coin())
                 _player->getX2Coin()->use();
+            skillSpriteCoin = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
+            skillSpriteCoin->setPosition(Vec2(visibleSize.width * 0.77, visibleSize.height * 0.15));
+            skillSpriteCoin->setScale(0.5);
+            Director::getInstance()->getRunningScene()->addChild(skillSpriteCoin, 3);
+
+            auto label = Label::createWithTTF(StringUtils::format("%.1f", 20.0f), "font/Baloo2/Baloo2-Bold.ttf", 24);
+            label->setPosition(skillSpriteCoin->getPosition());
+            Director::getInstance()->getRunningScene()->addChild(label, 3);
+
+            float remainingCooldown = 20.0f;
+
+            Director::getInstance()->getScheduler()->schedule([=](float dt) mutable {
+                remainingCooldown -= dt;
+                label->setString(StringUtils::format("%.1f", remainingCooldown));
+
+                if (remainingCooldown <= 0) {
+                    label->removeFromParent();
+                }
+                }, label, 0.1f, kRepeatForever, 0.0f, false, "cooldown_scheduler1");
         }
         });
     if (!_player->getX2Coin()) coinDouble->setVisible(false);
@@ -70,6 +89,27 @@ bool GameScene::init(Player* _plr)
         if (type == ui::Widget::TouchEventType::ENDED) {
             if(_player->getShield())
                 _player->getShield()->use();
+            skillSpriteShield = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
+            skillSpriteShield->setPosition(Vec2(visibleSize.width * 0.79, visibleSize.height * 0.27));
+            skillSpriteShield->setScale(0.5);
+
+            Director::getInstance()->getRunningScene()->addChild(skillSpriteShield, 3);
+
+            auto label = Label::createWithTTF(StringUtils::format("%.1f", 10.0f), "font/Baloo2/Baloo2-Bold.ttf", 24);
+            label->setPosition(skillSpriteShield->getPosition());
+            Director::getInstance()->getRunningScene()->addChild(label, 3);
+
+            float remainingCooldown = 10.0f;
+
+            Director::getInstance()->getScheduler()->schedule([=](float dt) mutable {
+                remainingCooldown -= dt;
+                label->setString(StringUtils::format("%.1f", remainingCooldown));
+
+                if (remainingCooldown <= 0) {
+                    label->removeFromParent();
+                }
+                }, label, 0.1f, kRepeatForever, 0.0f, false, "cooldown_scheduler2");
+
         }
         });
     if (!_player->getShield()) shield->setVisible(false);
@@ -79,6 +119,25 @@ bool GameScene::init(Player* _plr)
         if (type == ui::Widget::TouchEventType::ENDED) {
             if(_player->getX2Jump())
                 _player->getX2Jump()->use();
+            skillSpriteJump = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
+            skillSpriteJump->setPosition(Vec2(visibleSize.width * 0.85, visibleSize.height * 0.32));
+            skillSpriteJump->setScale(0.5);
+            Director::getInstance()->getRunningScene()->addChild(skillSpriteJump, 3);
+
+            auto label = Label::createWithTTF(StringUtils::format("%.1f", 10.0f), "font/Baloo2/Baloo2-Bold.ttf", 24);
+            label->setPosition(skillSpriteJump->getPosition());
+            Director::getInstance()->getRunningScene()->addChild(label, 3);
+
+            float remainingCooldown = 10.0f;
+
+            Director::getInstance()->getScheduler()->schedule([=](float dt) mutable {
+                remainingCooldown -= dt;
+                label->setString(StringUtils::format("%.1f", remainingCooldown));
+
+                if (remainingCooldown <= 0) {
+                    label->removeFromParent();
+                }
+                }, label, 0.1f, kRepeatForever, 0.0f, false, "cooldown_scheduler3");
         }
         });
     if (!_player->getX2Jump()) doubleJump->setVisible(false);
@@ -357,87 +416,113 @@ void GameScene::updatePlayer(float dt) {
         }
 
         if (_player->getX2Coin()) {
-            if(_player->getX2Coin()->getSkillCooldown() >= 0)
-            _player->getX2Coin()->setSkillCooldown(_player->getX2Coin()->getSkillCooldown() - dt);
-        } 
+            if (_player->getX2Coin()->getSkillCooldown() >= 0) {
+                _player->getX2Coin()->setSkillCooldown(_player->getX2Coin()->getSkillCooldown() - dt);
+                if (_player->getX2Coin()->getSkillCooldown() < 0)
+                {
+                    if (skillSpriteCoin!=nullptr)
+                    {
+
+                    skillSpriteCoin->setVisible(false);
+                    }
+                }
+            }
+        }
         if (_player->getX2Jump()) {
-            if (_player->getX2Jump()->getSkillCooldown() >= 0)
+            if (_player->getX2Jump()->getSkillCooldown() >= 0) {
                 _player->getX2Jump()->setSkillCooldown(_player->getX2Jump()->getSkillCooldown() - dt);
+                if (_player->getX2Jump()->getSkillCooldown() < 0)
+                {
+                    if (skillSpriteCoin != nullptr)
+                    {
+
+                        skillSpriteJump->setVisible(false);
+                    }
+                }
+            }
         }
         if (_player->getShield()) {
-            if (_player->getShield()->getSkillCooldown() >= 0)
+            if (_player->getShield()->getSkillCooldown() >= 0) {
                 _player->getShield()->setSkillCooldown(_player->getShield()->getSkillCooldown() - dt);
-        }
+                if (_player->getShield()->getSkillCooldown() < 0)
+                {
+                    if (skillSpriteCoin != nullptr)
+                    {
 
-        // update jump action
-        if (_jumpButton) {
-            if (_jumpButton->getIsPress()) {
-                _player->setJump(true);
-                _player->increaseJumpCount();
-                _jumpButton->resetPressed();
-            }
-        }
-
-        // update player move and jump action
-        if (_player) {
-            _player->setDirection(_joystick->getDirection());
-            float s = visibleSize.width - (columnWidth / 2);
-            _player->update(dt, columnWidth / 2, s);
-        }
-
-        // contact with coin
-        if (!listOfCoins.empty()) {
-            std::vector<Coin*> listRemoveCoin;
-            for (auto coin : listOfCoins) {
-                if (coin->getBoundingBox().containsPoint(_player->getPosition())) {
-                    coin->removeFromParentAndCleanup(true);
-                    listRemoveCoin.push_back(coin);
-                    if (!_player->isX2Coin())
-                        CoinManager::getInstance()->increaseCoins(1);
-                    else
-                        CoinManager::getInstance()->increaseCoins(1 * 2);
+                        skillSpriteShield->setVisible(false);
+                    }
                 }
             }
-            for (auto coin : listRemoveCoin) {
-                auto it = std::find(listOfCoins.begin(), listOfCoins.end(), coin);
-                if (it != listOfCoins.end()) {
-                    listOfCoins.erase(it);
+
+            // update jump action
+            if (_jumpButton) {
+                if (_jumpButton->getIsPress()) {
+                    _player->setJump(true);
+                    _player->increaseJumpCount();
+                    _jumpButton->resetPressed();
                 }
             }
-        }
 
-        for (auto bl : listOfBlocks)
-        {
-            Rect plrRect(_player->getPosition() + (_player->getPhysicsBody()->getVelocity() * dt) - Vec2(70, 30), Size(90, 50));
-            if (plrRect.containsPoint(bl->getPosition())) {
+            // update player move and jump action
+            if (_player) {
+                _player->setDirection(_joystick->getDirection());
+                float s = visibleSize.width - (columnWidth / 2);
+                _player->update(dt, columnWidth / 2, s);
+            }
 
+            // contact with coin
+            if (!listOfCoins.empty()) {
+                std::vector<Coin*> listRemoveCoin;
+                for (auto coin : listOfCoins) {
+                    if (coin->getBoundingBox().containsPoint(_player->getPosition())) {
+                        coin->removeFromParentAndCleanup(true);
+                        listRemoveCoin.push_back(coin);
+                        if (!_player->isX2Coin())
+                            CoinManager::getInstance()->increaseCoins(1);
+                        else
+                            CoinManager::getInstance()->increaseCoins(1 * 2);
+                    }
+                }
+                for (auto coin : listRemoveCoin) {
+                    auto it = std::find(listOfCoins.begin(), listOfCoins.end(), coin);
+                    if (it != listOfCoins.end()) {
+                        listOfCoins.erase(it);
+                    }
+                }
+            }
+
+            for (auto bl : listOfBlocks)
+            {
+                Rect plrRect(_player->getPosition() + (_player->getPhysicsBody()->getVelocity() * dt) - Vec2(70, 30), Size(90, 50));
+                if (plrRect.containsPoint(bl->getPosition())) {
+
+                    _player->setIsCanMove(false);
+
+                }
+                else {
+
+                    _player->setIsCanMove(true);
+                }
+            }
+
+            Rect leftRect(leftColumnNode->getPosition(), leftColumnNode->getContentSize());
+            if (leftRect.containsPoint(_player->getPosition() + (_player->getPhysicsBody()->getVelocity() * dt))) {
                 _player->setIsCanMove(false);
-
             }
             else {
+                _player->setIsCanMove(true);
+            }
 
+            Rect rightRect(rightColumnNode->getPosition(), rightColumnNode->getContentSize());
+            if (rightRect.containsPoint(_player->getPosition() + (_player->getPhysicsBody()->getVelocity() * dt))) {
+                _player->setIsCanMove(false);
+            }
+            else {
                 _player->setIsCanMove(true);
             }
         }
-
-        Rect leftRect(leftColumnNode->getPosition(), leftColumnNode->getContentSize());
-        if (leftRect.containsPoint(_player->getPosition() + (_player->getPhysicsBody()->getVelocity() * dt))) {
-            _player->setIsCanMove(false);
-        }
-        else {
-            _player->setIsCanMove(true);
-        }
-
-        Rect rightRect(rightColumnNode->getPosition(), rightColumnNode->getContentSize());
-        if (rightRect.containsPoint(_player->getPosition() + (_player->getPhysicsBody()->getVelocity() * dt))) {
-            _player->setIsCanMove(false);
-        }
-        else {
-            _player->setIsCanMove(true);
-        }
     }
 }
-
 void GameScene::updateCoin(float dt) {
     if (_player->isX2Coin()) {
         for (auto c : listOfCoins)

@@ -13,7 +13,7 @@ Scene* MainMenuScene::createScene()
 	SQLiteManager* dbManager = SQLiteManager::getInstance();
 	if (dbManager->init()) {
 		if (dbManager->getPlayerById(1).id == -1) {
-			dbManager->setPlayerInfo(1, 3, 300, 3, 2, 5, 1, 1, 1); // set or reset player 
+			dbManager->setPlayerInfo(1, 3, 300, 3, 2, 5, 0, 0, 0); // set or reset player 
 		/*	dbManager->addScore(1, 3222);
 			dbManager->addScore(1, 2222);
 			dbManager->addScore(1, 31222);
@@ -101,7 +101,6 @@ bool MainMenuScene::init() {
 			 this->addChild(storeLayer);
 		 }
 		 });
-
 	return true;
 }
 
