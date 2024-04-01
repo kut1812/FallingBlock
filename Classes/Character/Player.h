@@ -72,6 +72,18 @@ public:
 		x2JumpSkill = nullptr;
 		shieldSkill = nullptr;
 	}
+	void increaseJumpAmount(int amt) { jumpAmount += amt; };
+	void increaseCoinAmount(int amt) { coinAmount += amt; };
+	void increaseShieldAmount(int amt) { shieldAmount += amt; };
+	void decreaseJumpAmount(int amt) { jumpAmount -= amt; };
+	void decreaseCoinAmount(int amt) { coinAmount -= amt; };
+	void decreaseShieldAmount(int amt) { shieldAmount -= amt; };
+	int getJumpAmount() { return jumpAmount; };
+	int getCoinAmount() { return coinAmount; };
+	int getShieldAmount() { return shieldAmount; };
+
+
+
 	int money = 0;
 	int movementLevel = 0;
 	~Player();
@@ -82,7 +94,9 @@ private:
 	int skillDurationLevel = 0;
 	int lifeSpawnLevel = 0;
 	int blockSpeedLv = 0;
-
+	int jumpAmount = 0;
+	int coinAmount = 0;
+	int shieldAmount = 0;
 	bool _isCanMove = true;
 	bool usingShield = false;
 	X2CoinSkill* x2CoinSkill = nullptr;

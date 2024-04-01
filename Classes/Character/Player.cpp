@@ -27,6 +27,9 @@ bool Player::init() {
     this->skillDurationLevel = playerInfo.skill_duration;
     this->movementSpeed = 140 + (movementLevel / 3);
     this->currentLifeSpawnTime = 320.0f - this->lifeSpawnLevel / 8;
+    this->jumpAmount = playerInfo.x2JumpActive;
+    this->coinAmount = playerInfo.x2CoinActive;
+    this->shieldAmount = playerInfo.shieldActive;
     this->retain();
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "block_falled");
     auto sfx_block_falled = Utilities::createAnimation("block_falled", 19, 0.2f);
@@ -88,18 +91,13 @@ bool Player::init() {
     this->moveLeftState = new MoveLeftState(this);
     this->moveRightState = new MoveRightState(this);
 
-    if (playerInfo.x2JumpActive == 1) {
-        this->x2JumpSkill = new X2JumpSkill(this);
-        this->x2JumpSkill->init();
-    }
-    if (playerInfo.x2CoinActive == 1) {
-        this->x2CoinSkill = new X2CoinSkill(this);
-        this->x2CoinSkill->init();
-    }
-    if (playerInfo.shieldActive == 1) {
-        this->shieldSkill = new ShieldSkill(this);
-        this->shieldSkill->init();
-    }
+    this->x2JumpSkill = new X2JumpSkill(this);
+    this->x2JumpSkill->init();
+    this->x2CoinSkill = new X2CoinSkill(this);
+    this->x2CoinSkill->init();
+    this->shieldSkill = new ShieldSkill(this);
+    this->shieldSkill->init();
+
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = CC_CALLBACK_2(Player::onKeyPressed, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);

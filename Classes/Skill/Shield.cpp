@@ -1,22 +1,17 @@
 #include "Shield.h"
 #include "../Character/Player.h"
 bool ShieldSkill::init() {
+	if (!Node::init()) return false;
 	this->skillCooldown = 0.0f;
 	this->effectiveTime = 5.0f;
 	this->maxSkillCooldown = 10.0f;
-	if (Director::getInstance()->getRunningScene())
-	{
-		auto visibleSize = Director::getInstance()->getVisibleSize();
-		skillSprite = Sprite::create("control/fb_ctrl_skill_sheild_wait.png");
-		skillSprite->setPosition(Vec2(visibleSize.width * 0.79, visibleSize.height * 0.27));
-		Director::getInstance()->getRunningScene()->addChild(skillSprite, 3);
-	}
 	return true;
 }
 
 void ShieldSkill::use() {
-	if (this->skillCooldown < 0) {
+	if (this->skillCooldown <= 0 && _player) {
 		_player->setInvincible(true);
+		_player->getShieldSprite()->setVisible(true);
 		auto shieldBody = PhysicsBody::createBox(_player->getShieldSprite()->getContentSize() - Size(50, 50), PhysicsMaterial(1.0f, 0.1f, 1.0f));
 		shieldBody->setDynamic(false);
 		shieldBody->setCollisionBitmask(80);
@@ -30,7 +25,7 @@ void ShieldSkill::use() {
 				_player->getShieldSprite()->setVisible(false);
 				_player->getShieldSprite()->removeComponent(shieldBody);
 			}
-			}, this, effectiveTime, effectiveTime, effectiveTime, false, "reset_shield_skill");
+			}, this, this->effectiveTime, 0.0f, 0.0f, false, "reset_shield_skill");
 		this->skillCooldown = maxSkillCooldown;
 	}
 }
