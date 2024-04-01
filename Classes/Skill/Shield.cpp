@@ -4,11 +4,10 @@ bool ShieldSkill::init() {
 	if (!Node::init()) return false;
 	this->skillCooldown = 0.0f;
 	this->effectiveTime = 5.0f;
-	this->maxSkillCooldown = 10.0f;
 	return true;
 }
 
-void ShieldSkill::use() {
+bool ShieldSkill::use() {
 	if (this->skillCooldown <= 0 && _player) {
 		_player->setInvincible(true);
 		_player->getShieldSprite()->setVisible(true);
@@ -27,7 +26,9 @@ void ShieldSkill::use() {
 			}
 			}, this, this->effectiveTime, 0.0f, 0.0f, false, "reset_shield_skill");
 		this->skillCooldown = maxSkillCooldown;
+		return true;
 	}
+	return false;
 }
 ShieldSkill::~ShieldSkill() {
 	Director::getInstance()->getScheduler()->unschedule("reset_shield_skill", this);

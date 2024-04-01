@@ -12,6 +12,7 @@ public:
 
 	void increaseCoins(int coins) { _amount += coins; }
 	void decreaseCoins(int coins) {_amount -= coins; }
+	void reset() { _amount = 0; };
 	int getCoin(){return _amount;}
 private:
 	static CoinManager* _instance;

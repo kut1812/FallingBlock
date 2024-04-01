@@ -48,6 +48,7 @@ bool UpgradeLayer::init(Player* _plr) {
             upgradeLayer->removeFromParentAndCleanup(true);
         }
         });
+
     SQLiteManager::PlayerInfo playerInfo = dbManager->getPlayerById(1);
     auto textLevelSkullSpeed = Label::createWithTTF("  " + std::to_string(_plr->getMovementLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
     textLevelSkullSpeed->setPosition(Vec2(visibleSize.width * 0.31, visibleSize.height * 0.56));
@@ -69,7 +70,37 @@ bool UpgradeLayer::init(Player* _plr) {
     textCoin->setPosition(Vec2(visibleSize.width * 0.51, visibleSize.height * 0.20));
     upgradeLayer->addChild(textCoin);
 
-
+    //%
+    // 
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(1) << ((std::round(static_cast<float>(_plr->getMovementLevel() + 1) / 3 * 10.0) / 10.0));
+    std::string formattedString = ss.str();
+    auto statSkullSpeed = Label::createWithTTF("  " + formattedString + "%", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    statSkullSpeed->setPosition(Vec2(visibleSize.width * 0.34, visibleSize.height * 0.52));
+    statSkullSpeed->setColor(Color3B::GREEN);
+    statSkullSpeed->setAnchorPoint(Vec2(0, 0.5));
+    upgradeLayer->addChild(statSkullSpeed);
+    auto statLifeSpawn = Label::createWithTTF("  " + std::to_string(330 - (_plr->getLifeSpawnLevel() / 3)) + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    statLifeSpawn->setPosition(Vec2(visibleSize.width * 0.55, visibleSize.height * 0.52));
+    statLifeSpawn->setColor(Color3B::GREEN);
+    statLifeSpawn->setAnchorPoint(Vec2(0, 0.5));
+    upgradeLayer->addChild(statLifeSpawn);
+    std::stringstream ss2;
+    ss2 << std::fixed << std::setprecision(1) << (static_cast<float>((_plr->getBlockSpeedLevel())) / 6);
+    std::string formattedString2 = ss2.str();
+    auto statBlockSpeed = Label::createWithTTF("  -" + formattedString2 + "%", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    statBlockSpeed->setPosition(Vec2(visibleSize.width * 0.34, visibleSize.height * 0.31));
+    statBlockSpeed->setAnchorPoint(Vec2(0, 0.5));
+    statBlockSpeed->setColor(Color3B::GREEN);
+    upgradeLayer->addChild(statBlockSpeed);
+    std::stringstream ss3;
+    ss3 << std::fixed << std::setprecision(1) << (static_cast<float>((_plr->getSkillDurationLevel())) / 40);
+    std::string formattedString3 = ss3.str();
+    auto statSkillDuration = Label::createWithTTF("  -" + formattedString3 + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    statSkillDuration->setPosition(Vec2(visibleSize.width * 0.55, visibleSize.height * 0.31));
+    statSkillDuration->setColor(Color3B::GREEN);
+    statSkillDuration->setAnchorPoint(Vec2(0, 0.5));
+    upgradeLayer->addChild(statSkillDuration);
     //SkullSpeed
     int levelSkullSpeed = _plr->movementLevel; 
 
@@ -139,7 +170,6 @@ bool UpgradeLayer::init(Player* _plr) {
     buttonAddSS->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             if (StatsManager::getInstance(_plr)->upgrade("skull speed")) {
-
                 CCLOG("Successfully!");
                 int levelSkullSpeed = _plr->getMovementLevel();
                 for (int i = 0; i < 10; ++i) {
@@ -150,7 +180,10 @@ bool UpgradeLayer::init(Player* _plr) {
                 }
                 textLevelSkullSpeed->setString("  " + std::to_string(_plr->getMovementLevel()) + " / 300");
                 textCoin->setString(std::to_string(_plr->getMoney()));
-                
+                std::stringstream ss;
+                ss << std::fixed << std::setprecision(1) << ((std::round(static_cast<float>(_plr->getMovementLevel() + 1) / 3 * 10.0) / 10.0));
+                std::string formattedString = ss.str();
+                statSkullSpeed->setString("  " + formattedString + "%");
             }
             else {
                 CCLOG("Not enough money!");
@@ -176,6 +209,7 @@ bool UpgradeLayer::init(Player* _plr) {
                 }
                 textLifeSpawn->setString("  " + std::to_string(_plr->getLifeSpawnLevel()) + " / 300");
                 textCoin->setString(std::to_string(_plr->getMoney()));
+                statLifeSpawn->setString("  " + std::to_string(330 - (_plr->getLifeSpawnLevel() / 3)) + "s");
             }
             else {
                 CCLOG("Not enough money!");
@@ -200,6 +234,10 @@ bool UpgradeLayer::init(Player* _plr) {
                 }
                 textBlockSpeed->setString("  " + std::to_string(_plr->getBlockSpeedLevel()) + " / 300");
                 textCoin->setString(std::to_string(_plr->getMoney()));
+                std::stringstream ss2;
+                ss2 << std::fixed << std::setprecision(1) << (static_cast<float>((_plr->getBlockSpeedLevel())) / 6);
+                std::string formattedString2 = ss2.str();
+                statBlockSpeed->setString("  -" + formattedString2 + "%");
             }
             else {
                 CCLOG("Not enough money!");
@@ -224,6 +262,10 @@ bool UpgradeLayer::init(Player* _plr) {
                 }
                 textSkillDuration->setString("  " + std::to_string(_plr->getSkillDurationLevel()) + " / 300");
                 textCoin->setString(std::to_string(_plr->getMoney()));
+                std::stringstream ss3;
+                ss3 << std::fixed << std::setprecision(1) << (static_cast<float>((_plr->getSkillDurationLevel())) / 40);
+                std::string formattedString3 = ss3.str();
+                statSkillDuration->setString("  -" + formattedString3 + "s");
             }
             else {
                 CCLOG("Not enough money!");

@@ -18,6 +18,7 @@ public:
 	void setBlockSpeedLevel(int level);
 	float getPosX() { return posX; }
 	void setPosX(float pos) { posX = pos; }
+	float baseSpeed = 100;
 
 private:
 	PhysicsBody* physics;

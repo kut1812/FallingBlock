@@ -13,7 +13,7 @@ public:
 	Node* pauseLayer();
 	void tutorialLayer1(Scene* scene);
 	void tutorialLayer2(Scene* scene);
-	Node* loseLayer(int score);
+	Node* loseLayer(int score, Player* player);
 	Node* topListLayer();
 	//Node* upgradeLayer();
 	Node* storeLayer();

@@ -177,7 +177,7 @@ void LayerManager::tutorialLayer2(Scene* scene)
     scene->addChild(tutorialLayer2);
 }
 
-Node* LayerManager::loseLayer(int score)
+Node* LayerManager::loseLayer(int score, Player* player)
 {
     Node* loseLayer = CSLoader::getInstance()->createNode("csb/Lose.csb");
     Director::getInstance()->pause();
@@ -186,6 +186,7 @@ Node* LayerManager::loseLayer(int score)
         if (type == ui::Widget::TouchEventType::ENDED) {
             auto dbManager = SQLiteManager::getInstance();
             dbManager->addScore(1, score);
+            dbManager->setPlayerInfo(1, player->getMovementLevel(), player->getMoney() + CoinManager::getInstance()->getCoin(), player->getLifeSpawnLevel(), player->getBlockSpeedLevel(), player->getSkillDurationLevel(), player->getCoinAmount(), player->getJumpAmount(), player->getShieldAmount());
             auto newScene = MainMenuScene::createScene();
             TransitionScene* transition = TransitionFade::create(0.5f, newScene, Color3B::WHITE);
             Director::getInstance()->resume();
@@ -198,6 +199,7 @@ Node* LayerManager::loseLayer(int score)
         if (type == ui::Widget::TouchEventType::ENDED) {
             auto dbManager = SQLiteManager::getInstance();
             dbManager->addScore(1, score);
+            dbManager->setPlayerInfo(1, player->getMovementLevel(), player->getMoney() + CoinManager::getInstance()->getCoin(), player->getLifeSpawnLevel(), player->getBlockSpeedLevel(), player->getSkillDurationLevel(), player->getCoinAmount(), player->getJumpAmount(), player->getShieldAmount());
             loseLayer->addChild(LayerManager::getInstance()->topListLayer());
         }
         });
@@ -207,6 +209,7 @@ Node* LayerManager::loseLayer(int score)
         if (type == ui::Widget::TouchEventType::ENDED) {
             auto dbManager = SQLiteManager::getInstance();
             dbManager->addScore(1, score);
+            dbManager->setPlayerInfo(1, player->getMovementLevel(), player->getMoney() + CoinManager::getInstance()->getCoin(), player->getLifeSpawnLevel(), player->getBlockSpeedLevel(), player->getSkillDurationLevel(), player->getCoinAmount(), player->getJumpAmount(), player->getShieldAmount());
             _player = Player::createPlayer();
             auto newScene = GameScene::create(_player);
             TransitionScene* transition = TransitionFade::create(0.5f, newScene, Color3B::WHITE);

@@ -70,7 +70,7 @@ private:
         }
         return minValue;
     }
-
+    void onExit();
 };
 
 #endif // __GAME_SCENE_H__

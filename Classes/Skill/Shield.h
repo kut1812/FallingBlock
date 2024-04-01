@@ -8,9 +8,9 @@ USING_NS_CC;
 class Player;
 class ShieldSkill : BaseSkill, cocos2d::Node {
 public:
-    ShieldSkill(Player* plr) : BaseSkill(plr) {}
+    ShieldSkill(Player* plr, float maxDuration) : BaseSkill(plr, maxDuration) {}
     virtual bool init() override;
-    virtual void use() override;
+    virtual bool use() override;
     virtual void setSkillCooldown(float newTime) override { skillCooldown = newTime; };
     virtual float getSkillCooldown() override { return this->skillCooldown; } ;
     virtual void setMaxSkillCooldown(float newTime) override { this->maxSkillCooldown = newTime; };

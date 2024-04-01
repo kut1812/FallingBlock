@@ -26,7 +26,7 @@ bool Player::init() {
     this->lifeSpawnLevel = playerInfo.life_spawn;
     this->skillDurationLevel = playerInfo.skill_duration;
     this->movementSpeed = 140 + (movementLevel / 3);
-    this->currentLifeSpawnTime = 320.0f - this->lifeSpawnLevel / 8;
+    this->currentLifeSpawnTime = 320.0f - this->lifeSpawnLevel / 3;
     this->jumpAmount = playerInfo.x2JumpActive;
     this->coinAmount = playerInfo.x2CoinActive;
     this->shieldAmount = playerInfo.shieldActive;
@@ -91,11 +91,13 @@ bool Player::init() {
     this->moveLeftState = new MoveLeftState(this);
     this->moveRightState = new MoveRightState(this);
 
-    this->x2JumpSkill = new X2JumpSkill(this);
+    this->x2JumpSkill = new X2JumpSkill(this, 20.0f - skillDurationLevel / 40);
     this->x2JumpSkill->init();
-    this->x2CoinSkill = new X2CoinSkill(this);
+    CCLOG("%d this->skillDurationLevel", this->skillDurationLevel);
+    CCLOG("%f this->x2JumpSkill->getSkillCooldown() - skillDurationLevel / 40", this->x2JumpSkill->getMaxSkillCooldown() - skillDurationLevel / 40);
+    this->x2CoinSkill = new X2CoinSkill(this, 20.0f - skillDurationLevel / 40);
     this->x2CoinSkill->init();
-    this->shieldSkill = new ShieldSkill(this);
+    this->shieldSkill = new ShieldSkill(this, 25.0f - skillDurationLevel / 40);
     this->shieldSkill->init();
 
     auto listener = EventListenerKeyboard::create();
@@ -171,13 +173,11 @@ void Player::changeState(PlayerState newState) {
 
 void Player::setSkillDurationLevel(int lv) { 
     skillDurationLevel = lv;
-    if (this->x2JumpSkill)
-        this->x2JumpSkill->setMaxSkillCooldown(this->x2JumpSkill->getSkillCooldown() - lv / 60);
-    if (this->x2CoinSkill)
-        this->x2CoinSkill->setMaxSkillCooldown(this->x2CoinSkill->getSkillCooldown() - lv / 60);
-    if (this->shieldSkill)
-        this->shieldSkill->setMaxSkillCooldown(this->shieldSkill->getSkillCooldown() - lv / 60);
+    this->x2JumpSkill->setMaxSkillCooldown(20.0f - lv / 40);
+    this->x2CoinSkill->setMaxSkillCooldown(20.0f - lv / 40);
+    this->shieldSkill->setMaxSkillCooldown(25.0f - lv / 40);
 }
+
 void Player::setLifeSpawnLevel(int lv) { 
     lifeSpawnLevel = lv; 
     currentLifeSpawnTime = 320.0f - lifeSpawnLevel / 8;

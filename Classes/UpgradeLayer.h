@@ -4,6 +4,8 @@
 #include "cocos2d.h"
 #include "Character/Player.h"
 #include"Scenes/GameScene.h"
+#include <iomanip> 
+#include <sstream>
 class UpgradeLayer : public cocos2d::Layer {
 public:
     static UpgradeLayer* create(Player* _plr);

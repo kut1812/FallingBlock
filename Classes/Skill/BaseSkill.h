@@ -7,9 +7,9 @@ USING_NS_CC;
 class Player;
 class BaseSkill : cocos2d::Node {
 public:
-    BaseSkill(Player* plr) : _player(plr) {}
+    BaseSkill(Player* plr, float maxDuration) : _player(plr), maxSkillCooldown(maxDuration) {}
     virtual bool init() = 0;
-    virtual void use() = 0;
+    virtual bool use() = 0;
     virtual void setSkillCooldown(float newTime) = 0;
     virtual float getSkillCooldown() = 0;
     virtual void setMaxSkillCooldown(float newTime) = 0;

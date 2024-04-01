@@ -37,8 +37,7 @@ bool GameScene::init(Player* _plr)
     _player->setPosition(Vec2(visibleSize.width / 2, 2));
     _player->setTag(909);
     this->addChild(_player, 1);
-
-    this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    CoinManager::getInstance()->reset();
     this->getPhysicsWorld()->setGravity(Vec2(0, -980));
 
     auto uiMenu = CSLoader::getInstance()->createNode("csb/Layer.csb");
@@ -60,8 +59,7 @@ bool GameScene::init(Player* _plr)
     auto coinDouble = uiButton->getChildByName<ui::Button*>("Button_4");
     coinDouble->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            if (_player->getX2Coin() && _player->getCoinAmount() > 0) {
-            _player->getX2Coin()->use();
+            if (_player->getX2Coin() && _player->getCoinAmount() > 0 && _player->getX2Coin()->use()) {
             _player->decreaseCoinAmount(1);
             dbManager->setPlayerInfo(1, _player->getMovementLevel(), _player->getMoney(), _player->getLifeSpawnLevel(), _player->getBlockSpeedLevel(), _player->getSkillDurationLevel(), _player->getCoinAmount(), _player->getJumpAmount(), _player->getShieldAmount());
             skillSpriteCoin = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
@@ -69,11 +67,11 @@ bool GameScene::init(Player* _plr)
             skillSpriteCoin->setScale(0.5);
             Director::getInstance()->getRunningScene()->addChild(skillSpriteCoin, 3);
 
-            auto label = Label::createWithTTF(StringUtils::format("%.1f", 20.0f), "font/Baloo2/Baloo2-Bold.ttf", 24);
+            auto label = Label::createWithTTF(StringUtils::format("%.1f", _player->getX2Coin()->getMaxSkillCooldown()), "font/Baloo2/Baloo2-Bold.ttf", 24);
             label->setPosition(skillSpriteCoin->getPosition());
             Director::getInstance()->getRunningScene()->addChild(label, 3);
 
-            float remainingCooldown = 20.0f;
+            float remainingCooldown = _player->getX2Coin()->getMaxSkillCooldown();
 
             Director::getInstance()->getScheduler()->schedule([=](float dt) mutable {
                 remainingCooldown -= dt;
@@ -91,8 +89,7 @@ bool GameScene::init(Player* _plr)
     auto shield = uiButton->getChildByName<ui::Button*>("Button_5");
     shield->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            if (_player->getShield() && _player->getShieldAmount() > 0) {
-                _player->getShield()->use();
+            if (_player->getShield() && _player->getShieldAmount() > 0 && _player->getShield()->use()) {
                 _player->decreaseShieldAmount(1);
                 dbManager->setPlayerInfo(1, _player->getMovementLevel(), _player->getMoney(), _player->getLifeSpawnLevel(), _player->getBlockSpeedLevel(), _player->getSkillDurationLevel(), _player->getCoinAmount(), _player->getJumpAmount(), _player->getShieldAmount());
                 skillSpriteShield = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
@@ -101,11 +98,11 @@ bool GameScene::init(Player* _plr)
 
                 Director::getInstance()->getRunningScene()->addChild(skillSpriteShield, 3);
 
-                auto label = Label::createWithTTF(StringUtils::format("%.1f", 10.0f), "font/Baloo2/Baloo2-Bold.ttf", 24);
+                auto label = Label::createWithTTF(StringUtils::format("%.1f", _player->getShield()->getMaxSkillCooldown()), "font/Baloo2/Baloo2-Bold.ttf", 24);
                 label->setPosition(skillSpriteShield->getPosition());
                 Director::getInstance()->getRunningScene()->addChild(label, 3);
 
-                float remainingCooldown = 10.0f;
+                float remainingCooldown = _player->getShield()->getMaxSkillCooldown();
 
                 Director::getInstance()->getScheduler()->schedule([=](float dt) mutable {
                     remainingCooldown -= dt;
@@ -124,8 +121,7 @@ bool GameScene::init(Player* _plr)
     auto doubleJump = uiButton->getChildByName<ui::Button*>("Button_6");
     doubleJump->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            if (_player->getX2Jump() && _player->getJumpAmount() > 0) {
-                _player->getX2Jump()->use();
+            if (_player->getX2Jump() && _player->getJumpAmount() > 0 && _player->getX2Jump()->use()) {
                 _player->decreaseJumpAmount(1);
                 dbManager->setPlayerInfo(1, _player->getMovementLevel(), _player->getMoney(), _player->getLifeSpawnLevel(), _player->getBlockSpeedLevel(), _player->getSkillDurationLevel(), _player->getCoinAmount(), _player->getJumpAmount(), _player->getShieldAmount());
                 skillSpriteJump = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
@@ -133,11 +129,11 @@ bool GameScene::init(Player* _plr)
                 skillSpriteJump->setScale(0.5);
                 Director::getInstance()->getRunningScene()->addChild(skillSpriteJump, 3);
 
-                auto label = Label::createWithTTF(StringUtils::format("%.1f", 10.0f), "font/Baloo2/Baloo2-Bold.ttf", 24);
+                auto label = Label::createWithTTF(StringUtils::format("%.1f", _player->getX2Jump()->getMaxSkillCooldown()), "font/Baloo2/Baloo2-Bold.ttf", 24);
                 label->setPosition(skillSpriteJump->getPosition());
                 Director::getInstance()->getRunningScene()->addChild(label, 3);
 
-                float remainingCooldown = 10.0f;
+                float remainingCooldown = _player->getX2Jump()->getMaxSkillCooldown();
 
                 Director::getInstance()->getScheduler()->schedule([=](float dt) mutable {
                     remainingCooldown -= dt;
@@ -277,6 +273,7 @@ void GameScene::spawnBlocks(float dt) {
         block->setAnchorPoint(Vec2(0, 0));
         block->setPosition(Vec2(spawnX, visibleSize.height / 1.3));
         this->addChild(block);
+        block->baseSpeed = block->baseSpeed + (dt * 0.03);
         listOfBlocks.push_back(block);
         count++;
     } while (count <= randomQuantityBlock);
@@ -367,7 +364,7 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
                     _player->resetSkill();
                 }
                 auto score = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", mileageCounter->getString(), 20);
-                auto loseLayer = LayerManager::getInstance()->loseLayer(std::stoi(mileageCounter->getString()));
+                auto loseLayer = LayerManager::getInstance()->loseLayer(std::stoi(mileageCounter->getString()), _player);
                 this->addChild(loseLayer, 4);
                 loseLayer->addChild(score, 0);
                 score->setPosition(Vec2(visibleSize.width * 0.51, visibleSize.height * 0.5));
@@ -541,14 +538,19 @@ void GameScene::updatePlayer(float dt) {
         // contact with coin
         if (!listOfCoins.empty()) {
             std::vector<Coin*> listRemoveCoin;
-            for (auto coin : listOfCoins) {
-                if (coin->getBoundingBox().containsPoint(_player->getPosition())) {
-                    coin->removeFromParentAndCleanup(true);
-                    listRemoveCoin.push_back(coin);
-                    if (!_player->isX2Coin())
+            for (auto c : listOfCoins) {
+                if (c->getBoundingBox().containsPoint(_player->getPosition())) {
+                    c->removeFromParentAndCleanup(true);
+                    listRemoveCoin.push_back(c);
+                    if (!_player->isX2Coin()) {
                         CoinManager::getInstance()->increaseCoins(1);
-                    else
+                        coin->setString(std::to_string(CoinManager::getInstance()->getCoin()));
+                    }
+                    else {
+
                         CoinManager::getInstance()->increaseCoins(2);
+                        coin->setString(std::to_string(CoinManager::getInstance()->getCoin()));
+                    }
                 }
             }
             for (auto coin : listRemoveCoin) {
@@ -602,4 +604,10 @@ void GameScene::updateCoin(float dt) {
                 c->setCoinNormal();
         }
     }
+}
+
+void GameScene::onExit()
+{
+    // Gọi phương thức onExit() của lớp cha
+    Scene::onExit();
 }

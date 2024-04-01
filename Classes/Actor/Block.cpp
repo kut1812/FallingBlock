@@ -31,7 +31,7 @@ bool Block::init(std::string tyleBlock)
 }
 
 void Block::setBlockSpeedLevel(int level) {
-    blockBody->setVelocity(Vec2(0, 100 - level / 6));
+    blockBody->setVelocity(Vec2(0, baseSpeed - level / 6));
 }
 
 bool Block::addPhysics()
@@ -48,7 +48,7 @@ bool Block::addPhysics()
     blockBody->setRotationEnable(false);
     blockBody->setContactTestBitmask(true);
     blockBody->setCollisionBitmask(30);
-    blockBody->setVelocity(Vec2(0, 100 - this->blockSpeedLevel / 6));
+    blockBody->setVelocity(Vec2(0, baseSpeed - this->blockSpeedLevel / 6));
     blockBody->retain();
     this->addComponent(blockBody);
 
