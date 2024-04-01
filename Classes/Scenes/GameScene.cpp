@@ -5,6 +5,7 @@
 #include "Utilities/Utilities.h"
 #include "LayerManager.h"
 #include "UpgradeLayer.h"
+#include "StoreLayer.h"
 USING_NS_CC;
 
 Scene* GameScene::create(Player* _plr)
@@ -162,29 +163,46 @@ bool GameScene::init(Player* _plr)
     auto shop = uiButton->getChildByName<ui::Button*>("Button_2");
     shop->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            //thêm sự kiện
+            auto storeLayer = StoreLayer::create(_player);
+            this->addChild(storeLayer,4);
         }
         });
     //label life
     lifeLabel = Label::createWithTTF(std::to_string(_player->getSpawnLife()), "font/Baloo2/Baloo2-Bold.ttf", 20);
     lifeLabel->setPosition(Vec2(visibleSize.width*0.24,visibleSize.height*0.92));
-    this->addChild(lifeLabel,1);
+    this->addChild(lifeLabel,1);    
     //label coin
-    auto coin = Label::createWithTTF("1", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    coin = Label::createWithTTF(std::to_string(CoinManager::getInstance()->getCoin()), "font/Baloo2/Baloo2-Bold.ttf", 20);
     coin->setPosition(Vec2(visibleSize.width * 0.44, visibleSize.height * 0.92));
     this->addChild(coin, 1);
     //label x2jump
-    auto x2jump = Label::createWithTTF("1", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    x2jump = Label::createWithTTF(std::to_string(_player->getJumpAmount()), "font/Baloo2/Baloo2-Bold.ttf", 20);
     x2jump->setPosition(Vec2(visibleSize.width * 0.53, visibleSize.height * 0.92));
     this->addChild(x2jump, 1);
     //label shield
-    auto textShield = Label::createWithTTF("1", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    textShield = Label::createWithTTF(std::to_string(_player->getShieldAmount()), "font/Baloo2/Baloo2-Bold.ttf", 20);
     textShield->setPosition(Vec2(visibleSize.width * 0.6, visibleSize.height * 0.92));
     this->addChild(textShield, 1);
     //label x2coin
-    auto x2coin = Label::createWithTTF("1", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    x2coin = Label::createWithTTF(std::to_string(_player->getCoinAmount()), "font/Baloo2/Baloo2-Bold.ttf", 20);
     x2coin->setPosition(Vec2(visibleSize.width * 0.67, visibleSize.height * 0.92));
     this->addChild(x2coin, 1);
+
+    //sprite disable coin
+    disableSpriteCoin = Sprite::create("control/fb_ctrl_skill_dup_coin_block.png");
+    disableSpriteCoin->setPosition(Vec2(visibleSize.width*0.77,visibleSize.height*0.15));
+    disableSpriteCoin->setScale(0.5);
+    this->addChild(disableSpriteCoin,4);
+    //sprite disable jump
+    disableSpriteJump = Sprite::create("control/fb_ctrl_skill_dup_jump_block.png");
+    disableSpriteJump->setPosition(Vec2(visibleSize.width*0.85,visibleSize.height*0.32));
+    disableSpriteJump->setScale(0.5);
+    this->addChild(disableSpriteJump,4);
+    //sprite disable shield
+    disableSpriteShield = Sprite::create("control/fb_ctrl_skill_sheild_block.png");
+    disableSpriteShield->setPosition(Vec2(visibleSize.width*0.79,visibleSize.height*0.27));
+    disableSpriteShield->setScale(0.5);
+    this->addChild(disableSpriteShield,4);
 
 
     GameScene::setupPhysicBorder();
@@ -276,14 +294,14 @@ void GameScene::spawnCoins(float dt)
         auto coin = Coin::create();
         coin->setScale(1.4);
         auto randomX = Utilities::getInstance()->generateNumber(0, 13);
-        auto randomY = Utilities::getInstance()->generateNumber(3, 8);
+        auto randomY = Utilities::getInstance()->generateNumber(2, 8);
         auto spawnX = columnWidth / 2 + coin->getContentSize().width / 2 * randomX;
         float a = randomY;
         int posY = a / 10 * visibleSize.height;
         CCLOG("%d", posY);
         coin->setPosition(Vec2(spawnX,posY));
         coin->setAnchorPoint(Vec2(0, 0));
-        this->addChild(coin,10);
+        this->addChild(coin,3);
         listOfCoins.push_back(coin);
         }
     }
@@ -337,6 +355,7 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
                 this->setDynamicAllBlock(200);
                 if (_player->getShield()) {
                     _player->getShield()->~ShieldSkill();
+
                     _player->resetSkill();
                 }
                 if (_player->getX2Jump()) {
@@ -349,7 +368,7 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
                 }
                 auto score = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", mileageCounter->getString(), 20);
                 auto loseLayer = LayerManager::getInstance()->loseLayer(std::stoi(mileageCounter->getString()));
-                this->addChild(loseLayer, 2);
+                this->addChild(loseLayer, 4);
                 loseLayer->addChild(score, 0);
                 score->setPosition(Vec2(visibleSize.width * 0.51, visibleSize.height * 0.5));
             }
@@ -410,6 +429,9 @@ void GameScene::updatePlayer(float dt) {
         _player->setDirection(_joystick->getDirection());
         float s = visibleSize.width - (columnWidth / 2);
         _player->update(dt, columnWidth / 2, s);
+        x2coin->setString(std::to_string(_player->getCoinAmount()));
+        textShield->setString(std::to_string(_player->getShieldAmount()));
+        x2jump->setString(std::to_string(_player->getJumpAmount()));
 
         // update jump action
         if (_jumpButton) {
@@ -439,41 +461,81 @@ void GameScene::updatePlayer(float dt) {
         if (_player->getX2Coin()) {
             if (_player->getX2Coin()->getSkillCooldown() >= 0) {
                 _player->getX2Coin()->setSkillCooldown(_player->getX2Coin()->getSkillCooldown() - dt);
-                if (_player->getX2Coin()->getSkillCooldown() < 0)
-                {
+            }
+            else
+            {
                     if (skillSpriteCoin!=nullptr)
                     {
-
                     skillSpriteCoin->setVisible(false);
                     }
-                }
             }
         }
+       
+            if (disableSpriteCoin != nullptr)
+            {
+                if (_player->getCoinAmount()<1)
+                {
+                disableSpriteCoin->setVisible(true);
+                }
+                else
+                {
+                disableSpriteCoin->setVisible(false);
+                }
+            }
+        
         if (_player->getX2Jump()) {
             if (_player->getX2Jump()->getSkillCooldown() >= 0) {
                 _player->getX2Jump()->setSkillCooldown(_player->getX2Jump()->getSkillCooldown() - dt);
-                if (_player->getX2Jump()->getSkillCooldown() < 0)
-                {
-                    if (skillSpriteCoin != nullptr)
+            }
+            else
+            {
+                    if (skillSpriteJump != nullptr)
                     {
                         skillSpriteJump->setVisible(false);
                     }
-                }
+
             }
         }
+            if (disableSpriteJump != nullptr)
+            {
+                if (_player->getJumpAmount()<1)
+                {
+
+                disableSpriteJump->setVisible(true);
+                }
+                else
+                {
+                disableSpriteJump->setVisible(false);
+
+                }
+            }
         if (_player->getShield()) {
             if (_player->getShield()->getSkillCooldown() >= 0) {
                 _player->getShield()->setSkillCooldown(_player->getShield()->getSkillCooldown() - dt);
-                if (_player->getShield()->getSkillCooldown() < 0)
-                {
-                    if (skillSpriteCoin != nullptr)
+            }
+            else
+            {
+
+                    if (skillSpriteShield != nullptr)
                     {
 
                         skillSpriteShield->setVisible(false);
                     }
-                }
             }
         }
+           if (disableSpriteShield != nullptr)
+            {
+               if (_player->getShieldAmount()<1)
+               {
+
+                disableSpriteShield->setVisible(true);
+               }
+               else
+               {
+                disableSpriteShield->setVisible(false);
+
+               }
+            }
 
 
         // contact with coin

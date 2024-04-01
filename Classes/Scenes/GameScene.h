@@ -47,9 +47,16 @@ private:
     std::vector<Coin*> listOfCoins;
     Size blockSize = Size(0, 0);
     Label* lifeLabel;
+    Label* x2coin;
+    Label* textShield;
+    Label* x2jump;
+    Label* coin;
     Sprite* skillSpriteCoin=nullptr;
+    Sprite* disableSpriteCoin=nullptr;
     Sprite* skillSpriteJump = nullptr;
+    Sprite* disableSpriteJump = nullptr;
     Sprite* skillSpriteShield = nullptr;
+    Sprite* disableSpriteShield = nullptr;
     bool OnContactBegan(cocos2d::PhysicsContact& contact);
     void setPhysicsWorld(cocos2d::PhysicsWorld* m_world) {
         m_world = world;
