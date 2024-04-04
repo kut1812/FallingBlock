@@ -5,7 +5,7 @@
 
 USING_NS_CC;
 class Player;
-class BaseSkill : cocos2d::Node {
+class BaseSkill  {
 public:
     BaseSkill(Player* plr, float maxDuration) : _player(plr), maxSkillCooldown(maxDuration) {}
     virtual bool init() = 0;

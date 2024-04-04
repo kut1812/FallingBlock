@@ -6,7 +6,7 @@
 
 USING_NS_CC;
 class Player;
-class ShieldSkill : BaseSkill, cocos2d::Node {
+class ShieldSkill : BaseSkill {
 public:
     ShieldSkill(Player* plr, float maxDuration) : BaseSkill(plr, maxDuration) {}
     virtual bool init() override;

@@ -1,7 +1,6 @@
 #include "Shield.h"
 #include "../Character/Player.h"
 bool ShieldSkill::init() {
-	if (!Node::init()) return false;
 	this->skillCooldown = 0.0f;
 	this->effectiveTime = 5.0f;
 	return true;

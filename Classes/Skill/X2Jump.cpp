@@ -1,7 +1,6 @@
 #include "X2Jump.h"
 #include "../Character/Player.h"
 bool X2JumpSkill::init() {
-	if (!Node::init()) return false;
 	this->skillCooldown = 0.0f;
 	this->effectiveTime = 3.0f;
 	return true;

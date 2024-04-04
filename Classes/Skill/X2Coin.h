@@ -6,7 +6,7 @@
 
 USING_NS_CC;
 class Player;
-class X2CoinSkill : BaseSkill, cocos2d::Node {
+class X2CoinSkill : BaseSkill {
 public:
     X2CoinSkill(Player* plr, float maxDuration) : BaseSkill(plr, maxDuration) {}
     virtual bool init() override;

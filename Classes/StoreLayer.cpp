@@ -5,6 +5,7 @@
 #include "Skill/X2Jump.h"
 #include "Skill/Shield.h"
 #include "Skill/X2Coin.h"
+#include "CoinManager/CoinManager.h"
 USING_NS_CC;
 StoreLayer* StoreLayer::create(Player* _plr)
 {
@@ -24,7 +25,8 @@ bool StoreLayer::init(Player* _plr)
     _player = _plr;
     dbManager = SQLiteManager::getInstance();
 
-
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    this->scheduleUpdate();
     Node* storeLayer = CSLoader::getInstance()->createNode("csb/Store.csb");
     Director::getInstance()->pause();
 
@@ -33,6 +35,7 @@ bool StoreLayer::init(Player* _plr)
         if (type == ui::Widget::TouchEventType::ENDED) {
             Director::getInstance()->resume();
             storeLayer->removeFromParentAndCleanup(true);
+            coin = nullptr;
         }
         });
 
@@ -81,7 +84,22 @@ bool StoreLayer::init(Player* _plr)
             }
         }
         });
-
+    //label coin
+    coin = Label::createWithTTF(std::to_string(CoinManager::getInstance()->getCoin()), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    coin->setPosition(Vec2(visibleSize.width * 0.62, visibleSize.height * 0.31));
+    storeLayer->addChild(coin, 1);
+    //label x2jump
+    x2jump = Label::createWithTTF(std::to_string(_player->getJumpAmount()), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    x2jump->setPosition(Vec2(visibleSize.width * 0.38, visibleSize.height * 0.31));
+    storeLayer->addChild(x2jump, 1);
+    //label shield
+    textShield = Label::createWithTTF(std::to_string(_player->getShieldAmount()), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    textShield->setPosition(Vec2(visibleSize.width * 0.45, visibleSize.height * 0.31));
+    storeLayer->addChild(textShield, 1);
+    //label x2coin
+    x2coin = Label::createWithTTF(std::to_string(_player->getCoinAmount()), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    x2coin->setPosition(Vec2(visibleSize.width * 0.52, visibleSize.height * 0.31));
+    storeLayer->addChild(x2coin, 1);
     this->addChild(storeLayer);
     return true;
 }
@@ -104,4 +122,16 @@ bool StoreLayer::unlockSkill(std::string skillName) {
     }
     dbManager->setPlayerInfo(1, _player->movementLevel, _player->getMoney(), _player->getLifeSpawnLevel(), _player->getBlockSpeedLevel(), _player->getSkillDurationLevel(), _player->getCoinAmount(), _player->getJumpAmount(), _player->getShieldAmount());
     return true;
+}
+
+void StoreLayer::update(float dt)
+{
+    if (coin!=nullptr)
+    {
+
+    coin->setString(std::to_string(CoinManager::getInstance()->getCoin()));
+    x2jump->setString(std::to_string(_player->getJumpAmount()));
+    textShield->setString(std::to_string(_player->getShieldAmount()));
+    x2coin->setString(std::to_string(_player->getCoinAmount()));
+    }
 }

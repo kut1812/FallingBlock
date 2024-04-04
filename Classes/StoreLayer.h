@@ -15,9 +15,16 @@ public:
     static StoreLayer* create(Player* _plr);
     virtual bool init(Player* _plr);
     bool unlockSkill(std::string skillName);
+    void update(float dt);
 private:
     Player* _player;
+    Node* storeLayer;
+    Label* coin;
+    Label* x2jump;
+    Label* textShield;
+    Label* x2coin;
     SQLiteManager* dbManager;
+
 };
 
 #endif // !__STORE_LAYER_H__

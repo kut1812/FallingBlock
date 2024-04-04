@@ -6,7 +6,7 @@
 
 USING_NS_CC;
 class Player;
-class X2JumpSkill : BaseSkill, cocos2d::Node {
+class X2JumpSkill : BaseSkill {
 public:
     X2JumpSkill(Player* plr, float maxDuration) : BaseSkill(plr, maxDuration) {}
     virtual bool init() override;

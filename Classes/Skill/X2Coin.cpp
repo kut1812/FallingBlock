@@ -2,7 +2,6 @@
 #include "../Character/Player.h"
 
 bool X2CoinSkill::init() {
-	if (!Node::init()) return false;
 	this->skillCooldown = 0.0f;
 	this->effectiveTime = 8.0f;
 	return true;
