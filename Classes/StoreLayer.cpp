@@ -15,6 +15,8 @@ StoreLayer* StoreLayer::create(Player* _plr)
         return layer;
     }
     layer->_player = _plr;
+    layer->dbManager = SQLiteManager::getInstance();
+
     return nullptr;
 }
 bool StoreLayer::init(Player* _plr)
@@ -52,6 +54,8 @@ bool StoreLayer::init(Player* _plr)
             if (unlockSkill("X2Coin")) {
                 CCLOG("player coin: %d", _player->getCoinAmount());
                 CCLOG("successfully!");
+                x2coin->setString(std::to_string(_player->getCoinAmount()));
+                coin->setString(std::to_string(_player->getMoney()));
             }
             else {
                 CCLOG("false!");
@@ -64,6 +68,8 @@ bool StoreLayer::init(Player* _plr)
         if (type == ui::Widget::TouchEventType::ENDED) {
             if (unlockSkill("X2Jump")) {
                 CCLOG("player jump: %d", _player->getJumpAmount());
+                x2jump->setString(std::to_string(_player->getJumpAmount()));
+                coin->setString(std::to_string(_player->getMoney()));
                 CCLOG("successfully!");
             }
             else {
@@ -78,6 +84,8 @@ bool StoreLayer::init(Player* _plr)
             if (unlockSkill("Shield")) {
                 CCLOG("player shield: %d", _player->getShieldAmount());
                 CCLOG("successfully!");
+                textShield->setString(std::to_string(_player->getShieldAmount()));
+                coin->setString(std::to_string(_player->getMoney()));
             }
             else {
                 CCLOG("false!");
@@ -85,7 +93,7 @@ bool StoreLayer::init(Player* _plr)
         }
         });
     //label coin
-    coin = Label::createWithTTF(std::to_string(CoinManager::getInstance()->getCoin()), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    coin = Label::createWithTTF(std::to_string(_player->getMoney()), "font/Baloo2/Baloo2-Bold.ttf", 20);
     coin->setPosition(Vec2(visibleSize.width * 0.62, visibleSize.height * 0.31));
     storeLayer->addChild(coin, 1);
     //label x2jump
@@ -101,6 +109,7 @@ bool StoreLayer::init(Player* _plr)
     x2coin->setPosition(Vec2(visibleSize.width * 0.52, visibleSize.height * 0.31));
     storeLayer->addChild(x2coin, 1);
     this->addChild(storeLayer);
+    /*dbManager->addScore(1, score);*/
     return true;
 }
 
@@ -122,16 +131,4 @@ bool StoreLayer::unlockSkill(std::string skillName) {
     }
     dbManager->setPlayerInfo(1, _player->movementLevel, _player->getMoney(), _player->getLifeSpawnLevel(), _player->getBlockSpeedLevel(), _player->getSkillDurationLevel(), _player->getCoinAmount(), _player->getJumpAmount(), _player->getShieldAmount());
     return true;
-}
-
-void StoreLayer::update(float dt)
-{
-    if (coin!=nullptr)
-    {
-
-    coin->setString(std::to_string(CoinManager::getInstance()->getCoin()));
-    x2jump->setString(std::to_string(_player->getJumpAmount()));
-    textShield->setString(std::to_string(_player->getShieldAmount()));
-    x2coin->setString(std::to_string(_player->getCoinAmount()));
-    }
 }
