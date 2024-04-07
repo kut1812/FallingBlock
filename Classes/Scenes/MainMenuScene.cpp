@@ -6,11 +6,13 @@
 #include "UpgradeLayer.h"
 #include "StoreLayer.h"
 #include "WorkingWithData/SQLiteManager.h"
+#include "AudioEngine/AudioEngine.h"
 USING_NS_CC;
 
 Scene* MainMenuScene::createScene()
 {
 	SQLiteManager* dbManager = SQLiteManager::getInstance();
+	Audio* audioEngine = Audio::getInstance();
 	if (dbManager->init()) {
 		if (dbManager->getPlayerById(1).id == -1) {
 			dbManager->setPlayerInfo(1, 3, 5000, 3, 2, 5, 0, 0, 0); // set or reset player 

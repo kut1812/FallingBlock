@@ -18,6 +18,7 @@ bool Player::init() {
     if (!Node::init()) {
         return false;
     }
+    audioEngine = Audio::getInstance();
     SQLiteManager* dbManager = SQLiteManager::getInstance();
     SQLiteManager::PlayerInfo playerInfo = dbManager->getPlayerById(1);
     this->movementLevel = playerInfo.movement_speed;
@@ -71,6 +72,7 @@ bool Player::init() {
     auto physicsBody = PhysicsBody::createBox(characterSprite->getContentSize(), PhysicsMaterial(1.0f, 0.1f, 1.0f));
     physicsBody->setDynamic(true);
     physicsBody->setMass(1);
+    physicsBody->setCategoryBitmask(10);
     physicsBody->setRotationEnable(false);
     physicsBody->setContactTestBitmask(true);
     physicsBody->setCollisionBitmask(10);
@@ -85,6 +87,17 @@ bool Player::init() {
     physicsHead->setCollisionBitmask(11);
     playerHead->addComponent(physicsHead);
     this->addChild(playerHead);
+
+    playerHand = Node::create();
+    playerHand->setContentSize(characterSprite->getContentSize() - Size(-15, 15));
+    playerHand->setPosition(Vec2(this->getPositionX() - playerHand->getContentSize().width / 2, this->getPositionY()));
+    auto physicsHand = PhysicsBody::createBox(playerHand->getContentSize());
+    physicsHand->setDynamic(false);
+    physicsHand->setCategoryBitmask(10);
+    physicsHand->setContactTestBitmask(true);
+    physicsHand->setCollisionBitmask(17);
+    playerHand->addComponent(physicsHand);
+    this->addChild(playerHand);
 
     this->idleState = new IdleState(this);
     this->idleLeftState = new IdleLeftState(this);
@@ -133,6 +146,12 @@ void Player::update(float dt, float leftBorder, float rightBorder) {
 
     // impulse physicsBody to jump
     if (jumpCount > 0 && jumpCount <= maxJumpCount && isJumping) {
+        if (audioEngine->getJumpSoundId() == 0) {
+            audioEngine->setJumpSoundId(audioEngine->play2d("Sounds/click_soft.mp3", false));
+        }
+        else {
+            audioEngine->resume(audioEngine->getJumpSoundId());
+        }
         this->getPhysicsBody()->applyImpulse(Vec2(0, 360));
         playerHead->setPosition(Vec2(-5, 25));
         isJumping = false;
@@ -141,8 +160,11 @@ void Player::update(float dt, float leftBorder, float rightBorder) {
     // handle 
     Vec2 currentVelocity = this->getPhysicsBody()->getVelocity();
     if (currentVelocity.y <= 0.5) {
-        if(currentVelocity.y > -0.5)
+        audioEngine->stop(audioEngine->getJumpSoundId());
+        audioEngine->setJumpSoundId(0);
+        if (currentVelocity.y > -0.5) {
             jumpCount = 0;
+        }
         this->getPhysicsBody()->setVelocity(Vec2(currentVelocity.x, currentVelocity.y));
     }
     prevDirection = direction;

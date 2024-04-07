@@ -239,16 +239,29 @@ Node* LayerManager::topListLayer()
     
     float offsetX = 0.49;
     float offsetY = 0.62;
-    for (int i = 0; i < top10.size(); i++) {
-        auto textp1 = Label::createWithTTF(std::to_string(top10[i].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
-        textp1->setPosition(Vec2(visibleSize.width * offsetX, visibleSize.height * offsetY));
-        textp1->setAnchorPoint(Vec2(1, 0.5));
-        topListLayer->addChild(textp1);
-        if (i == 4) {
-            offsetY = 0.69;
-            offsetX = 0.71;
+    for (int i = 0; i < 10; i++) {
+        if (i < top10.size()) {
+            auto textp1 = Label::createWithTTF(std::to_string(top10[i].score), "font/Baloo2/Baloo2-Bold.ttf", 20);
+            textp1->setPosition(Vec2(visibleSize.width * offsetX, visibleSize.height * offsetY));
+            textp1->setAnchorPoint(Vec2(1, 0.5));
+            topListLayer->addChild(textp1);
+            if (i == 4) {
+                offsetY = 0.69;
+                offsetX = 0.71;
+            }
+            offsetY -= 0.07;
         }
-        offsetY -= 0.07;
+        else {
+            auto textp1 = Label::createWithTTF(std::to_string(0), "font/Baloo2/Baloo2-Bold.ttf", 20);
+            textp1->setPosition(Vec2(visibleSize.width * offsetX, visibleSize.height * offsetY));
+            textp1->setAnchorPoint(Vec2(1, 0.5));
+            topListLayer->addChild(textp1);
+            if (i == 4) {
+                offsetY = 0.69;
+                offsetX = 0.71;
+            }
+            offsetY -= 0.07;
+        }
     }
 
     //auto textp1 = Label::createWithTTF(std::to_string(top10[0].score), "font/Baloo2/Baloo2-Bold.ttf", 20);

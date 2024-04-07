@@ -2,6 +2,7 @@
 #define __JOYSTICK_H__
 
 #include "cocos2d.h"
+#include "AudioEngine/AudioEngine.h"
 USING_NS_CC;
 class Joystick : public cocos2d::Node
 {
@@ -22,6 +23,7 @@ public:
     CREATE_FUNC(Joystick);
 
 private:
+    Audio* audioEngine;
     bool isPressed;
     Sprite* joystickBorder;
     Sprite* joystickBtn;

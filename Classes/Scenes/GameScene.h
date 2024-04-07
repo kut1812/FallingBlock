@@ -10,7 +10,7 @@
 #include "../Actor/Coin.h"
 #include "../CoinManager/CoinManager.h"
 #include "WorkingWithData/SQLiteManager.h"
-
+#include "AudioEngine/AudioEngine.h"
 class GameScene : public cocos2d::Scene
 {
 public:
@@ -24,6 +24,7 @@ public:
     void spawnCoins(float dt);
     void setDynamicAllBlock(int x);
 private:
+    Audio* audioEngine;
     SQLiteManager* dbManager;
     float currentMeter = 0;
     float limitMeter = 20;

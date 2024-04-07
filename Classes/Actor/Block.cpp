@@ -20,13 +20,14 @@ bool Block::init(std::string tyleBlock)
     {
         return false;
     }
+    audioEngine = Audio::getInstance();
     this->setScale(0.48);
     if (addPhysics() != true)
     {
         CCLOG("add physics Block failed");
     }
 
-    this->scheduleUpdate();
+    this->scheduleUpdateWithPriority(0);
     return true;
 }
 
@@ -42,16 +43,16 @@ bool Block::addPhysics()
      Vec2(this->getContentSize().width / 3 ,-this->getContentSize().height / 2 ),
      Vec2(this->getContentSize().width / 3 ,-10)
     };
-    blockBody = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(1.0f, 0.1f, 1.0f));
+    blockBody = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(10.0f, 0.0f, 1.0f));
     blockBody->setDynamic(true);
-    blockBody->setMass(30);
+    blockBody->setMass(100);
     blockBody->setRotationEnable(false);
     blockBody->setContactTestBitmask(true);
     blockBody->setCollisionBitmask(30);
     blockBody->setVelocity(Vec2(0, baseSpeed - this->blockSpeedLevel / 6));
     blockBody->retain();
     this->addComponent(blockBody);
-
+    audioEngine->play2d("Sounds/tray_exit.mp3", false);
     return true;
 
 }
@@ -64,5 +65,9 @@ void Block::update(float dt)
     if (this->getPositionX() != this->getPosX())
     {
         this->setPositionX(this->getPosX());
+    }
+    if (this->getPhysicsBody()->getVelocity().y <= 0 && this->getPhysicsBody()->getVelocity().y >= -5.0f && !isOnGround) {
+        isOnGround = true;
+        audioEngine->play2d("Sounds/9.mp3", false);
     }
 }

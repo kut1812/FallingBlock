@@ -11,7 +11,7 @@
 #include "../Skill/X2Jump.h"
 #include "../Skill/Shield.h"
 #include "../Skill/X2Coin.h"
-
+#include "AudioEngine/AudioEngine.h"
 USING_NS_CC;
 class Player : public cocos2d::Node
 {
@@ -88,6 +88,7 @@ public:
 	int movementLevel = 0;
 	~Player();
 private:
+	Audio* audioEngine;
 	float skillDuration = 1;
 	float currentLifeSpawnTime = 50.0f;
 	int currentSpawnLife = 1;
@@ -119,7 +120,7 @@ private:
 	float jumpHeight = 30.0f;
 	int maxJumpCount = 1;
 	cocos2d::Node* playerHead;
-	cocos2d::Node* playerLeftHand;
+	cocos2d::Node* playerHand;
 	cocos2d::Node* playerRightHand;
 	Vec2 prevDirection = Vec2(0,0);
 };

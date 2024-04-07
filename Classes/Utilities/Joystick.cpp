@@ -1,5 +1,4 @@
 ﻿#include "Joystick.h"
-
 USING_NS_CC;
 
 Joystick::Joystick() : isPressed(false), currentDirection(Vec2::ZERO)
@@ -12,6 +11,8 @@ bool Joystick::init()
     {
         return false;
     }
+
+    audioEngine = Audio::getInstance();
 
     joystickBorder = Sprite::create("control/fb_ctrl_pad.png");
     joystickBorder->setPosition(Vec2());
@@ -37,9 +38,14 @@ bool Joystick::init()
 bool Joystick::onTouchBegan(Touch* touch, Event* event)
 {
     Vec2 touchLocationInNode = this->convertToNodeSpace(touch->getLocation());
-
     if (joystickBtn->getBoundingBox().containsPoint(touchLocationInNode))
     {
+        if (audioEngine->getPressJoystickSoundId() == 0) {
+            audioEngine->setPressJoystickSoundId(audioEngine->play2d("Sounds/click.mp3", true));
+        }
+        else {
+            audioEngine->resume(audioEngine->getPressJoystickSoundId());
+        }
         isPressed = true;
         return true;
     }
@@ -71,6 +77,7 @@ void Joystick::onTouchMoved(Touch* touch, Event* event)
 
 void Joystick::onTouchEnded(Touch* touch, Event* event)
 {
+    audioEngine->pause(audioEngine->getPressJoystickSoundId());
     prevPosBeforeRelease = joystickBtn->getPosition();
     joystickBtn->setPosition(centerPos);
     isPressed = false;

@@ -31,10 +31,12 @@ bool GameScene::init(Player* _plr)
     {
         return false;
     }
-    visibleSize = Director::getInstance()->getVisibleSize();
+    // this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
+    visibleSize = Director::getInstance()->getVisibleSize();
+    audioEngine = Audio::getInstance();
     _player = _plr;
-    _player->setPosition(Vec2(visibleSize.width / 2, 2));
+    _player->setPosition(Vec2(visibleSize.width / 2, 100));
     _player->setTag(909);
     this->addChild(_player, 1);
     CoinManager::getInstance()->reset();
@@ -60,6 +62,7 @@ bool GameScene::init(Player* _plr)
     coinDouble->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             if (_player->getX2Coin() && _player->getCoinAmount() > 0 && _player->getX2Coin()->use()) {
+            audioEngine->play2d("Sounds/tap_digits.mp3", false);
             _player->decreaseCoinAmount(1);
             dbManager->setPlayerInfo(1, _player->getMovementLevel(), _player->getMoney(), _player->getLifeSpawnLevel(), _player->getBlockSpeedLevel(), _player->getSkillDurationLevel(), _player->getCoinAmount(), _player->getJumpAmount(), _player->getShieldAmount());
             skillSpriteCoin = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
@@ -90,6 +93,7 @@ bool GameScene::init(Player* _plr)
     shield->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             if (_player->getShield() && _player->getShieldAmount() > 0 && _player->getShield()->use()) {
+                audioEngine->play2d("Sounds/tap_digits.mp3", false);
                 _player->decreaseShieldAmount(1);
                 dbManager->setPlayerInfo(1, _player->getMovementLevel(), _player->getMoney(), _player->getLifeSpawnLevel(), _player->getBlockSpeedLevel(), _player->getSkillDurationLevel(), _player->getCoinAmount(), _player->getJumpAmount(), _player->getShieldAmount());
                 skillSpriteShield = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
@@ -122,6 +126,7 @@ bool GameScene::init(Player* _plr)
     doubleJump->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             if (_player->getX2Jump() && _player->getJumpAmount() > 0 && _player->getX2Jump()->use()) {
+                audioEngine->play2d("Sounds/tap_digits.mp3", false);
                 _player->decreaseJumpAmount(1);
                 dbManager->setPlayerInfo(1, _player->getMovementLevel(), _player->getMoney(), _player->getLifeSpawnLevel(), _player->getBlockSpeedLevel(), _player->getSkillDurationLevel(), _player->getCoinAmount(), _player->getJumpAmount(), _player->getShieldAmount());
                 skillSpriteJump = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
@@ -151,6 +156,7 @@ bool GameScene::init(Player* _plr)
     auto upgrade = uiButton->getChildByName<ui::Button*>("Button_1");
     upgrade->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
+            audioEngine->play2d("Sounds/tap_digits.mp3", false);
             auto upgradeLayer = UpgradeLayer::create(_player);
             this->addChild(upgradeLayer,3);
         }
@@ -159,6 +165,7 @@ bool GameScene::init(Player* _plr)
     auto shop = uiButton->getChildByName<ui::Button*>("Button_2");
     shop->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
+            audioEngine->play2d("Sounds/tap_digits.mp3", false);
             auto storeLayer = StoreLayer::create(_player);
             this->addChild(storeLayer,4);
         }
@@ -215,7 +222,7 @@ bool GameScene::init(Player* _plr)
     }
     _jumpButton->setPosition(visibleSize.width * 0.85, visibleSize.height * 0.15);
 
-    this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updatePlayer), 0.1f);
+    this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updatePlayer), 0.0f);
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::spawnCoins), 0.0f);
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::spawnBlocks), 5.0f);
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::updateMeter), 0.0f);
@@ -228,6 +235,23 @@ bool GameScene::init(Player* _plr)
     mileageCounter = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", std::to_string(0), 20);
     uiButton->addChild(mileageCounter, 1999);
     mileageCounter->setPosition(visibleSize.width * 0.33, visibleSize.height * 0.92);
+
+    for (int i = 0; i < 28; i++) {
+        if (i <= 13) {
+            Block* block = Block::create("fb_object_block_1");
+            block->setAnchorPoint(Vec2(0,0));
+            block->setPosition(Vec2(0, 0));
+            block->setPosX(columnWidth / 2 + i * (block->getContentSize().width / 2));
+            this->addChild(block);
+        }
+        else {
+            Block* block = Block::create("fb_object_block_2");
+            block->setAnchorPoint(Vec2(0, 0));
+            block->setPosition(Vec2(0, block->getContentSize().height / 2));
+            block->setPosX(columnWidth / 2 + (i - 14) * (block->getContentSize().width / 2));
+            this->addChild(block);
+        }
+    }
 
     return true;
 }
@@ -271,7 +295,7 @@ void GameScene::spawnBlocks(float dt) {
         blockSize = Size(block->getContentSize());
         block->setPosX(spawnX);
         block->setAnchorPoint(Vec2(0, 0));
-        block->setPosition(Vec2(spawnX, visibleSize.height / 1.3));
+        block->setPosition(Vec2(spawnX, visibleSize.height + block->getContentSize().height));
         this->addChild(block);
         block->baseSpeed = block->baseSpeed + (dt * 0.03);
         listOfBlocks.push_back(block);
@@ -349,6 +373,7 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
             )
         {
             if(_player->getSpawnLife() <= 0) {
+                audioEngine->play2d("Sounds/6.mp3", false, 0.15f);
                 this->setDynamicAllBlock(200);
                 if (_player->getShield()) {
                     _player->getShield()->~ShieldSkill();
@@ -371,6 +396,7 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
             }
             else {
                 _player->decreaseSpawnLife();
+                audioEngine->play2d("Sounds/6.mp3", false, 0.15f);
                 if (bodyA->getPhysicsBody()->getCollisionBitmask() == 30) {
                     bodyA->getPhysicsBody()->removeFromWorld();
                     bodyA->setVisible(false);
@@ -381,6 +407,13 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
                 }
             }
         }
+        if (bodyA->getPhysicsBody()->getCollisionBitmask() == 30 && bodyB->getPhysicsBody()->getCollisionBitmask() == 17 ||
+            bodyA->getPhysicsBody()->getCollisionBitmask() == 17 && bodyB->getPhysicsBody()->getCollisionBitmask() == 30
+            )
+        {
+            _player->getPhysicsBody()->setVelocity(Vec2(0, 0));
+            CCLOG("having contact %f %f", _player->getDirection().x, _player->getDirection().y);
+        }
     }
 
     return true;
@@ -388,14 +421,26 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
 
 void GameScene::setupPhysicBorder() {
     auto origin = Director::getInstance()->getVisibleOrigin();
-    auto edgeBody = PhysicsBody::createEdgeBox(Size(visibleSize.width - columnWidth, visibleSize.height), PHYSICSBODY_MATERIAL_DEFAULT, 3);
+    /*auto edgeBody = PhysicsBody::createEdgeBox(Size(visibleSize.width - columnWidth, visibleSize.height), PHYSICSBODY_MATERIAL_DEFAULT, 3);
     edgeBody->setCategoryBitmask(0x08);
     edgeBody->setCollisionBitmask(0x07);
     edgeBody->setContactTestBitmask(0x07);
     auto edgeNode = Node::create();
     edgeNode->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     edgeNode->addComponent(edgeBody);
-    this->addChild(edgeNode);
+    this->addChild(edgeNode);*/
+    
+    auto bottomColumn = Node::create();
+    bottomColumn->setPosition(Vec2(0,-visibleSize.height / 2));
+    bottomColumn->setAnchorPoint(Vec2(0,0));
+    bottomColumn->setContentSize(Size(visibleSize.width, 1));
+    auto bottomBox = PhysicsBody::createBox(Size(visibleSize.width, visibleSize.height));
+    bottomBox->setDynamic(false);
+    bottomBox->setCategoryBitmask(15);
+    bottomBox->setCollisionBitmask(15);
+    bottomBox->setContactTestBitmask(true);
+    bottomColumn->addComponent(bottomBox);
+    this->addChild(bottomColumn);
 
     leftColumnNode = Node::create();
     leftColumnNode->setPosition(Vec2(0, visibleSize.height / 2));
@@ -515,7 +560,6 @@ void GameScene::updatePlayer(float dt) {
 
                     if (skillSpriteShield != nullptr)
                     {
-
                         skillSpriteShield->setVisible(false);
                     }
             }
@@ -540,6 +584,7 @@ void GameScene::updatePlayer(float dt) {
             std::vector<Coin*> listRemoveCoin;
             for (auto c : listOfCoins) {
                 if (c->getBoundingBox().containsPoint(_player->getPosition())) {
+                    audioEngine->play2d("Sounds/clickCommodity.mp3", false);
                     c->removeFromParentAndCleanup(true);
                     listRemoveCoin.push_back(c);
                     if (!_player->isX2Coin()) {

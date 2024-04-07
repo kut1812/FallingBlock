@@ -2,6 +2,7 @@
 #define __JUMP_BUTTON__
 
 #include "cocos2d.h"
+#include "AudioEngine/AudioEngine.h"
 USING_NS_CC;
 class JumpButton : public cocos2d::Node
 {
@@ -19,6 +20,7 @@ public:
     CREATE_FUNC(JumpButton);
 
 private:
+    Audio* audioEngine;
     bool isPressed = false;
     Sprite* btnSprite;
 };

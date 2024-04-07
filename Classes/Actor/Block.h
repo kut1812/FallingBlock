@@ -2,7 +2,7 @@
 #define __BLOCK_H__
 
 #include "cocos2d.h"
-
+#include "AudioEngine/AudioEngine.h"
 USING_NS_CC;
 class Block : public Sprite
 {
@@ -21,12 +21,13 @@ public:
 	float baseSpeed = 100;
 
 private:
+	Audio* audioEngine;
 	PhysicsBody* physics;
 	PhysicsBody* blockBody;
 	int blockSpeedLevel;
 	std::string status = "active";
 	float posX;
-
+	bool isOnGround = false;
 	void update(float dt);	
 };
 
