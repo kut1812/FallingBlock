@@ -27,7 +27,7 @@ private:
     Audio* audioEngine;
     SQLiteManager* dbManager;
     float currentMeter = 0;
-    float limitMeter = 20;
+    float limitMeter = 25;
     float savedMeterBe4Reset = 0;
     MileageCounter* mileageCounter;
     Node* leftColumnNode;

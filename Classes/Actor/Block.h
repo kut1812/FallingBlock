@@ -18,7 +18,7 @@ public:
 	void setBlockSpeedLevel(int level);
 	float getPosX() { return posX; }
 	void setPosX(float pos) { posX = pos; }
-	float baseSpeed = 100;
+	float baseSpeed = 0;
 
 private:
 	Audio* audioEngine;
@@ -29,6 +29,7 @@ private:
 	float posX;
 	bool isOnGround = false;
 	void update(float dt);	
+	Sprite* underBlock;
 };
 
 #endif // !__BLOCK_H__

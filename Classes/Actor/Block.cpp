@@ -45,12 +45,13 @@ bool Block::addPhysics()
     };
     blockBody = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(10.0f, 0.0f, 1.0f));
     blockBody->setDynamic(true);
-    blockBody->setMass(100);
+    blockBody->setMass(2);
     blockBody->setRotationEnable(false);
     blockBody->setContactTestBitmask(true);
     blockBody->setCollisionBitmask(30);
     blockBody->setVelocity(Vec2(0, baseSpeed - this->blockSpeedLevel / 6));
     blockBody->retain();
+
     this->addComponent(blockBody);
     audioEngine->play2d("Sounds/tray_exit.mp3", false);
     return true;
@@ -58,7 +59,7 @@ bool Block::addPhysics()
 }
 
 void Block::setFlop() {
-    blockBody->setVelocity(Vec2(0, -2600));
+    blockBody->setVelocity(Vec2(0, -10000));
 }
 void Block::update(float dt)
 {
@@ -66,8 +67,15 @@ void Block::update(float dt)
     {
         this->setPositionX(this->getPosX());
     }
-    if (this->getPhysicsBody()->getVelocity().y <= 0 && this->getPhysicsBody()->getVelocity().y >= -5.0f && !isOnGround) {
+    if (this->getPhysicsBody()->getVelocity().y <= 0 && this->getPhysicsBody()->getVelocity().y >= -3.0f && !isOnGround) {
         isOnGround = true;
-        audioEngine->play2d("Sounds/9.mp3", false);
+        audioEngine->play2d("Sounds/9.mp3", false, 0.12f);
+        Utilities::getInstance()->loadSpriteFrameCache("animation/", "block_falled");
+        auto sfx_block_falled = Utilities::createAnimation("block_falled", 19, 0.1f);
+        underBlock = Sprite::create("animation/block_falled_sprite.png");
+        underBlock->setScale(2);
+        underBlock->setPosition(Vec2(this->getContentSize().width/2, 0));
+        this->addChild(underBlock);
+        underBlock->runAction(Animate::create(sfx_block_falled));
     }
 }

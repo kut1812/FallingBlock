@@ -82,7 +82,7 @@ bool UpgradeLayer::init(Player* _plr) {
     //%
     // 
     std::stringstream ss;
-    ss << std::fixed << std::setprecision(1) << ((std::round(static_cast<float>(_plr->getMovementLevel() + 1) / 3 * 10.0) / 10.0));
+    ss << std::fixed << std::setprecision(2) << ((std::round(static_cast<float>(_plr->getMovementLevel() + 1) / 3 * 10.0) / 10.0));
     std::string formattedString = ss.str();
     auto statSkullSpeed = Label::createWithTTF("  " + formattedString + "%", "font/Baloo2/Baloo2-Bold.ttf", 20);
     statSkullSpeed->setPosition(Vec2(visibleSize.width * 0.34, visibleSize.height * 0.52));
@@ -95,7 +95,7 @@ bool UpgradeLayer::init(Player* _plr) {
     statLifeSpawn->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(statLifeSpawn);
     std::stringstream ss2;
-    ss2 << std::fixed << std::setprecision(1) << (static_cast<float>((_plr->getBlockSpeedLevel())) / 6);
+    ss2 << std::fixed << std::setprecision(2) << (static_cast<float>((_plr->getBlockSpeedLevel())) / 6);
     std::string formattedString2 = ss2.str();
     auto statBlockSpeed = Label::createWithTTF("  -" + formattedString2 + "%", "font/Baloo2/Baloo2-Bold.ttf", 20);
     statBlockSpeed->setPosition(Vec2(visibleSize.width * 0.34, visibleSize.height * 0.31));
@@ -103,7 +103,7 @@ bool UpgradeLayer::init(Player* _plr) {
     statBlockSpeed->setColor(Color3B::GREEN);
     upgradeLayer->addChild(statBlockSpeed);
     std::stringstream ss3;
-    ss3 << std::fixed << std::setprecision(1) << (static_cast<float>((_plr->getSkillDurationLevel())) / 40);
+    ss3 << std::fixed << std::setprecision(2) << (static_cast<float>((_plr->getSkillDurationLevel())) / 40);
     std::string formattedString3 = ss3.str();
     auto statSkillDuration = Label::createWithTTF("  -" + formattedString3 + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
     statSkillDuration->setPosition(Vec2(visibleSize.width * 0.55, visibleSize.height * 0.31));

@@ -31,7 +31,7 @@ bool GameScene::init(Player* _plr)
     {
         return false;
     }
-    // this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+     this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     visibleSize = Director::getInstance()->getVisibleSize();
     audioEngine = Audio::getInstance();
@@ -40,7 +40,7 @@ bool GameScene::init(Player* _plr)
     _player->setTag(909);
     this->addChild(_player, 1);
     CoinManager::getInstance()->reset();
-    this->getPhysicsWorld()->setGravity(Vec2(0, -980));
+    this->getPhysicsWorld()->setGravity(Vec2(0, -700));
 
     auto uiMenu = CSLoader::getInstance()->createNode("csb/Layer.csb");
     this->addChild(uiMenu);
@@ -272,6 +272,7 @@ bool GameScene::init(Player* _plr)
             block->setPosition(Vec2(0, 0));
             block->setPosX(columnWidth / 2 + i * (block->getContentSize().width / 2));
             this->addChild(block);
+            listOfBlocks.push_back(block);
         }
         else {
             Block* block = Block::create("fb_object_block_2");
@@ -279,6 +280,7 @@ bool GameScene::init(Player* _plr)
             block->setPosition(Vec2(0, block->getContentSize().height / 2));
             block->setPosX(columnWidth / 2 + (i - 14) * (block->getContentSize().width / 2));
             this->addChild(block);
+            listOfBlocks.push_back(block);
         }
     }
 
@@ -326,7 +328,7 @@ void GameScene::spawnBlocks(float dt) {
         block->setAnchorPoint(Vec2(0, 0));
         block->setPosition(Vec2(spawnX, visibleSize.height + block->getContentSize().height));
         this->addChild(block);
-        block->baseSpeed = block->baseSpeed + (dt * 0.03);
+        block->baseSpeed = block->baseSpeed + (dt * 0.0003);
         listOfBlocks.push_back(block);
         count++;
     } while (count <= randomQuantityBlock);
@@ -373,19 +375,19 @@ void GameScene::updateMeter(float dt) {
         float myFloat = std::atof(mileageCounter->getString().c_str());
         if (currentMeter - 2 > myFloat)
         {
-            mileageCounter->setMileage(currentMeter - 1);
+            mileageCounter->setMileage(currentMeter - 11);
         }
         if (currentMeter > limitMeter && _player->getPositionY() <= (visibleSize.height - (visibleSize.height / 5)) && _player->getPhysicsBody()->getVelocity().y >= -0.1 && _player->getPhysicsBody()->getVelocity().y <= 0.1) {
             std::vector<Block*> listToRemove;
             int count = 0;
             for (auto i : listOfBlocks) {
-                if (i->getPositionY() <= i->getSpriteSize().height && i->getPositionY() >= 0 && count <= 14) {
+                if (i->getPositionY() <= 3 && count <= 14) {
                     i->setFlop();
                     listToRemove.push_back(i);
                     count++;
                 }
             }
-            limitMeter += 20;
+            limitMeter += 25;
             savedMeterBe4Reset = currentMeter - ((currentMeter - limitMeter) > currentMeter ? (currentMeter - limitMeter) : 0);
         }
     }
@@ -436,8 +438,8 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
                 }
             }
         }
-        if (bodyA->getPhysicsBody()->getCollisionBitmask() == 30 && bodyB->getPhysicsBody()->getCollisionBitmask() == 17 ||
-            bodyA->getPhysicsBody()->getCollisionBitmask() == 17 && bodyB->getPhysicsBody()->getCollisionBitmask() == 30
+        if (bodyA->getPhysicsBody()->getCollisionBitmask() == 30 && bodyB->getPhysicsBody()->getCollisionBitmask() == 10 ||
+            bodyA->getPhysicsBody()->getCollisionBitmask() == 10 && bodyB->getPhysicsBody()->getCollisionBitmask() == 30
             )
         {
             _player->getPhysicsBody()->setVelocity(Vec2(0, 0));

@@ -62,8 +62,6 @@ bool StoreLayer::init(Player* _plr)
             break;
         case ui::Button::TouchEventType::ENDED:
             if (unlockSkill("X2Coin")) {
-                CCLOG("player coin: %d", _player->getCoinAmount());
-                CCLOG("successfully!");
                 x2coin->setString(std::to_string(_player->getCoinAmount()));
                 coin->setString(std::to_string(_player->getMoney()));
                 if (!unlockSkill("X2Coin")) {
@@ -93,10 +91,8 @@ bool StoreLayer::init(Player* _plr)
             break;
         case ui::Button::TouchEventType::ENDED:
             if (unlockSkill("X2Jump")) {
-                CCLOG("player jump: %d", _player->getJumpAmount());
                 x2jump->setString(std::to_string(_player->getJumpAmount()));
                 coin->setString(std::to_string(_player->getMoney()));
-                CCLOG("successfully!");
                 if (!unlockSkill("X2Jump")) {
                     buyJump->setEnabled(false);
                 }
@@ -125,8 +121,6 @@ bool StoreLayer::init(Player* _plr)
         case ui::Button::TouchEventType::ENDED:
             if (type == ui::Widget::TouchEventType::ENDED) {
                 if (unlockSkill("Shield")) {
-                    CCLOG("player shield: %d", _player->getShieldAmount());
-                    CCLOG("successfully!");
                     textShield->setString(std::to_string(_player->getShieldAmount()));
                     coin->setString(std::to_string(_player->getMoney()));
                     if (!unlockSkill("Shield")) {
@@ -165,16 +159,16 @@ bool StoreLayer::init(Player* _plr)
 }
 
 bool StoreLayer::unlockSkill(std::string skillName) {
-    if (skillName == "X2Coin" && _player->getMoney() >= 10) {
-        _player->decreaseMoney(10);
+    if (skillName == "X2Coin" && _player->getMoney() >= 20) {
+        _player->decreaseMoney(20);
         _player->increaseCoinAmount(1);
     }
-    else if (skillName == "X2Jump" && _player->getMoney() >= 15) {
-        _player->decreaseMoney(15); 
+    else if (skillName == "X2Jump" && _player->getMoney() >= 30) {
+        _player->decreaseMoney(30);
         _player->increaseJumpAmount(1);
     }
-    else if (skillName == "Shield" && _player->getMoney() >= 20) {
-        _player->decreaseMoney(20);
+    else if (skillName == "Shield" && _player->getMoney() >= 40) {
+        _player->decreaseMoney(40);
         _player->increaseShieldAmount(1);
     }
     else {

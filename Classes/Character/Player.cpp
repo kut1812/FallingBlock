@@ -69,10 +69,9 @@ bool Player::init() {
     shieldSprite->retain();
     this->addChild(shieldSprite);
 
-    auto physicsBody = PhysicsBody::createBox(characterSprite->getContentSize(), PhysicsMaterial(1.0f, 0.1f, 1.0f));
+    auto physicsBody = PhysicsBody::createBox(Size(characterSprite->getContentSize().width, characterSprite->getContentSize().height - 10), PhysicsMaterial(1.0f, 0.1f, 1.0f));
     physicsBody->setDynamic(true);
     physicsBody->setMass(1);
-    physicsBody->setCategoryBitmask(10);
     physicsBody->setRotationEnable(false);
     physicsBody->setContactTestBitmask(true);
     physicsBody->setCollisionBitmask(10);
@@ -88,17 +87,6 @@ bool Player::init() {
     playerHead->addComponent(physicsHead);
     this->addChild(playerHead);
 
-    playerHand = Node::create();
-    playerHand->setContentSize(characterSprite->getContentSize() - Size(-15, 15));
-    playerHand->setPosition(Vec2(this->getPositionX() - playerHand->getContentSize().width / 2, this->getPositionY()));
-    auto physicsHand = PhysicsBody::createBox(playerHand->getContentSize());
-    physicsHand->setDynamic(false);
-    physicsHand->setCategoryBitmask(10);
-    physicsHand->setContactTestBitmask(true);
-    physicsHand->setCollisionBitmask(17);
-    playerHand->addComponent(physicsHand);
-    this->addChild(playerHand);
-
     this->idleState = new IdleState(this);
     this->idleLeftState = new IdleLeftState(this);
     this->moveLeftState = new MoveLeftState(this);
@@ -106,8 +94,6 @@ bool Player::init() {
 
     this->x2JumpSkill = new X2JumpSkill(this, 20.0f - skillDurationLevel / 40);
     this->x2JumpSkill->init();
-    CCLOG("%d this->skillDurationLevel", this->skillDurationLevel);
-    CCLOG("%f this->x2JumpSkill->getSkillCooldown() - skillDurationLevel / 40", this->x2JumpSkill->getMaxSkillCooldown() - skillDurationLevel / 40);
     this->x2CoinSkill = new X2CoinSkill(this, 20.0f - skillDurationLevel / 40);
     this->x2CoinSkill->init();
     this->shieldSkill = new ShieldSkill(this, 25.0f - skillDurationLevel / 40);
@@ -135,7 +121,6 @@ void Player::spawnLife(float dt) {
 
 void Player::update(float dt, float leftBorder, float rightBorder) {
     // handle move physicsBody by velocity
-   
     if (_isCanMove) {
         this->getPhysicsBody()->setVelocity(Vec2((direction * movementSpeed).x, this->getPhysicsBody()->getVelocity().y));
         playerHead->setPosition(Vec2(-5, 25));
@@ -152,7 +137,7 @@ void Player::update(float dt, float leftBorder, float rightBorder) {
         else {
             audioEngine->resume(audioEngine->getJumpSoundId());
         }
-        this->getPhysicsBody()->applyImpulse(Vec2(0, 360));
+        this->getPhysicsBody()->applyImpulse(Vec2(0, 270));
         playerHead->setPosition(Vec2(-5, 25));
         isJumping = false;
     }
