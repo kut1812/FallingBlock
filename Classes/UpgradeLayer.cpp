@@ -38,14 +38,23 @@ bool UpgradeLayer::init(Player* _plr) {
     }
     auto cancel = upgradeLayer->getChildByName<ui::Button*>("Button_3");
     cancel->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
-        if (type == ui::Widget::TouchEventType::ENDED) {
+        switch (type) {
+        case ui::Button::TouchEventType::BEGAN:
+            // Khi nút được nhấn, phóng to nút lên
+            cancel->setScale(0.55f);
+            break;
+        case ui::Button::TouchEventType::ENDED: {
             auto sceneGame1 = dynamic_cast<GameScene*>(Director::getInstance()->getRunningScene());
-            if (sceneGame1 != nullptr)
-            {
+            if (sceneGame1 != nullptr) {
                 sceneGame1->setDynamicAllBlock(-200);
             }
             Director::getInstance()->resume();
             upgradeLayer->removeFromParentAndCleanup(true);
+            cancel->setScale(0.5);
+            break;
+        }
+        default:
+            break;
         }
         });
 

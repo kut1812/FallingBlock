@@ -42,6 +42,7 @@ bool StoreLayer::init(Player* _plr)
         });
 
     auto watch = storeLayer->getChildByName<ui::Button*>("Button_1");
+    watch->setEnabled(false);
     watch->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             CCLOG("1");
@@ -49,47 +50,97 @@ bool StoreLayer::init(Player* _plr)
         });
 
     auto buyCoin = storeLayer->getChildByName<ui::Button*>("Button_1_0");
+    if (!unlockSkill("X2Coin")) {
+    buyCoin->setEnabled(false);
+    }
     buyCoin->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
-        if (type == ui::Widget::TouchEventType::ENDED) {
+        switch (type)
+        {
+        case ui::Button::TouchEventType::BEGAN:
+            // Khi nút được nhấn, phóng to nút lên
+            buyCoin->setScale(0.55f);
+            break;
+        case ui::Button::TouchEventType::ENDED:
             if (unlockSkill("X2Coin")) {
                 CCLOG("player coin: %d", _player->getCoinAmount());
                 CCLOG("successfully!");
                 x2coin->setString(std::to_string(_player->getCoinAmount()));
                 coin->setString(std::to_string(_player->getMoney()));
+                if (!unlockSkill("X2Coin")) {
+                    buyCoin->setEnabled(false);
+                }
             }
             else {
                 CCLOG("false!");
             }
+            buyCoin->setScale(0.5);
+            break;
+        default:
+            break;
         }
         });
 
     auto buyJump = storeLayer->getChildByName<ui::Button*>("Button_1_0_0");
+    if (!unlockSkill("X2Jump")) {
+        buyJump->setEnabled(false);
+    }
     buyJump->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
-        if (type == ui::Widget::TouchEventType::ENDED) {
+        switch (type)
+        {
+        case ui::Button::TouchEventType::BEGAN:
+            // Khi nút được nhấn, phóng to nút lên
+            buyJump->setScale(0.55);
+            break;
+        case ui::Button::TouchEventType::ENDED:
             if (unlockSkill("X2Jump")) {
                 CCLOG("player jump: %d", _player->getJumpAmount());
                 x2jump->setString(std::to_string(_player->getJumpAmount()));
                 coin->setString(std::to_string(_player->getMoney()));
                 CCLOG("successfully!");
+                if (!unlockSkill("X2Jump")) {
+                    buyJump->setEnabled(false);
+                }
             }
             else {
                 CCLOG("false!");
             }
+            buyJump->setScale(0.5);
+            break;
+        default:
+            break;
         }
         });
 
     auto buySheild = storeLayer->getChildByName<ui::Button*>("Button_1_0_0_0");
+    if (!unlockSkill("Shield")) {
+        buySheild->setEnabled(false);
+    }
     buySheild->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
-        if (type == ui::Widget::TouchEventType::ENDED) {
-            if (unlockSkill("Shield")) {
-                CCLOG("player shield: %d", _player->getShieldAmount());
-                CCLOG("successfully!");
-                textShield->setString(std::to_string(_player->getShieldAmount()));
-                coin->setString(std::to_string(_player->getMoney()));
+        switch (type)
+        {
+        case ui::Button::TouchEventType::BEGAN:
+            // Khi nút được nhấn, phóng to nút lên
+            buySheild->setScale(0.55);
+            break;
+        case ui::Button::TouchEventType::ENDED:
+            if (type == ui::Widget::TouchEventType::ENDED) {
+                if (unlockSkill("Shield")) {
+                    CCLOG("player shield: %d", _player->getShieldAmount());
+                    CCLOG("successfully!");
+                    textShield->setString(std::to_string(_player->getShieldAmount()));
+                    coin->setString(std::to_string(_player->getMoney()));
+                    if (!unlockSkill("Shield")) {
+                        buySheild->setEnabled(false);
+                    }
+                }
+                else {
+                    CCLOG("false!");
+                }
             }
-            else {
-                CCLOG("false!");
-            }
+            buySheild->setScale(0.5);
+            break;
+        default:
+            break;
         }
         });
     //label coin

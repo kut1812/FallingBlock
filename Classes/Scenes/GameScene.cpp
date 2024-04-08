@@ -57,41 +57,53 @@ bool GameScene::init(Player* _plr)
             this->addChild(LayerManager::getInstance()->pauseLayer(), 100);
         }
         });
-    //button x2coin
+    // Button x2coin
     auto coinDouble = uiButton->getChildByName<ui::Button*>("Button_4");
-    coinDouble->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-        if (type == ui::Widget::TouchEventType::ENDED) {
+    coinDouble->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        switch (type) {
+        case ui::Button::TouchEventType::BEGAN: {
+            coinDouble->setScale(0.55f);
             if (_player->getX2Coin() && _player->getCoinAmount() > 0 && _player->getX2Coin()->use()) {
-            audioEngine->play2d("Sounds/tap_digits.mp3", false);
-            _player->decreaseCoinAmount(1);
-            dbManager->setPlayerInfo(1, _player->getMovementLevel(), _player->getMoney(), _player->getLifeSpawnLevel(), _player->getBlockSpeedLevel(), _player->getSkillDurationLevel(), _player->getCoinAmount(), _player->getJumpAmount(), _player->getShieldAmount());
-            skillSpriteCoin = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
-            skillSpriteCoin->setPosition(Vec2(visibleSize.width * 0.77, visibleSize.height * 0.15));
-            skillSpriteCoin->setScale(0.5);
-            Director::getInstance()->getRunningScene()->addChild(skillSpriteCoin, 3);
+                audioEngine->play2d("Sounds/tap_digits.mp3", false);
+                _player->decreaseCoinAmount(1);
+                dbManager->setPlayerInfo(1, _player->getMovementLevel(), _player->getMoney(), _player->getLifeSpawnLevel(), _player->getBlockSpeedLevel(), _player->getSkillDurationLevel(), _player->getCoinAmount(), _player->getJumpAmount(), _player->getShieldAmount());
+                skillSpriteCoin = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
+                skillSpriteCoin->setPosition(Vec2(visibleSize.width * 0.77, visibleSize.height * 0.15));
+                skillSpriteCoin->setScale(0.5);
+                Director::getInstance()->getRunningScene()->addChild(skillSpriteCoin, 3);
 
-            auto label = Label::createWithTTF(StringUtils::format("%.1f", _player->getX2Coin()->getMaxSkillCooldown()), "font/Baloo2/Baloo2-Bold.ttf", 24);
-            label->setPosition(skillSpriteCoin->getPosition());
-            Director::getInstance()->getRunningScene()->addChild(label, 3);
+                auto label = Label::createWithTTF(StringUtils::format("%.1f", _player->getX2Coin()->getMaxSkillCooldown()), "font/Baloo2/Baloo2-Bold.ttf", 24);
+                label->setPosition(skillSpriteCoin->getPosition());
+                Director::getInstance()->getRunningScene()->addChild(label, 3);
 
-            float remainingCooldown = _player->getX2Coin()->getMaxSkillCooldown();
+                float remainingCooldown = _player->getX2Coin()->getMaxSkillCooldown();
 
-            Director::getInstance()->getScheduler()->schedule([=](float dt) mutable {
-                remainingCooldown -= dt;
-                label->setString(StringUtils::format("%.1f", remainingCooldown));
+                Director::getInstance()->getScheduler()->schedule([=](float dt) mutable {
+                    remainingCooldown -= dt;
+                    label->setString(StringUtils::format("%.1f", remainingCooldown));
 
-                if (remainingCooldown <= 0) {
-                    label->removeFromParent();
-                }
-                }, label, 0.1f, kRepeatForever, 0.0f, false, "cooldown_scheduler1");
+                    if (remainingCooldown <= 0) {
+                        label->removeFromParent();
+                    }
+                    }, label, 0.1f, kRepeatForever, 0.0f, false, "cooldown_scheduler1");
             }
+            break;
         }
+        case ui::Button::TouchEventType::ENDED:
+            coinDouble->setScale(0.5);
+            break;
+        default:
+            break;
+        }
+        if (!_player->getX2Coin()) coinDouble->setVisible(false);
         });
-    if (!_player->getX2Coin()) coinDouble->setVisible(false);
-    //button shield
+
+    // Button shield
     auto shield = uiButton->getChildByName<ui::Button*>("Button_5");
-    shield->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-        if (type == ui::Widget::TouchEventType::ENDED) {
+    shield->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        switch (type) {
+        case ui::Button::TouchEventType::BEGAN: {
+            shield->setScale(0.55f);
             if (_player->getShield() && _player->getShieldAmount() > 0 && _player->getShield()->use()) {
                 audioEngine->play2d("Sounds/tap_digits.mp3", false);
                 _player->decreaseShieldAmount(1);
@@ -117,14 +129,23 @@ bool GameScene::init(Player* _plr)
                     }
                     }, label, 0.1f, kRepeatForever, 0.0f, false, "cooldown_scheduler2");
             }
-
+            break;
         }
+        case ui::Button::TouchEventType::ENDED:
+            shield->setScale(0.5);
+            break;
+        default:
+            break;
+        }
+        if (!_player->getShield()) shield->setVisible(false);
         });
-    if (!_player->getShield()) shield->setVisible(false);
-    //button doubleJump
+
+    // Button doubleJump
     auto doubleJump = uiButton->getChildByName<ui::Button*>("Button_6");
-    doubleJump->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-        if (type == ui::Widget::TouchEventType::ENDED) {
+    doubleJump->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        switch (type) {
+        case ui::Button::TouchEventType::BEGAN: {
+            doubleJump->setScale(0.55f);
             if (_player->getX2Jump() && _player->getJumpAmount() > 0 && _player->getX2Jump()->use()) {
                 audioEngine->play2d("Sounds/tap_digits.mp3", false);
                 _player->decreaseJumpAmount(1);
@@ -149,9 +170,17 @@ bool GameScene::init(Player* _plr)
                     }
                     }, label, 0.1f, kRepeatForever, 0.0f, false, "cooldown_scheduler3");
             }
+            break;
         }
+        case ui::Button::TouchEventType::ENDED:
+            doubleJump->setScale(0.5);
+            break;
+        default:
+            break;
+        }
+        if (!_player->getX2Jump()) doubleJump->setVisible(false);
         });
-    if (!_player->getX2Jump()) doubleJump->setVisible(false);
+
     //button upgrade
     auto upgrade = uiButton->getChildByName<ui::Button*>("Button_1");
     upgrade->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
