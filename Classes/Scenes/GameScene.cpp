@@ -419,6 +419,19 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
                     _player->getX2Coin()->~X2CoinSkill();
                     _player->resetSkill();
                 }
+
+                this->removeChild(_player);
+                this->unscheduleAllCallbacks();
+                // Trong hàm hiển thị layer "Lose"
+                const auto& allCharacters = this->getChildren(); // Lấy tất cả các nhân vật trong scene
+                for (const auto& character : allCharacters) {
+                    if (dynamic_cast<Block*>(character))
+                    {
+                        character->removeAllComponents();
+                    }
+                }
+
+
                 auto score = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", mileageCounter->getString(), 20);
                 auto loseLayer = LayerManager::getInstance()->loseLayer(std::stoi(mileageCounter->getString()), _player);
                 this->addChild(loseLayer, 4);
