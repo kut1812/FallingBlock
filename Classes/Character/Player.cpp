@@ -69,7 +69,7 @@ bool Player::init() {
     shieldSprite->retain();
     this->addChild(shieldSprite);
 
-    auto physicsBody = PhysicsBody::createBox(Size(characterSprite->getContentSize().width, characterSprite->getContentSize().height - 10), PhysicsMaterial(1.0f, 0.1f, 1.0f));
+    auto physicsBody = PhysicsBody::createBox(Size(characterSprite->getContentSize().width, characterSprite->getContentSize().height), PhysicsMaterial(1.0f, 0.1f, 1.0f));
     physicsBody->setDynamic(true);
     physicsBody->setMass(1);
     physicsBody->setRotationEnable(false);

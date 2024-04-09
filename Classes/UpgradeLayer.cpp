@@ -90,17 +90,6 @@ bool UpgradeLayer::init(Player* _plr) {
     statSkullSpeed->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(statSkullSpeed);
 
-    float level = static_cast<float>(_plr->getLifeSpawnLevel()) / 3;
-    float result = 330.0f - level;
-
-    std::ostringstream oss;
-    oss << std::fixed << std::setprecision(1) << result;
-    std::string a = oss.str();
-    auto statLifeSpawn = Label::createWithTTF("  " +a + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
-    statLifeSpawn->setPosition(Vec2(visibleSize.width * 0.55, visibleSize.height * 0.52));
-    statLifeSpawn->setColor(Color3B::GREEN);
-    statLifeSpawn->setAnchorPoint(Vec2(0, 0.5));
-    upgradeLayer->addChild(statLifeSpawn);
     std::stringstream ss2;
     ss2 << std::fixed << std::setprecision(2) << (static_cast<float>((_plr->getBlockSpeedLevel())) / 6);
     std::string formattedString2 = ss2.str();
@@ -117,6 +106,19 @@ bool UpgradeLayer::init(Player* _plr) {
     statSkillDuration->setColor(Color3B::GREEN);
     statSkillDuration->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(statSkillDuration);
+
+
+    float level = static_cast<float>(_plr->getLifeSpawnLevel()) / 3;
+    float result = 330.0f - level;
+    std::ostringstream ss4;
+    ss4 << std::fixed << std::setprecision(2) << result;
+    std::string formattedString4 = ss4.str();
+    auto statLifeSpawn = Label::createWithTTF("  " + formattedString4 + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    statLifeSpawn->setPosition(Vec2(visibleSize.width * 0.55, visibleSize.height * 0.52));
+    statLifeSpawn->setColor(Color3B::GREEN);
+    statLifeSpawn->setAnchorPoint(Vec2(0, 0.5));
+    upgradeLayer->addChild(statLifeSpawn);
+
     //SkullSpeed
     int levelSkullSpeed = _plr->movementLevel; 
 

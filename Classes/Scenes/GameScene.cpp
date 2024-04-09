@@ -31,7 +31,7 @@ bool GameScene::init(Player* _plr)
     {
         return false;
     }
-     this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    // this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     visibleSize = Director::getInstance()->getVisibleSize();
     audioEngine = Audio::getInstance();

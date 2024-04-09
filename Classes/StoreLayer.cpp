@@ -50,9 +50,9 @@ bool StoreLayer::init(Player* _plr)
         });
 
     auto buyCoin = storeLayer->getChildByName<ui::Button*>("Button_1_0");
-    if (!unlockSkill("X2Coin")) {
-    buyCoin->setEnabled(false);
-    }
+    
+    if(_player->getMoney() < 20)
+        buyCoin->setEnabled(false);
     buyCoin->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type)
         {
@@ -64,7 +64,7 @@ bool StoreLayer::init(Player* _plr)
             if (unlockSkill("X2Coin")) {
                 x2coin->setString(std::to_string(_player->getCoinAmount()));
                 coin->setString(std::to_string(_player->getMoney()));
-                if (!unlockSkill("X2Coin")) {
+                if (_player->getMoney() < 20) {
                     buyCoin->setEnabled(false);
                 }
             }
@@ -79,9 +79,9 @@ bool StoreLayer::init(Player* _plr)
         });
 
     auto buyJump = storeLayer->getChildByName<ui::Button*>("Button_1_0_0");
-    if (!unlockSkill("X2Jump")) {
+
+    if (_player->getMoney() < 30)
         buyJump->setEnabled(false);
-    }
     buyJump->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type)
         {
@@ -93,7 +93,7 @@ bool StoreLayer::init(Player* _plr)
             if (unlockSkill("X2Jump")) {
                 x2jump->setString(std::to_string(_player->getJumpAmount()));
                 coin->setString(std::to_string(_player->getMoney()));
-                if (!unlockSkill("X2Jump")) {
+                if (_player->getMoney() < 30) {
                     buyJump->setEnabled(false);
                 }
             }
@@ -108,9 +108,9 @@ bool StoreLayer::init(Player* _plr)
         });
 
     auto buySheild = storeLayer->getChildByName<ui::Button*>("Button_1_0_0_0");
-    if (!unlockSkill("Shield")) {
+
+    if (_player->getMoney() < 40)
         buySheild->setEnabled(false);
-    }
     buySheild->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type)
         {
@@ -123,7 +123,7 @@ bool StoreLayer::init(Player* _plr)
                 if (unlockSkill("Shield")) {
                     textShield->setString(std::to_string(_player->getShieldAmount()));
                     coin->setString(std::to_string(_player->getMoney()));
-                    if (!unlockSkill("Shield")) {
+                    if (_player->getMoney() < 40) {
                         buySheild->setEnabled(false);
                     }
                 }
