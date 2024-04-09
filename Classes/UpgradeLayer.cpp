@@ -89,7 +89,14 @@ bool UpgradeLayer::init(Player* _plr) {
     statSkullSpeed->setColor(Color3B::GREEN);
     statSkullSpeed->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(statSkullSpeed);
-    auto statLifeSpawn = Label::createWithTTF("  " + std::to_string(330 - (_plr->getLifeSpawnLevel() / 3)) + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
+
+    float level = static_cast<float>(_plr->getLifeSpawnLevel()) / 3;
+    float result = 330.0f - level;
+
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(1) << result;
+    std::string a = oss.str();
+    auto statLifeSpawn = Label::createWithTTF("  " +a + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
     statLifeSpawn->setPosition(Vec2(visibleSize.width * 0.55, visibleSize.height * 0.52));
     statLifeSpawn->setColor(Color3B::GREEN);
     statLifeSpawn->setAnchorPoint(Vec2(0, 0.5));
@@ -218,7 +225,10 @@ bool UpgradeLayer::init(Player* _plr) {
                 }
                 textLifeSpawn->setString("  " + std::to_string(_plr->getLifeSpawnLevel()) + " / 300");
                 textCoin->setString(std::to_string(_plr->getMoney()));
-                statLifeSpawn->setString("  " + std::to_string(330 - (_plr->getLifeSpawnLevel() / 3)) + "s");
+                std::ostringstream oss;
+                oss << std::fixed << std::setprecision(1) << result;
+                std::string a = oss.str();
+                statLifeSpawn->setString("  " + a + "s");
             }
             else {
                 CCLOG("Not enough money!");

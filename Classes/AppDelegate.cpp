@@ -56,6 +56,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0f / 60);
     glview->setDesignResolutionSize(1140, 540, ResolutionPolicy::EXACT_FIT);
 
+
     // Set the design resolution
     //glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
     //auto frameSize = glview->getFrameSize();

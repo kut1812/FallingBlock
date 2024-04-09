@@ -204,7 +204,7 @@ bool GameScene::init(Player* _plr)
     lifeLabel->setPosition(Vec2(visibleSize.width*0.24,visibleSize.height*0.92));
     this->addChild(lifeLabel,1);    
     //label coin
-    coin = Label::createWithTTF(std::to_string(CoinManager::getInstance()->getCoin()), "font/Baloo2/Baloo2-Bold.ttf", 20);
+    coin = Label::createWithTTF(std::to_string(_player->getMoney()), "font/Baloo2/Baloo2-Bold.ttf", 20);
     coin->setPosition(Vec2(visibleSize.width * 0.44, visibleSize.height * 0.92));
     this->addChild(coin, 1);
     //label x2jump
@@ -620,12 +620,14 @@ void GameScene::updatePlayer(float dt) {
                     listRemoveCoin.push_back(c);
                     if (!_player->isX2Coin()) {
                         CoinManager::getInstance()->increaseCoins(1);
-                        coin->setString(std::to_string(CoinManager::getInstance()->getCoin()));
+                        _player->increaseMoney(1);
+                        coin->setString(std::to_string(_player->getMoney()));
                     }
                     else {
 
                         CoinManager::getInstance()->increaseCoins(2);
-                        coin->setString(std::to_string(CoinManager::getInstance()->getCoin()));
+                        _player->increaseMoney(2);
+                        coin->setString(std::to_string(_player->getMoney()));
                     }
                 }
             }

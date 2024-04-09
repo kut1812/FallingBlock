@@ -237,7 +237,7 @@ Node* LayerManager::topListLayer()
 
     std::vector<SQLiteManager::ScoreInfo> top10 = dbManager->getTop10Highscore();
     
-    float offsetX = 0.49;
+    float offsetX = 0.48;
     float offsetY = 0.62;
     for (int i = 0; i < 10; i++) {
         if (i < top10.size()) {
@@ -247,7 +247,7 @@ Node* LayerManager::topListLayer()
             topListLayer->addChild(textp1);
             if (i == 4) {
                 offsetY = 0.69;
-                offsetX = 0.71;
+                offsetX = 0.7;
             }
             offsetY -= 0.07;
         }
@@ -258,7 +258,7 @@ Node* LayerManager::topListLayer()
             topListLayer->addChild(textp1);
             if (i == 4) {
                 offsetY = 0.69;
-                offsetX = 0.71;
+                offsetX = 0.7;
             }
             offsetY -= 0.07;
         }
