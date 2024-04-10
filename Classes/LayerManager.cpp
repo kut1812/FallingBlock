@@ -186,7 +186,7 @@ Node* LayerManager::loseLayer(int score, Player* player)
         if (type == ui::Widget::TouchEventType::ENDED) {
             auto dbManager = SQLiteManager::getInstance();
             dbManager->addScore(1, score);
-            dbManager->setPlayerInfo(1, player->getMovementLevel(), player->getMoney()+10000, player->getLifeSpawnLevel(), player->getBlockSpeedLevel(), player->getSkillDurationLevel(), player->getCoinAmount(), player->getJumpAmount(), player->getShieldAmount());
+            dbManager->setPlayerInfo(1, player->getMovementLevel(), player->getMoney(), player->getLifeSpawnLevel(), player->getBlockSpeedLevel(), player->getSkillDurationLevel(), player->getCoinAmount(), player->getJumpAmount(), player->getShieldAmount());
             auto newScene = MainMenuScene::createScene();
             TransitionScene* transition = TransitionFade::create(0.5f, newScene, Color3B::WHITE);
             Director::getInstance()->resume();

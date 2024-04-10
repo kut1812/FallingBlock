@@ -159,16 +159,16 @@ bool StoreLayer::init(Player* _plr)
 }
 
 bool StoreLayer::unlockSkill(std::string skillName) {
-    if (skillName == "X2Coin" && _player->getMoney() >= 20) {
-        _player->decreaseMoney(20);
+    if (skillName == "X2Coin" && _player->getMoney() >= 10) {
+        _player->decreaseMoney(10);
         _player->increaseCoinAmount(1);
     }
-    else if (skillName == "X2Jump" && _player->getMoney() >= 30) {
-        _player->decreaseMoney(30);
+    else if (skillName == "X2Jump" && _player->getMoney() >= 20) {
+        _player->decreaseMoney(20);
         _player->increaseJumpAmount(1);
     }
-    else if (skillName == "Shield" && _player->getMoney() >= 40) {
-        _player->decreaseMoney(40);
+    else if (skillName == "Shield" && _player->getMoney() >= 30) {
+        _player->decreaseMoney(30);
         _player->increaseShieldAmount(1);
     }
     else {
