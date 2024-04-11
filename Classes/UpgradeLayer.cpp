@@ -85,16 +85,17 @@ bool UpgradeLayer::init(Player* _plr) {
     ss << std::fixed << std::setprecision(2) << ((std::round(static_cast<float>(_plr->getMovementLevel() + 1) / 3 * 10.0) / 10.0));
     std::string formattedString = ss.str();
     auto statSkullSpeed = Label::createWithTTF("  " + formattedString + "%", "font/Baloo2/Baloo2-Bold.ttf", 20);
-    statSkullSpeed->setPosition(Vec2(visibleSize.width * 0.34, visibleSize.height * 0.52));
+    statSkullSpeed->setPosition(Vec2(visibleSize.width * 0.36, visibleSize.height * 0.515));
     statSkullSpeed->setColor(Color3B::GREEN);
     statSkullSpeed->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(statSkullSpeed);
+
 
     std::stringstream ss2;
     ss2 << std::fixed << std::setprecision(2) << (static_cast<float>((_plr->getBlockSpeedLevel())) / 6);
     std::string formattedString2 = ss2.str();
     auto statBlockSpeed = Label::createWithTTF("  -" + formattedString2 + "%", "font/Baloo2/Baloo2-Bold.ttf", 20);
-    statBlockSpeed->setPosition(Vec2(visibleSize.width * 0.34, visibleSize.height * 0.31));
+    statBlockSpeed->setPosition(Vec2(visibleSize.width * 0.36, visibleSize.height * 0.305));
     statBlockSpeed->setAnchorPoint(Vec2(0, 0.5));
     statBlockSpeed->setColor(Color3B::GREEN);
     upgradeLayer->addChild(statBlockSpeed);
@@ -102,23 +103,42 @@ bool UpgradeLayer::init(Player* _plr) {
     ss3 << std::fixed << std::setprecision(2) << (static_cast<float>((_plr->getSkillDurationLevel())) / 40);
     std::string formattedString3 = ss3.str();
     auto statSkillDuration = Label::createWithTTF("  -" + formattedString3 + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
-    statSkillDuration->setPosition(Vec2(visibleSize.width * 0.55, visibleSize.height * 0.31));
+    statSkillDuration->setPosition(Vec2(visibleSize.width * 0.57, visibleSize.height * 0.305));
     statSkillDuration->setColor(Color3B::GREEN);
     statSkillDuration->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(statSkillDuration);
-
-
     float level = static_cast<float>(_plr->getLifeSpawnLevel()) / 3;
     float result = 330.0f - level;
     std::ostringstream ss4;
     ss4 << std::fixed << std::setprecision(2) << result;
     std::string formattedString4 = ss4.str();
     auto statLifeSpawn = Label::createWithTTF("  " + formattedString4 + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
-    statLifeSpawn->setPosition(Vec2(visibleSize.width * 0.55, visibleSize.height * 0.52));
+    statLifeSpawn->setPosition(Vec2(visibleSize.width * 0.57, visibleSize.height * 0.515));
     statLifeSpawn->setColor(Color3B::GREEN);
     statLifeSpawn->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(statLifeSpawn);
 
+
+    auto statSkullPrice = Label::createWithTTF("  " + std::to_string(_plr->getMovementLevel() * 5) + "$", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    statSkullPrice->setPosition(Vec2(visibleSize.width * 0.44, visibleSize.height * 0.515));
+    statSkullPrice->setColor(Color3B::WHITE);
+    statSkullPrice->setAnchorPoint(Vec2(0, 0.5));
+    upgradeLayer->addChild(statSkullPrice);
+    auto statBlockPrice = Label::createWithTTF("  " + std::to_string(_plr->getBlockSpeedLevel() * 5) + "$", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    statBlockPrice->setPosition(Vec2(visibleSize.width * 0.44, visibleSize.height * 0.305));
+    statBlockPrice->setAnchorPoint(Vec2(0, 0.5));
+    statBlockPrice->setColor(Color3B::WHITE);
+    upgradeLayer->addChild(statBlockPrice);
+    auto statSkillPrice = Label::createWithTTF("  " + std::to_string(_plr->getSkillDurationLevel() * 5) + "$", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    statSkillPrice->setPosition(Vec2(visibleSize.width * 0.66, visibleSize.height * 0.305));
+    statSkillPrice->setColor(Color3B::WHITE);
+    statSkillPrice->setAnchorPoint(Vec2(0, 0.5));
+    upgradeLayer->addChild(statSkillPrice);
+    auto statLifePrice = Label::createWithTTF("  " + std::to_string(_plr->getLifeSpawnLevel() * 5) + "$", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    statLifePrice->setPosition(Vec2(visibleSize.width * 0.66, visibleSize.height * 0.515));
+    statLifePrice->setColor(Color3B::WHITE);
+    statLifePrice->setAnchorPoint(Vec2(0, 0.5));
+    upgradeLayer->addChild(statLifePrice);
     //SkullSpeed
     int levelSkullSpeed = _plr->movementLevel; 
 
@@ -202,6 +222,7 @@ bool UpgradeLayer::init(Player* _plr) {
                 ss << std::fixed << std::setprecision(1) << ((std::round(static_cast<float>(_plr->getMovementLevel() + 1) / 3 * 10.0) / 10.0));
                 std::string formattedString = ss.str();
                 statSkullSpeed->setString("  " + formattedString + "%");
+                statSkullPrice->setString("  " + std::to_string(_plr->getMovementLevel() * 5) + "$");
             }
             else {
                 CCLOG("Not enough money!");
@@ -231,6 +252,7 @@ bool UpgradeLayer::init(Player* _plr) {
                 oss << std::fixed << std::setprecision(1) << result;
                 std::string a = oss.str();
                 statLifeSpawn->setString("  " + a + "s");
+                statLifePrice->setString("  " + std::to_string(_plr->getLifeSpawnLevel() * 5) + "$");
             }
             else {
                 CCLOG("Not enough money!");
@@ -259,6 +281,7 @@ bool UpgradeLayer::init(Player* _plr) {
                 ss2 << std::fixed << std::setprecision(1) << (static_cast<float>((_plr->getBlockSpeedLevel())) / 6);
                 std::string formattedString2 = ss2.str();
                 statBlockSpeed->setString("  -" + formattedString2 + "%");
+                statBlockPrice->setString("  " + std::to_string(_plr->getBlockSpeedLevel() * 5) + "$");
             }
             else {
                 CCLOG("Not enough money!");
@@ -287,6 +310,7 @@ bool UpgradeLayer::init(Player* _plr) {
                 ss3 << std::fixed << std::setprecision(1) << (static_cast<float>((_plr->getSkillDurationLevel())) / 40);
                 std::string formattedString3 = ss3.str();
                 statSkillDuration->setString("  -" + formattedString3 + "s");
+                statSkillPrice->setString("  " + std::to_string(_plr->getSkillDurationLevel() * 5) + "$");
             }
             else {
                 CCLOG("Not enough money!");
