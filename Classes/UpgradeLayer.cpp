@@ -34,7 +34,7 @@ bool UpgradeLayer::init(Player* _plr) {
     auto sceneGame = dynamic_cast<GameScene*>(Director::getInstance()->getRunningScene());
     if (sceneGame!=nullptr)
     {
-        sceneGame->setDynamicAllBlock(200);
+        //sceneGame->setDynamicAllBlock(200);
     }
     auto cancel = upgradeLayer->getChildByName<ui::Button*>("Button_3");
     cancel->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
@@ -59,20 +59,20 @@ bool UpgradeLayer::init(Player* _plr) {
         });
 
     SQLiteManager::PlayerInfo playerInfo = dbManager->getPlayerById(1);
-    auto textLevelSkullSpeed = Label::createWithTTF("  " + std::to_string(_plr->getMovementLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    auto textLevelSkullSpeed = Label::createWithTTF("   " + std::to_string(_plr->getMovementLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
     textLevelSkullSpeed->setPosition(Vec2(visibleSize.width * 0.31, visibleSize.height * 0.56));
     textLevelSkullSpeed->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(textLevelSkullSpeed);
-    auto textLifeSpawn = Label::createWithTTF("  " + std::to_string(_plr->getLifeSpawnLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    auto textLifeSpawn = Label::createWithTTF("   " + std::to_string(_plr->getLifeSpawnLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
     textLifeSpawn->setPosition(Vec2(visibleSize.width * 0.53, visibleSize.height * 0.56));
     textLifeSpawn->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(textLifeSpawn);
-    auto textBlockSpeed = Label::createWithTTF("  " + std::to_string(_plr->getBlockSpeedLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
-    textBlockSpeed->setPosition(Vec2(visibleSize.width * 0.31, visibleSize.height * 0.35));
+    auto textBlockSpeed = Label::createWithTTF("   " + std::to_string(_plr->getBlockSpeedLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    textBlockSpeed->setPosition(Vec2(visibleSize.width * 0.31, visibleSize.height * 0.345));
     textBlockSpeed->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(textBlockSpeed);
-    auto textSkillDuration = Label::createWithTTF("  " + std::to_string(_plr->getSkillDurationLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
-    textSkillDuration->setPosition(Vec2(visibleSize.width * 0.53, visibleSize.height * 0.35));
+    auto textSkillDuration = Label::createWithTTF("    " + std::to_string(_plr->getSkillDurationLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    textSkillDuration->setPosition(Vec2(visibleSize.width * 0.53, visibleSize.height * 0.345));
     textSkillDuration->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(textSkillDuration);
     auto textCoin = Label::createWithTTF(std::to_string(_plr->getMoney()), "font/Baloo2/Baloo2-Bold.ttf", 20);

@@ -31,7 +31,7 @@ bool GameScene::init(Player* _plr)
     {
         return false;
     }
-    // this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+     this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     visibleSize = Director::getInstance()->getVisibleSize();
     audioEngine = Audio::getInstance();
@@ -52,11 +52,20 @@ bool GameScene::init(Player* _plr)
     this->addChild(uiButton, 1);
 
     auto pause = uiButton->getChildByName<ui::Button*>("Button_3");
-    pause->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-        if (type == ui::Widget::TouchEventType::ENDED) {
+    pause->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        switch (type) {
+        case ui::Widget::TouchEventType::BEGAN:
+            pause->setScale(0.55f);
+            break;
+        case ui::Widget::TouchEventType::ENDED:
+            pause->setScale(0.5f);
             this->addChild(LayerManager::getInstance()->pauseLayer(), 100);
+            break;
+        default:
+            break;
         }
         });
+
     // Button x2coin
     auto coinDouble = uiButton->getChildByName<ui::Button*>("Button_4");
     coinDouble->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
@@ -181,24 +190,42 @@ bool GameScene::init(Player* _plr)
         if (!_player->getX2Jump()) doubleJump->setVisible(false);
         });
 
-    //button upgrade
+    // Button Upgrade
     auto upgrade = uiButton->getChildByName<ui::Button*>("Button_1");
     upgrade->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-        if (type == ui::Widget::TouchEventType::ENDED) {
+        switch (type) {
+        case ui::Widget::TouchEventType::BEGAN:
+            upgrade->setScale(0.55f);
+            break;
+        case ui::Widget::TouchEventType::ENDED:
+            upgrade->setScale(0.5f);
             audioEngine->play2d("Sounds/tap_digits.mp3", false);
             auto upgradeLayer = UpgradeLayer::create(_player);
-            this->addChild(upgradeLayer,3);
+            this->addChild(upgradeLayer, 3);
+            break;
+        default:
+            break;
         }
         });
-    //button shop
+
+    // Button Shop
     auto shop = uiButton->getChildByName<ui::Button*>("Button_2");
     shop->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-        if (type == ui::Widget::TouchEventType::ENDED) {
+        switch (type) {
+        case ui::Widget::TouchEventType::BEGAN:
+            shop->setScale(0.55f);
+            break;
+        case ui::Widget::TouchEventType::ENDED:
+            shop->setScale(0.5f);
             audioEngine->play2d("Sounds/tap_digits.mp3", false);
             auto storeLayer = StoreLayer::create(_player);
-            this->addChild(storeLayer,4);
+            this->addChild(storeLayer, 4);
+            break;
+        default:
+            break;
         }
         });
+
     //label life
     lifeLabel = Label::createWithTTF(std::to_string(_player->getSpawnLife()), "font/Baloo2/Baloo2-Bold.ttf", 20);
     lifeLabel->setPosition(Vec2(visibleSize.width*0.24,visibleSize.height*0.92));
