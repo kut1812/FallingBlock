@@ -203,8 +203,6 @@ bool GameScene::init(Player* _plr)
             auto upgradeLayer = UpgradeLayer::create(_player);
             this->addChild(upgradeLayer, 3);
             break;
-        default:
-            break;
         }
         });
 
@@ -220,8 +218,6 @@ bool GameScene::init(Player* _plr)
             audioEngine->play2d("Sounds/tap_digits.mp3", false);
             auto storeLayer = StoreLayer::create(_player);
             this->addChild(storeLayer, 4);
-            break;
-        default:
             break;
         }
         });
@@ -471,10 +467,18 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
                 if (bodyA->getPhysicsBody()->getCollisionBitmask() == 30) {
                     bodyA->getPhysicsBody()->removeFromWorld();
                     bodyA->setVisible(false);
+                    auto it = std::find(listOfBlocks.begin(), listOfBlocks.end(), static_cast<Block*>(bodyA));
+                    if (it != listOfBlocks.end()) {
+                        listOfBlocks.erase(it);
+                    }
                 }
                 else if (bodyB->getPhysicsBody()->getCollisionBitmask() == 30) {
                     bodyB->getPhysicsBody()->removeFromWorld();
                     bodyB->setVisible(false);
+                    auto it = std::find(listOfBlocks.begin(), listOfBlocks.end(), static_cast<Block*>(bodyB));
+                    if (it != listOfBlocks.end()) {
+                        listOfBlocks.erase(it);
+                    }
                 }
             }
         }
@@ -538,6 +542,22 @@ void GameScene::updatePlayer(float dt) {
 
     if (_player) {
 
+        for (auto i : listOfBlocks)
+        {
+            if (_player && _player->getPosition().y > i->getPosition().y && _player->getPosition().y <= i->getPosition().y + i->getContentSize().height) {
+                if (_player && _player->getPositionX() > i->getPositionX() || _player->getPositionX() < i->getPositionX() + i->getContentSize().width) {
+                    auto collisionRect = i->getBoundingBox();
+                    collisionRect.size.width = i->getContentSize().width * 0.48;
+                    collisionRect.size.height = i->getContentSize().height * 0.48;
+     
+                    if (_player && collisionRect.containsPoint(_player->getPosition() + (_player->getDirection() * (140 + (_player->getMovementLevel() / 3)) * dt) + (_player->getDirection().x > 0 ? Vec2(i->getContentSize().width / 7, 0) : Vec2(-i->getContentSize().width / 7, 0)))) {
+                        _player->getPhysicsBody()->setVelocity(Vec2(0, 0));
+                        _player->setIsCanMove(false);
+                    }
+                }
+              
+            }
+        }
         // update player move and jump action
         _player->setDirection(_joystick->getDirection());
         float s = visibleSize.width - (columnWidth / 2);
@@ -596,6 +616,7 @@ void GameScene::updatePlayer(float dt) {
                 }
             }
         
+
         if (_player->getX2Jump()) {
             if (_player->getX2Jump()->getSkillCooldown() >= 0) {
                 _player->getX2Jump()->setSkillCooldown(_player->getX2Jump()->getSkillCooldown() - dt);
