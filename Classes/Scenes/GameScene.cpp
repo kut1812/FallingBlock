@@ -551,7 +551,7 @@ void GameScene::updatePlayer(float dt) {
                     collisionRect.size.height = i->getContentSize().height * 0.48;
      
                     if (_player && collisionRect.containsPoint(_player->getPosition() + (_player->getDirection() * (140 + (_player->getMovementLevel() / 3)) * dt) + (_player->getDirection().x > 0 ? Vec2(i->getContentSize().width / 7, 0) : Vec2(-i->getContentSize().width / 7, 0)))) {
-                        _player->getPhysicsBody()->setVelocity(Vec2(0, 0));
+                        _player->getPhysicsBody()->setVelocity(Vec2(0, _player->getPhysicsBody()->getVelocity().y));
                         _player->setIsCanMove(false);
                     }
                 }

@@ -126,7 +126,7 @@ void Player::update(float dt, float leftBorder, float rightBorder) {
         playerHead->setPosition(Vec2(-5, 25));
     }
     else {
-        this->getPhysicsBody()->setVelocity(Vec2(0, 0));
+        this->getPhysicsBody()->setVelocity(Vec2(0, this->getPhysicsBody()->getVelocity().y));
     }
 
     // impulse physicsBody to jump
