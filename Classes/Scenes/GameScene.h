@@ -30,6 +30,7 @@ private:
     float limitMeter = 25;
     float savedMeterBe4Reset = 0;
     MileageCounter* mileageCounter;
+    Node* bottomColumn;
     Node* leftColumnNode;
     Node* rightColumnNode;
     Joystick* _joystick;
@@ -37,6 +38,7 @@ private:
     Player* _player ;
     cocos2d::PhysicsWorld* world;
     float columnWidth;
+    
     Size visibleSize;
     float listPositionYBlock[14];
     float banSpawnCoinMeter;
@@ -58,6 +60,7 @@ private:
     Sprite* disableSpriteJump = nullptr;
     Sprite* skillSpriteShield = nullptr;
     Sprite* disableSpriteShield = nullptr;
+    float checkRun ;
     bool OnContactBegan(cocos2d::PhysicsContact& contact);
     void setPhysicsWorld(cocos2d::PhysicsWorld* m_world) {
         m_world = world;

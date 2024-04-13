@@ -192,7 +192,7 @@ bool GameScene::init(Player* _plr)
 
     // Button Upgrade
     auto upgrade = uiButton->getChildByName<ui::Button*>("Button_1");
-    upgrade->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+    upgrade->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type) {
         case ui::Widget::TouchEventType::BEGAN:
             upgrade->setScale(0.55f);
@@ -208,7 +208,7 @@ bool GameScene::init(Player* _plr)
 
     // Button Shop
     auto shop = uiButton->getChildByName<ui::Button*>("Button_2");
-    shop->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+    shop->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type) {
         case ui::Widget::TouchEventType::BEGAN:
             shop->setScale(0.55f);
@@ -367,8 +367,8 @@ void GameScene::spawnCoins(float dt)
         for (int i = 0; i < quantityCoin; i++)
         {
         auto coin = Coin::create();
-        coin->setScale(1.4);
-        auto randomX = Utilities::getInstance()->generateNumber(0, 13);
+        coin->setScale(100.f/75.f/2);
+        auto randomX = Utilities::getInstance()->generateNumber(0, 19);
         auto randomY = Utilities::getInstance()->generateNumber(2, 8);
         auto spawnX = columnWidth / 2 + coin->getContentSize().width / 2 * randomX;
         float a = randomY;
@@ -376,7 +376,7 @@ void GameScene::spawnCoins(float dt)
         CCLOG("%d", posY);
         coin->setPosition(Vec2(spawnX,posY));
         coin->setAnchorPoint(Vec2(0, 0));
-        this->addChild(coin,3);
+        this->addChild(coin,2);
         listOfCoins.push_back(coin);
         }
     }
@@ -496,16 +496,8 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
 
 void GameScene::setupPhysicBorder() {
     auto origin = Director::getInstance()->getVisibleOrigin();
-    /*auto edgeBody = PhysicsBody::createEdgeBox(Size(visibleSize.width - columnWidth, visibleSize.height), PHYSICSBODY_MATERIAL_DEFAULT, 3);
-    edgeBody->setCategoryBitmask(0x08);
-    edgeBody->setCollisionBitmask(0x07);
-    edgeBody->setContactTestBitmask(0x07);
-    auto edgeNode = Node::create();
-    edgeNode->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-    edgeNode->addComponent(edgeBody);
-    this->addChild(edgeNode);*/
     
-    auto bottomColumn = Node::create();
+    bottomColumn = Node::create();
     bottomColumn->setPosition(Vec2(0,-visibleSize.height / 2));
     bottomColumn->setAnchorPoint(Vec2(0,0));
     bottomColumn->setContentSize(Size(visibleSize.width, 1));
@@ -532,7 +524,7 @@ void GameScene::setupPhysicBorder() {
     auto rightBox = PhysicsBody::createBox(Size(columnWidth, visibleSize.height));
     rightBox->setDynamic(false);
     rightBox->setCategoryBitmask(15);
-    rightBox->setCollisionBitmask(15);
+    rightBox->setCollisionBitmask(15);  
     rightBox->setContactTestBitmask(true);
     rightColumnNode->addComponent(rightBox);
     this->addChild(rightColumnNode);
@@ -541,7 +533,6 @@ void GameScene::setupPhysicBorder() {
 void GameScene::updatePlayer(float dt) {
 
     if (_player) {
-
         for (auto i : listOfBlocks)
         {
             if (_player && _player->getPosition().y > i->getPosition().y && _player->getPosition().y <= i->getPosition().y + i->getContentSize().height) {
@@ -550,7 +541,8 @@ void GameScene::updatePlayer(float dt) {
                     collisionRect.size.width = i->getContentSize().width * 0.48;
                     collisionRect.size.height = i->getContentSize().height * 0.48;
      
-                    if (_player && collisionRect.containsPoint(_player->getPosition() + (_player->getDirection() * (140 + (_player->getMovementLevel() / 3)) * dt) + (_player->getDirection().x > 0 ? Vec2(i->getContentSize().width / 7, 0) : Vec2(-i->getContentSize().width / 7, 0)))) {
+                    if (_player && collisionRect.containsPoint(_player->getPosition() + (_player->getDirection() * (140 + (_player->getMovementLevel() / 3)) * dt)
+                        + (_player->getDirection().x > 0 ? Vec2(i->getContentSize().width / 7, 0) : Vec2(-i->getContentSize().width / 7, 0)))) {
                         _player->getPhysicsBody()->setVelocity(Vec2(0, _player->getPhysicsBody()->getVelocity().y));
                         _player->setIsCanMove(false);
                     }
@@ -558,8 +550,37 @@ void GameScene::updatePlayer(float dt) {
               
             }
         }
-        // update player move and jump action
+
+        //
+        Vec2 playerPosition = _player->getPosition();
+        Size playerSize = _player->getContentSize();
+        auto minPosX = columnWidth/2;
+        auto maxPosX = visibleSize.width-minPosX;
+
         _player->setDirection(_joystick->getDirection());
+        if (_player && playerPosition.x > maxPosX - 17) {
+            _player->getPhysicsBody()->setVelocity(Vec2(0, _player->getPhysicsBody()->getVelocity().y));
+            _player->setIsCanMove(false);
+            checkRun = 1;
+        }
+
+         else if(_player && playerPosition.x < minPosX+17) {
+
+            // Kiểm tra va chạm với từng cột riêng lẻ
+           
+                 _player->getPhysicsBody()->setVelocity(Vec2(0, _player->getPhysicsBody()->getVelocity().y));
+                _player->setIsCanMove(false);
+                checkRun = -1;
+        }
+        CCLOG("Vec2: (%.2f, %.2f)", _player->getDirection().x, checkRun);
+        if (_player->getDirection().x!=0&& _player->getDirection().x!=checkRun)
+        {
+            checkRun = 0;
+            _player->setIsCanMove(true);
+        }
+        // 
+        // 
+        // update player move and jump action
         float s = visibleSize.width - (columnWidth / 2);
         _player->update(dt, columnWidth / 2, s);
         x2coin->setString(std::to_string(_player->getCoinAmount()));
@@ -711,7 +732,7 @@ void GameScene::updatePlayer(float dt) {
             }
         }
 
-        Rect leftRect(leftColumnNode->getPosition(), leftColumnNode->getContentSize());
+      /*  Rect leftRect(leftColumnNode->getPosition(), leftColumnNode->getContentSize());
         if (leftRect.containsPoint(_player->getPosition() + (_player->getPhysicsBody()->getVelocity() * dt))) {
             _player->setIsCanMove(false);
         }
@@ -725,7 +746,7 @@ void GameScene::updatePlayer(float dt) {
         }
         else {
             _player->setIsCanMove(true);
-        }
+        }*/
     }
 }
 void GameScene::updateCoin(float dt) {

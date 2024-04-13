@@ -33,7 +33,6 @@ bool Coin::init()
     auto coinDoubleAnim = Utilities::createAnimation("coin_double", 20, 0.2f);
     AnimationCache::getInstance()->addAnimation(coinAnimation, "COIN NORMAL");
     AnimationCache::getInstance()->addAnimation(coinDoubleAnim, "COIN DOUBLE");
-    this->createWithSpriteFrameName("coin_normal (1)");
 
     this->runAction(RepeatForever::create(Animate::create(coinAnimation)));
 

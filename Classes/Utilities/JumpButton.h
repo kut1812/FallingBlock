@@ -3,7 +3,9 @@
 
 #include "cocos2d.h"
 #include "AudioEngine/AudioEngine.h"
+
 USING_NS_CC;
+
 class JumpButton : public cocos2d::Node
 {
 public:
@@ -15,8 +17,12 @@ public:
     void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
     void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 
+    void onKeyDown(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+    void onKeyUp(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+
     bool getIsPress() const { return isPressed; };
     void resetPressed() { isPressed = false; };
+
     CREATE_FUNC(JumpButton);
 
 private:
