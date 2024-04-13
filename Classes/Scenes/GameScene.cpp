@@ -561,6 +561,7 @@ void GameScene::updatePlayer(float dt) {
         if (_player && playerPosition.x > maxPosX - 17) {
             _player->getPhysicsBody()->setVelocity(Vec2(0, _player->getPhysicsBody()->getVelocity().y));
             _player->setIsCanMove(false);
+            collisionWall = true;
             checkRun = 1;
         }
 
@@ -570,13 +571,15 @@ void GameScene::updatePlayer(float dt) {
            
                  _player->getPhysicsBody()->setVelocity(Vec2(0, _player->getPhysicsBody()->getVelocity().y));
                 _player->setIsCanMove(false);
+                collisionWall = true;
                 checkRun = -1;
         }
         CCLOG("Vec2: (%.2f, %.2f)", _player->getDirection().x, checkRun);
-        if (_player->getDirection().x!=0&& _player->getDirection().x!=checkRun)
+        if (_player->getDirection().x!=0&& _player->getDirection().x!=checkRun && collisionWall==true)
         {
             checkRun = 0;
-            _player->setIsCanMove(true);
+            _player->setIsCanMove(true);                        
+            collisionWall = false;
         }
         // 
         // 
