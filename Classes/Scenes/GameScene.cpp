@@ -404,7 +404,7 @@ void GameScene::updateMeter(float dt) {
             std::vector<Block*> listToRemove;
             int count = 0;
             for (auto i : listOfBlocks) {
-                if (i->getPositionY() <= 3 && count <= 14) {
+                if (i->getPositionY() <= 4 && count <= 13) {
                     i->setFlop();
                     listToRemove.push_back(i);
                     count++;
@@ -511,7 +511,7 @@ void GameScene::setupPhysicBorder() {
 
     leftColumnNode = Node::create();
     leftColumnNode->setPosition(Vec2(0, visibleSize.height / 2));
-    auto leftBox = PhysicsBody::createBox(Size(columnWidth, visibleSize.height));
+    auto leftBox = PhysicsBody::createBox(Size(columnWidth-3, visibleSize.height));
     leftBox->setDynamic(false);
     leftBox->setCategoryBitmask(15);
     leftBox->setCollisionBitmask(15);
@@ -521,7 +521,7 @@ void GameScene::setupPhysicBorder() {
 
     rightColumnNode = Node::create();
     rightColumnNode->setPosition(Vec2(visibleSize.width, visibleSize.height / 2));
-    auto rightBox = PhysicsBody::createBox(Size(columnWidth, visibleSize.height));
+    auto rightBox = PhysicsBody::createBox(Size(columnWidth-3, visibleSize.height));
     rightBox->setDynamic(false);
     rightBox->setCategoryBitmask(15);
     rightBox->setCollisionBitmask(15);  
@@ -561,6 +561,7 @@ void GameScene::updatePlayer(float dt) {
         if (_player && playerPosition.x > maxPosX - 17) {
             _player->getPhysicsBody()->setVelocity(Vec2(0, _player->getPhysicsBody()->getVelocity().y));
             _player->setIsCanMove(false);
+            _player->setPositionX(maxPosX - 16);
             collisionWall = true;
             checkRun = 1;
         }
@@ -571,11 +572,11 @@ void GameScene::updatePlayer(float dt) {
            
                  _player->getPhysicsBody()->setVelocity(Vec2(0, _player->getPhysicsBody()->getVelocity().y));
                 _player->setIsCanMove(false);
+            _player->setPositionX(minPosX + 16);
                 collisionWall = true;
                 checkRun = -1;
         }
-        CCLOG("Vec2: (%.2f, %.2f)", _player->getDirection().x, checkRun);
-        if (_player->getDirection().x!=0&& _player->getDirection().x!=checkRun && collisionWall==true)
+        if ( _player->getDirection().x!=checkRun && collisionWall==true)
         {
             checkRun = 0;
             _player->setIsCanMove(true);                        

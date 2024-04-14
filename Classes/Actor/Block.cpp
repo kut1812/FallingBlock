@@ -37,12 +37,6 @@ void Block::setBlockSpeedLevel(int level) {
 
 bool Block::addPhysics()
 {
-    Vec2 lowerEdge[4] = {
-     Vec2(-this->getContentSize().width / 3,-this->getContentSize().height / 2 ),
-     Vec2(-this->getContentSize().width / 3,-10),
-     Vec2(this->getContentSize().width / 3 ,-this->getContentSize().height / 2 ),
-     Vec2(this->getContentSize().width / 3 ,-10)
-    };
     blockBody = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(10.0f, 0.0f, 1.0f));
     blockBody->setDynamic(true);
     blockBody->setMass(2);
@@ -59,6 +53,7 @@ bool Block::addPhysics()
 }
 
 void Block::setFlop() {
+    blockBody->setEnabled(false);
     blockBody->setVelocity(Vec2(0, -10000));
 }
 void Block::update(float dt)
