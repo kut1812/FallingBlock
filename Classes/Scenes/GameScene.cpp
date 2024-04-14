@@ -404,12 +404,13 @@ void GameScene::updateMeter(float dt) {
             std::vector<Block*> listToRemove;
             int count = 0;
             for (auto i : listOfBlocks) {
-                if (i->getPositionY() <= 4 && count <= 13) {
+                if (i->getPositionY() <= 4 && count <= checkFlop) {
                     i->setFlop();
                     listToRemove.push_back(i);
                     count++;
                 }
             }
+            checkFlop += 13;
             limitMeter += 25;
             savedMeterBe4Reset = currentMeter - ((currentMeter - limitMeter) > currentMeter ? (currentMeter - limitMeter) : 0);
         }

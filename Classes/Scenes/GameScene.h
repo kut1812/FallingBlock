@@ -61,6 +61,7 @@ private:
     Sprite* skillSpriteShield = nullptr;
     Sprite* disableSpriteShield = nullptr;
     float checkRun ;
+    float checkFlop=13;
     bool collisionWall;
     bool OnContactBegan(cocos2d::PhysicsContact& contact);
     void setPhysicsWorld(cocos2d::PhysicsWorld* m_world) {
