@@ -6,6 +6,7 @@
 #include "Skill/Shield.h"
 #include "Skill/X2Coin.h"
 #include "CoinManager/CoinManager.h"
+#include "Scenes/GameScene.h"
 USING_NS_CC;
 StoreLayer* StoreLayer::create(Player* _plr)
 {
@@ -36,6 +37,10 @@ bool StoreLayer::init(Player* _plr)
     cancel->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             Director::getInstance()->resume();
+            auto sceneGame1 = dynamic_cast<GameScene*>(Director::getInstance()->getRunningScene());
+            if (sceneGame1 != nullptr) {
+                sceneGame1->setDynamicAllBlock(true);
+            }
             storeLayer->removeFromParentAndCleanup(true);
             coin = nullptr;
         }

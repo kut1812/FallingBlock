@@ -22,7 +22,7 @@ public:
     void setupPhysicBorder();
     void spawnBlocks(float dt);
     void spawnCoins(float dt);
-    void setDynamicAllBlock(int x);
+    void setDynamicAllBlock(bool x);
 private:
     Audio* audioEngine;
     SQLiteManager* dbManager;

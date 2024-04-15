@@ -71,6 +71,10 @@ Node* LayerManager::pauseLayer()
         if (type == ui::Widget::TouchEventType::ENDED) {
             Director::getInstance()->resume();
             pauseLayer->removeFromParentAndCleanup(true);
+            auto sceneGame1 = dynamic_cast<GameScene*>(Director::getInstance()->getRunningScene());
+            if (sceneGame1 != nullptr) {
+                sceneGame1->setDynamicAllBlock(true);
+            }
         }
         });
 

@@ -58,6 +58,7 @@ bool GameScene::init(Player* _plr)
             pause->setScale(0.55f);
             break;
         case ui::Widget::TouchEventType::ENDED:
+            setDynamicAllBlock(false);
             pause->setScale(0.5f);
             this->addChild(LayerManager::getInstance()->pauseLayer(), 100);
             break;
@@ -199,6 +200,7 @@ bool GameScene::init(Player* _plr)
             break;
         case ui::Widget::TouchEventType::ENDED:
             upgrade->setScale(0.5f);
+            setDynamicAllBlock(false);
             audioEngine->play2d("Sounds/tap_digits.mp3", false);
             auto upgradeLayer = UpgradeLayer::create(_player);
             this->addChild(upgradeLayer, 3);
@@ -214,6 +216,7 @@ bool GameScene::init(Player* _plr)
             shop->setScale(0.55f);
             break;
         case ui::Widget::TouchEventType::ENDED:
+            setDynamicAllBlock(false);
             shop->setScale(0.5f);
             audioEngine->play2d("Sounds/tap_digits.mp3", false);
             auto storeLayer = StoreLayer::create(_player);
@@ -382,12 +385,12 @@ void GameScene::spawnCoins(float dt)
     }
 }
 
-void GameScene::setDynamicAllBlock(int x)
+void GameScene::setDynamicAllBlock(bool x)
 {
     for (auto i : listOfBlocks) {
         if (i != nullptr)
         {
-            i->getPhysicsBody()->setVelocity(Vec2(i->getPhysicsBody()->getVelocity().x,x));
+            i->getPhysicsBody()->setDynamic(x);
         }
     }
 }
@@ -429,7 +432,7 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
         {
             if(_player->getSpawnLife() <= 1) {
                 audioEngine->play2d("Sounds/6.mp3", false, 0.15f);
-                this->setDynamicAllBlock(200);
+                this->setDynamicAllBlock(false);
                 if (_player->getShield()) {
                     _player->getShield()->~ShieldSkill();
 
