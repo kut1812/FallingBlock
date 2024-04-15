@@ -16,12 +16,12 @@ bool Joystick::init()
 
     joystickBorder = Sprite::create("control/fb_ctrl_pad.png");
     joystickBorder->setPosition(Vec2());
-    joystickBorder->setScale(0.5);
+    joystickBorder->setScale(0.75);
     this->addChild(joystickBorder, 300);
 
     joystickBtn = Sprite::create("control/fb_ctrl_move.png");
     joystickBtn->setPosition(Vec2());
-    joystickBtn->setScale(0.5);
+    joystickBtn->setScale(0.75);
     this->addChild(joystickBtn, 500);
     centerPos = joystickBtn->getPosition();
 

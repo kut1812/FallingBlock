@@ -266,7 +266,7 @@ bool GameScene::init(Player* _plr)
     _joystick = Joystick::create();
     if (_joystick)
         this->addChild(_joystick, 1);
-    _joystick->setPosition(visibleSize.width / 8, visibleSize.height * 0.15);
+    _joystick->setPosition(visibleSize.width / 8, visibleSize.height * 0.25);
 
     _jumpButton = JumpButton::create();
     if (_jumpButton) {
