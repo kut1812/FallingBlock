@@ -427,7 +427,7 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
             bodyA->getPhysicsBody() && bodyB->getPhysicsBody() && bodyA->getPhysicsBody()->getCollisionBitmask() == 11 && bodyB->getPhysicsBody()->getCollisionBitmask() == 30
             )
         {
-            if(_player->getSpawnLife() <= 0) {
+            if(_player->getSpawnLife() <= 1) {
                 audioEngine->play2d("Sounds/6.mp3", false, 0.15f);
                 this->setDynamicAllBlock(200);
                 if (_player->getShield()) {
