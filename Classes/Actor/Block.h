@@ -2,6 +2,7 @@
 #define __BLOCK_H__
 
 #include "cocos2d.h"
+#include "Utilities/Utilities.h"
 #include "AudioEngine/AudioEngine.h"
 USING_NS_CC;
 class Block : public Sprite
@@ -21,7 +22,7 @@ public:
 	float baseSpeed = 0;
 
 private:
-	Audio* audioEngine;
+	Utilities* audioEngine;
 	PhysicsBody* physics;
 	PhysicsBody* blockBody;
 	int blockSpeedLevel;

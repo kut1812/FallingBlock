@@ -63,7 +63,7 @@ bool StoreLayer::init(Player* _plr)
         {
         case ui::Button::TouchEventType::BEGAN:
             // Khi nút được nhấn, phóng to nút lên
-            buyCoin->setScale(0.55f);
+            //buyCoin->setScale(0.55f);
             break;
         case ui::Button::TouchEventType::ENDED:
             if (unlockSkill("X2Coin")) {
@@ -76,7 +76,7 @@ bool StoreLayer::init(Player* _plr)
             else {
                 CCLOG("false!");
             }
-            buyCoin->setScale(0.5);
+            //buyCoin->setScale(0.5);
             break;
         default:
             break;
@@ -92,7 +92,7 @@ bool StoreLayer::init(Player* _plr)
         {
         case ui::Button::TouchEventType::BEGAN:
             // Khi nút được nhấn, phóng to nút lên
-            buyJump->setScale(0.55);
+            //buyJump->setScale(0.55);
             break;
         case ui::Button::TouchEventType::ENDED:
             if (unlockSkill("X2Jump")) {
@@ -105,7 +105,7 @@ bool StoreLayer::init(Player* _plr)
             else {
                 CCLOG("false!");
             }
-            buyJump->setScale(0.5);
+            //buyJump->setScale(0.5);
             break;
         default:
             break;
@@ -121,7 +121,7 @@ bool StoreLayer::init(Player* _plr)
         {
         case ui::Button::TouchEventType::BEGAN:
             // Khi nút được nhấn, phóng to nút lên
-            buySheild->setScale(0.55);
+            //buySheild->setScale(0.55);
             break;
         case ui::Button::TouchEventType::ENDED:
             if (type == ui::Widget::TouchEventType::ENDED) {
@@ -136,7 +136,7 @@ bool StoreLayer::init(Player* _plr)
                     CCLOG("false!");
                 }
             }
-            buySheild->setScale(0.5);
+            //buySheild->setScale(0.5);
             break;
         default:
             break;

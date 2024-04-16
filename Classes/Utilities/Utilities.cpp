@@ -27,12 +27,12 @@ int Utilities::generateNumber(int min, int max) {
 void Utilities::playMusic(std::string fileName)
 {
     AudioEngine::stop(_bgmID);
-    _bgmID = AudioEngine::play2d("Audio/Music/" + fileName, true, _musicVolume);
+    _bgmID = AudioEngine::play2d(fileName, true, _musicVolume);
 }
 
 void Utilities::playSFX(std::string fileName)
 {
-    AudioEngine::play2d("Audio/SFX/" + fileName, false, _sfxVolume);
+    AudioEngine::play2d( fileName, false, _sfxVolume);
 }
 
 void Utilities::setMusicVolume(float newVolume)

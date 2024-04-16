@@ -20,7 +20,7 @@ bool Block::init(std::string tyleBlock)
     {
         return false;
     }
-    audioEngine = Audio::getInstance();
+    audioEngine = Utilities::getInstance();
     this->setScale(0.48);
     if (addPhysics() != true)
     {
@@ -47,7 +47,7 @@ bool Block::addPhysics()
     blockBody->retain();
 
     this->addComponent(blockBody);
-    audioEngine->play2d("Sounds/tray_exit.mp3", false);
+    audioEngine->playSFX("Sounds/tray_exit.mp3");
     return true;
 
 }
@@ -64,7 +64,7 @@ void Block::update(float dt)
     }
     if (this->getPhysicsBody()->getVelocity().y <= 0 && this->getPhysicsBody()->getVelocity().y >= -3.0f && !isOnGround) {
         isOnGround = true;
-        audioEngine->play2d("Sounds/9.mp3", false, 0.12f);
+        audioEngine->playSFX("Sounds/9.mp3");
         Utilities::getInstance()->loadSpriteFrameCache("animation/", "block_falled");
         auto sfx_block_falled = Utilities::createAnimation("block_falled", 19, 0.05f);
         underBlock = Sprite::create("animation/block_falled_sprite.png");

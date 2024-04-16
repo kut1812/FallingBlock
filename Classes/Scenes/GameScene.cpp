@@ -34,7 +34,7 @@ bool GameScene::init(Player* _plr)
      this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     visibleSize = Director::getInstance()->getVisibleSize();
-    audioEngine = Audio::getInstance();
+    audioEngine = Utilities::getInstance();
     _player = _plr;
     _player->setPosition(Vec2(visibleSize.width / 2, 100));
     _player->setTag(909);
@@ -49,7 +49,7 @@ bool GameScene::init(Player* _plr)
     columnWidth = column->getContentSize().width;
 
     auto uiButton = CSLoader::getInstance()->createNode("csb/ButtonGameScene.csb");
-    this->addChild(uiButton, 1);
+    this->addChild(uiButton, 3);
 
     auto pause = uiButton->getChildByName<ui::Button*>("Button_3");
     pause->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
@@ -74,7 +74,7 @@ bool GameScene::init(Player* _plr)
         case ui::Button::TouchEventType::BEGAN: {
             coinDouble->setScale(0.55f);
             if (_player->getX2Coin() && _player->getCoinAmount() > 0 && _player->getX2Coin()->use()) {
-                audioEngine->play2d("Sounds/tap_digits.mp3", false);
+                audioEngine->playSFX("Sounds/tap_digits.mp3");
                 _player->decreaseCoinAmount(1);
                 dbManager->setPlayerInfo(1, _player->getMovementLevel(), _player->getMoney(), _player->getLifeSpawnLevel(), _player->getBlockSpeedLevel(), _player->getSkillDurationLevel(), _player->getCoinAmount(), _player->getJumpAmount(), _player->getShieldAmount());
                 skillSpriteCoin = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
@@ -115,7 +115,7 @@ bool GameScene::init(Player* _plr)
         case ui::Button::TouchEventType::BEGAN: {
             shield->setScale(0.55f);
             if (_player->getShield() && _player->getShieldAmount() > 0 && _player->getShield()->use()) {
-                audioEngine->play2d("Sounds/tap_digits.mp3", false);
+                audioEngine->playSFX("Sounds/tap_digits.mp3");
                 _player->decreaseShieldAmount(1);
                 dbManager->setPlayerInfo(1, _player->getMovementLevel(), _player->getMoney(), _player->getLifeSpawnLevel(), _player->getBlockSpeedLevel(), _player->getSkillDurationLevel(), _player->getCoinAmount(), _player->getJumpAmount(), _player->getShieldAmount());
                 skillSpriteShield = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
@@ -157,7 +157,7 @@ bool GameScene::init(Player* _plr)
         case ui::Button::TouchEventType::BEGAN: {
             doubleJump->setScale(0.55f);
             if (_player->getX2Jump() && _player->getJumpAmount() > 0 && _player->getX2Jump()->use()) {
-                audioEngine->play2d("Sounds/tap_digits.mp3", false);
+                audioEngine->playSFX("Sounds/tap_digits.mp3");
                 _player->decreaseJumpAmount(1);
                 dbManager->setPlayerInfo(1, _player->getMovementLevel(), _player->getMoney(), _player->getLifeSpawnLevel(), _player->getBlockSpeedLevel(), _player->getSkillDurationLevel(), _player->getCoinAmount(), _player->getJumpAmount(), _player->getShieldAmount());
                 skillSpriteJump = Sprite::create("control/fb_ctrl_skill_dup_coin_wait.png");
@@ -201,7 +201,7 @@ bool GameScene::init(Player* _plr)
         case ui::Widget::TouchEventType::ENDED:
             upgrade->setScale(0.5f);
             setDynamicAllBlock(false);
-            audioEngine->play2d("Sounds/tap_digits.mp3", false);
+            audioEngine->playSFX("Sounds/tap_digits.mp3");
             auto upgradeLayer = UpgradeLayer::create(_player);
             this->addChild(upgradeLayer, 3);
             break;
@@ -218,7 +218,7 @@ bool GameScene::init(Player* _plr)
         case ui::Widget::TouchEventType::ENDED:
             setDynamicAllBlock(false);
             shop->setScale(0.5f);
-            audioEngine->play2d("Sounds/tap_digits.mp3", false);
+            audioEngine->playSFX("Sounds/tap_digits.mp3");
             auto storeLayer = StoreLayer::create(_player);
             this->addChild(storeLayer, 4);
             break;
@@ -228,23 +228,23 @@ bool GameScene::init(Player* _plr)
     //label life
     lifeLabel = Label::createWithTTF(std::to_string(_player->getSpawnLife()), "font/Baloo2/Baloo2-Bold.ttf", 20);
     lifeLabel->setPosition(Vec2(visibleSize.width*0.24,visibleSize.height*0.92));
-    this->addChild(lifeLabel,1);    
+    this->addChild(lifeLabel,3);    
     //label coin
     coin = Label::createWithTTF(std::to_string(_player->getMoney()), "font/Baloo2/Baloo2-Bold.ttf", 20);
     coin->setPosition(Vec2(visibleSize.width * 0.44, visibleSize.height * 0.92));
-    this->addChild(coin, 1);
+    this->addChild(coin, 3);
     //label x2jump
     x2jump = Label::createWithTTF(std::to_string(_player->getJumpAmount()), "font/Baloo2/Baloo2-Bold.ttf", 20);
     x2jump->setPosition(Vec2(visibleSize.width * 0.53, visibleSize.height * 0.92));
-    this->addChild(x2jump, 1);
+    this->addChild(x2jump, 3);
     //label shield
     textShield = Label::createWithTTF(std::to_string(_player->getShieldAmount()), "font/Baloo2/Baloo2-Bold.ttf", 20);
     textShield->setPosition(Vec2(visibleSize.width * 0.6, visibleSize.height * 0.92));
-    this->addChild(textShield, 1);
+    this->addChild(textShield, 3);
     //label x2coin
     x2coin = Label::createWithTTF(std::to_string(_player->getCoinAmount()), "font/Baloo2/Baloo2-Bold.ttf", 20);
     x2coin->setPosition(Vec2(visibleSize.width * 0.67, visibleSize.height * 0.92));
-    this->addChild(x2coin, 1);
+    this->addChild(x2coin, 3);
 
     //sprite disable coin
     disableSpriteCoin = Sprite::create("control/fb_ctrl_skill_dup_coin_block.png");
@@ -370,7 +370,7 @@ void GameScene::spawnCoins(float dt)
         for (int i = 0; i < quantityCoin; i++)
         {
         auto coin = Coin::create();
-        coin->setScale(100.f/75.f/2);
+        coin->setScale(100.f/75.f/3);
         auto randomX = Utilities::getInstance()->generateNumber(0, 19);
         auto randomY = Utilities::getInstance()->generateNumber(2, 8);
         auto spawnX = columnWidth / 2 + coin->getContentSize().width / 2 * randomX;
@@ -410,12 +410,18 @@ void GameScene::updateMeter(float dt) {
                 if (i->getPositionY() <= 4 && count <= checkFlop) {
                     i->setFlop();
                     listToRemove.push_back(i);
+                    i->setVisible(false);
                     count++;
                 }
             }
             checkFlop += 13;
             limitMeter += 25;
             savedMeterBe4Reset = currentMeter - ((currentMeter - limitMeter) > currentMeter ? (currentMeter - limitMeter) : 0);
+        for (auto c : listOfCoins)
+        {
+            auto moveBy = MoveBy::create(0.2f, Vec2(0, -blockSize.height));
+            c->runAction(moveBy);
+        }
         }
     }
 }
@@ -431,7 +437,7 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
             )
         {
             if(_player->getSpawnLife() <= 1) {
-                audioEngine->play2d("Sounds/6.mp3", false, 0.15f);
+                audioEngine->playSFX("Sounds/6.mp3");
                 this->setDynamicAllBlock(false);
                 if (_player->getShield()) {
                     _player->getShield()->~ShieldSkill();
@@ -467,7 +473,7 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
             }
             else {
                 _player->decreaseSpawnLife();
-                audioEngine->play2d("Sounds/6.mp3", false, 0.15f);
+                audioEngine->playSFX("Sounds/6.mp3");
                 if (bodyA->getPhysicsBody()->getCollisionBitmask() == 30) {
                     bodyA->getPhysicsBody()->removeFromWorld();
                     bodyA->setVisible(false);
@@ -542,10 +548,10 @@ void GameScene::updatePlayer(float dt) {
             if (_player && _player->getPosition().y > i->getPosition().y && _player->getPosition().y <= i->getPosition().y + i->getContentSize().height) {
                 if (_player && _player->getPositionX() > i->getPositionX() || _player->getPositionX() < i->getPositionX() + i->getContentSize().width) {
                     auto collisionRect = i->getBoundingBox();
-                    collisionRect.size.width = i->getContentSize().width * 0.48;
-                    collisionRect.size.height = i->getContentSize().height * 0.48;
+                    collisionRect.size.width = i->getContentSize().width * 0.5;
+                    collisionRect.size.height = i->getContentSize().height * 0.5;
      
-                    if (_player && collisionRect.containsPoint(_player->getPosition() + (_player->getDirection() * (140 + (_player->getMovementLevel() / 3)) * dt)
+                    if (_player && collisionRect.containsPoint(_player->getPosition() + (_player->getDirection() * (150 + (_player->getMovementLevel() / 3)) * dt)
                         + (_player->getDirection().x > 0 ? Vec2(i->getContentSize().width / 7, 0) : Vec2(-i->getContentSize().width / 7, 0)))) {
                         _player->getPhysicsBody()->setVelocity(Vec2(0, _player->getPhysicsBody()->getVelocity().y));
                         _player->setIsCanMove(false);
@@ -705,7 +711,7 @@ void GameScene::updatePlayer(float dt) {
             std::vector<Coin*> listRemoveCoin;
             for (auto c : listOfCoins) {
                 if (c->getBoundingBox().containsPoint(_player->getPosition())) {
-                    audioEngine->play2d("Sounds/clickCommodity.mp3", false);
+                    audioEngine->playSFX("Sounds/clickCommodity.mp3");
                     c->removeFromParentAndCleanup(true);
                     listRemoveCoin.push_back(c);
                     if (!_player->isX2Coin()) {

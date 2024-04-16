@@ -59,19 +59,19 @@ bool UpgradeLayer::init(Player* _plr) {
         });
 
     SQLiteManager::PlayerInfo playerInfo = dbManager->getPlayerById(1);
-    auto textLevelSkullSpeed = Label::createWithTTF("   " + std::to_string(_plr->getMovementLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    auto textLevelSkullSpeed = Label::createWithTTF("   " + std::to_string(_plr->getMovementLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 18);
     textLevelSkullSpeed->setPosition(Vec2(visibleSize.width * 0.31, visibleSize.height * 0.56));
     textLevelSkullSpeed->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(textLevelSkullSpeed);
-    auto textLifeSpawn = Label::createWithTTF("    " + std::to_string(_plr->getLifeSpawnLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    auto textLifeSpawn = Label::createWithTTF("    " + std::to_string(_plr->getLifeSpawnLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 18);
     textLifeSpawn->setPosition(Vec2(visibleSize.width * 0.53, visibleSize.height * 0.56));
     textLifeSpawn->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(textLifeSpawn);
-    auto textBlockSpeed = Label::createWithTTF("   " + std::to_string(_plr->getBlockSpeedLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    auto textBlockSpeed = Label::createWithTTF("   " + std::to_string(_plr->getBlockSpeedLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 18);
     textBlockSpeed->setPosition(Vec2(visibleSize.width * 0.31, visibleSize.height * 0.345));
     textBlockSpeed->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(textBlockSpeed);
-    auto textSkillDuration = Label::createWithTTF("    " + std::to_string(_plr->getSkillDurationLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    auto textSkillDuration = Label::createWithTTF("    " + std::to_string(_plr->getSkillDurationLevel()) + " / 300", "font/Baloo2/Baloo2-Bold.ttf", 18);
     textSkillDuration->setPosition(Vec2(visibleSize.width * 0.53, visibleSize.height * 0.345));
     textSkillDuration->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(textSkillDuration);
@@ -84,7 +84,7 @@ bool UpgradeLayer::init(Player* _plr) {
     std::stringstream ss;
     ss << std::fixed << std::setprecision(2) << ((std::round(static_cast<float>(_plr->getMovementLevel() + 1) / 3 * 10.0) / 10.0));
     std::string formattedString = ss.str();
-    auto statSkullSpeed = Label::createWithTTF("  " + formattedString + "%", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    auto statSkullSpeed = Label::createWithTTF("" + formattedString + "%", "font/Baloo2/Baloo2-Bold.ttf", 20);
     statSkullSpeed->setPosition(Vec2(visibleSize.width * 0.36, visibleSize.height * 0.515));
     statSkullSpeed->setColor(Color3B::GREEN);
     statSkullSpeed->setAnchorPoint(Vec2(0, 0.5));
@@ -94,7 +94,7 @@ bool UpgradeLayer::init(Player* _plr) {
     std::stringstream ss2;
     ss2 << std::fixed << std::setprecision(2) << (static_cast<float>((_plr->getBlockSpeedLevel())) / 6);
     std::string formattedString2 = ss2.str();
-    auto statBlockSpeed = Label::createWithTTF("  -" + formattedString2 + "%", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    auto statBlockSpeed = Label::createWithTTF("-" + formattedString2 + "%", "font/Baloo2/Baloo2-Bold.ttf", 20);
     statBlockSpeed->setPosition(Vec2(visibleSize.width * 0.36, visibleSize.height * 0.305));
     statBlockSpeed->setAnchorPoint(Vec2(0, 0.5));
     statBlockSpeed->setColor(Color3B::GREEN);
@@ -102,42 +102,76 @@ bool UpgradeLayer::init(Player* _plr) {
     std::stringstream ss3;
     ss3 << std::fixed << std::setprecision(2) << (static_cast<float>((_plr->getSkillDurationLevel())) / 40);
     std::string formattedString3 = ss3.str();
-    auto statSkillDuration = Label::createWithTTF("  -" + formattedString3 + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    auto statSkillDuration = Label::createWithTTF("   -" + formattedString3 + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
     statSkillDuration->setPosition(Vec2(visibleSize.width * 0.57, visibleSize.height * 0.305));
     statSkillDuration->setColor(Color3B::GREEN);
     statSkillDuration->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(statSkillDuration);
     float level = static_cast<float>(_plr->getLifeSpawnLevel()) / 3;
-    float result = 330.0f - level;
     std::ostringstream ss4;
+    float result = 330.0f - level;
     ss4 << std::fixed << std::setprecision(2) << result;
     std::string formattedString4 = ss4.str();
-    auto statLifeSpawn = Label::createWithTTF("  " + formattedString4 + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
+    auto statLifeSpawn = Label::createWithTTF("   " + formattedString4 + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
     statLifeSpawn->setPosition(Vec2(visibleSize.width * 0.57, visibleSize.height * 0.515));
     statLifeSpawn->setColor(Color3B::GREEN);
     statLifeSpawn->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(statLifeSpawn);
 
-
-    auto statSkullPrice = Label::createWithTTF("  " + std::to_string(_plr->getMovementLevel() * 5) + "$", "font/Baloo2/Baloo2-Bold.ttf", 20);
-    statSkullPrice->setPosition(Vec2(visibleSize.width * 0.44, visibleSize.height * 0.515));
-    statSkullPrice->setColor(Color3B::WHITE);
-    statSkullPrice->setAnchorPoint(Vec2(0, 0.5));
+    auto a = _plr->getMovementLevel();
+    auto b = "MAX";
+    std::string price;
+    if (a==300)
+    {
+        price = b;
+    }
+    else {
+        price = std::to_string(_plr->getMovementLevel() * 5)+ "$";
+    }
+    auto statSkullPrice = Label::createWithTTF("  " + price , "font/Baloo2/Baloo2-Bold.ttf", 18);
+    statSkullPrice->setPosition(Vec2(visibleSize.width * 0.485, visibleSize.height * 0.515));
+    statSkullPrice->setColor(Color3B::ORANGE);
+    statSkullPrice->setAnchorPoint(Vec2(1, 0.5));
     upgradeLayer->addChild(statSkullPrice);
-    auto statBlockPrice = Label::createWithTTF("  " + std::to_string(_plr->getBlockSpeedLevel() * 5) + "$", "font/Baloo2/Baloo2-Bold.ttf", 20);
-    statBlockPrice->setPosition(Vec2(visibleSize.width * 0.44, visibleSize.height * 0.305));
-    statBlockPrice->setAnchorPoint(Vec2(0, 0.5));
-    statBlockPrice->setColor(Color3B::WHITE);
+
+    a = _plr->getBlockSpeedLevel();
+    if (a==300)
+    {
+        price = b;
+    }
+    else {
+        price = std::to_string(_plr->getBlockSpeedLevel() * 5)+ "$";
+    }
+    auto statBlockPrice = Label::createWithTTF("  " + price , "font/Baloo2/Baloo2-Bold.ttf", 18);
+    statBlockPrice->setPosition(Vec2(visibleSize.width * 0.485, visibleSize.height * 0.305));
+    statBlockPrice->setAnchorPoint(Vec2(1, 0.5));
+    statBlockPrice->setColor(Color3B::ORANGE);
     upgradeLayer->addChild(statBlockPrice);
-    auto statSkillPrice = Label::createWithTTF("  " + std::to_string(_plr->getSkillDurationLevel() * 5) + "$", "font/Baloo2/Baloo2-Bold.ttf", 20);
-    statSkillPrice->setPosition(Vec2(visibleSize.width * 0.66, visibleSize.height * 0.305));
-    statSkillPrice->setColor(Color3B::WHITE);
-    statSkillPrice->setAnchorPoint(Vec2(0, 0.5));
+    a = _plr->getSkillDurationLevel();
+    if (a==300)
+    {
+        price = b;
+    }
+    else {
+        price = std::to_string(_plr->getSkillDurationLevel() * 5)+ "$";
+    }
+    auto statSkillPrice = Label::createWithTTF("  " +price , "font/Baloo2/Baloo2-Bold.ttf", 18);
+    statSkillPrice->setPosition(Vec2(visibleSize.width * 0.71, visibleSize.height * 0.305));
+    statSkillPrice->setColor(Color3B::ORANGE);
+    statSkillPrice->setAnchorPoint(Vec2(1, 0.5));
     upgradeLayer->addChild(statSkillPrice);
-    auto statLifePrice = Label::createWithTTF("  " + std::to_string(_plr->getLifeSpawnLevel() * 5) + "$", "font/Baloo2/Baloo2-Bold.ttf", 20);
-    statLifePrice->setPosition(Vec2(visibleSize.width * 0.66, visibleSize.height * 0.515));
-    statLifePrice->setColor(Color3B::WHITE);
-    statLifePrice->setAnchorPoint(Vec2(0, 0.5));
+    a = _plr->getLifeSpawnLevel();
+    if (a==300)
+    {
+        price = b;
+    }
+    else {
+        price = std::to_string(_plr->getLifeSpawnLevel() * 5)+ "$";
+    }
+    auto statLifePrice = Label::createWithTTF("  " +price , "font/Baloo2/Baloo2-Bold.ttf", 18);
+    statLifePrice->setPosition(Vec2(visibleSize.width * 0.71, visibleSize.height * 0.515));
+    statLifePrice->setColor(Color3B::ORANGE);
+    statLifePrice->setAnchorPoint(Vec2(1, 0.5));
     upgradeLayer->addChild(statLifePrice);
     //SkullSpeed
     int levelSkullSpeed = _plr->movementLevel; 
@@ -150,7 +184,22 @@ bool UpgradeLayer::init(Player* _plr) {
         upgradeLayer->addChild(section);
         loadingSkullSpeed.pushBack(section);
     }
-    for (int i = 0; i < levelSkullSpeed % 10; ++i) {
+    if (levelSkullSpeed % 10 !=0)
+    {
+        levelSkullSpeed = levelSkullSpeed % 10;
+    }
+    else
+    {
+        if (levelSkullSpeed>0)
+        {
+            levelSkullSpeed = 10;
+        }
+        else
+        {
+            levelSkullSpeed = 0;
+        }
+    }
+    for (int i = 0; i < levelSkullSpeed ; ++i) {
         loadingSkullSpeed.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
     }
 
@@ -165,7 +214,22 @@ bool UpgradeLayer::init(Player* _plr) {
         upgradeLayer->addChild(section);
         loadingLifeSpawn.pushBack(section);
     }
-    for (int i = 0; i < levelLifeSpawn % 10; ++i) {
+    if (levelLifeSpawn % 10 != 0)
+    {
+        levelLifeSpawn = levelLifeSpawn % 10;
+    }
+    else
+    {
+        if (levelLifeSpawn > 0)
+        {
+            levelLifeSpawn = 10;
+        }
+        else
+        {
+            levelLifeSpawn = 0;
+        }
+    }
+    for (int i = 0; i < levelLifeSpawn; ++i) {
         loadingLifeSpawn.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
     }
 
@@ -181,7 +245,22 @@ bool UpgradeLayer::init(Player* _plr) {
         upgradeLayer->addChild(section);
         loadingBlockSpeed.pushBack(section);
     }
-    for (int i = 0; i < levelBlockSpeed % 10; ++i) {
+    if (levelBlockSpeed % 10 != 0)
+    {
+        levelBlockSpeed = levelBlockSpeed % 10;
+    }
+    else
+    {
+        if (levelBlockSpeed > 0)
+        {
+            levelBlockSpeed = 10;
+        }
+        else
+        {
+            levelBlockSpeed = 0;
+        }
+    }
+    for (int i = 0; i < levelBlockSpeed; ++i) {
         loadingBlockSpeed.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
     }
 
@@ -197,7 +276,22 @@ bool UpgradeLayer::init(Player* _plr) {
         upgradeLayer->addChild(section);
         loadingSkillDuration.pushBack(section);
     }
-    for (int i = 0; i < levelSkillDuration % 10; ++i) {
+    if (levelSkillDuration % 10 != 0)
+    {
+        levelSkillDuration = levelSkillDuration % 10;
+    }
+    else
+    {
+        if (levelSkillDuration > 0)
+        {
+            levelSkillDuration = 10;
+        }
+        else
+        {
+            levelSkillDuration = 0;
+        }
+    }
+    for (int i = 0; i < levelSkillDuration; ++i) {
         loadingSkillDuration.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
     }
     this->addChild(upgradeLayer);
@@ -213,23 +307,55 @@ bool UpgradeLayer::init(Player* _plr) {
                 for (int i = 0; i < 10; ++i) {
                     loadingSkullSpeed.at(i)->setTexture("popup/fb_popup_upgrade_cell_b.png");
                 }
-                for (int i = 0; i < levelSkullSpeed % 10; ++i) {
+                if (levelSkullSpeed % 10 != 0)
+                {
+                    levelSkullSpeed = levelSkullSpeed % 10;
+                }
+                else
+                {
+                    if (levelSkullSpeed > 0)
+                    {
+                        levelSkullSpeed = 10;
+                    }
+                    else
+                    {
+                        levelSkullSpeed = 0;
+                    }
+                }
+                for (int i = 0; i < levelSkullSpeed; ++i) {
                     loadingSkullSpeed.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
                 }
-                textLevelSkullSpeed->setString("    " + std::to_string(_plr->getMovementLevel()) + " / 300");
+                textLevelSkullSpeed->setString("   " + std::to_string(_plr->getMovementLevel()) + " / 300");
                 textCoin->setString(std::to_string(_plr->getMoney()));
                 std::stringstream ss;
-                ss << std::fixed << std::setprecision(1) << ((std::round(static_cast<float>(_plr->getMovementLevel() + 1) / 3 * 10.0) / 10.0));
+                ss << std::fixed << std::setprecision(2) << ((std::round(static_cast<float>(_plr->getMovementLevel() + 1) / 3 * 10.0) / 10.0));
                 std::string formattedString = ss.str();
-                statSkullSpeed->setString("  " + formattedString + "%");
-                statSkullPrice->setString("  " + std::to_string(_plr->getMovementLevel() * 5) + "$");
+                statSkullSpeed->setString("" + formattedString + "%");
+                auto a = _plr->getMovementLevel();
+                std::string b = "MAX";
+                std::string price;
+                if (a == 300)
+                {
+                    price = b ;
+                }
+                else {
+                    price = std::to_string(_plr->getMovementLevel() * 5)+"$";
+                }
+                statSkullPrice->setString("  " + price );
+                if (_plr->getMoney() < _plr->getMovementLevel() * 5 || _plr->getMovementLevel() == 300)
+                {
+                    buttonAddSS->setEnabled(false);
+                }
             }
             else {
                 CCLOG("Not enough money!");
             }
         }
         });
-
+        if (_plr->getMoney()< _plr->getMovementLevel() * 5 || _plr->getMovementLevel()==300)
+        {
+            buttonAddSS->setEnabled(false);
+        } 
 
     //button + life spawn
 
@@ -243,23 +369,57 @@ bool UpgradeLayer::init(Player* _plr) {
                 for (int i = 0; i < 10; ++i) {
                     loadingLifeSpawn.at(i)->setTexture("popup/fb_popup_upgrade_cell_b.png");
                 }
-                for (int i = 0; i < levelLifeSpawn % 10; ++i) {
+                if (levelLifeSpawn % 10 != 0)
+                {
+                    levelLifeSpawn = levelLifeSpawn % 10;
+                }
+                else
+                {
+                    if (levelLifeSpawn > 0)
+                    {
+                        levelLifeSpawn = 10;
+                    }
+                    else
+                    {
+                        levelLifeSpawn = 0;
+                    }
+                }
+                for (int i = 0; i < levelLifeSpawn; ++i) {
                     loadingLifeSpawn.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
                 }
                 textLifeSpawn->setString("    " + std::to_string(_plr->getLifeSpawnLevel()) + " / 300");
                 textCoin->setString(std::to_string(_plr->getMoney()));
-                std::ostringstream oss;
-                oss << std::fixed << std::setprecision(1) << result;
-                std::string a = oss.str();
-                statLifeSpawn->setString("  " + a + "s");
-                statLifePrice->setString("  " + std::to_string(_plr->getLifeSpawnLevel() * 5) + "$");
+                float level = static_cast<float>(_plr->getLifeSpawnLevel()) / 3;
+                float result = 330.0f - level;
+                std::ostringstream ss4;
+                ss4 << std::fixed << std::setprecision(2) << result;
+                std::string formattedString4 = ss4.str();
+                statLifeSpawn->setString("   " + formattedString4 + "s");
+                auto a = _plr->getLifeSpawnLevel();
+                std::string b = "MAX";
+                std::string price;
+                if (a == 300)
+                {
+                    price = b;
+                }
+                else {
+                    price = std::to_string(_plr->getLifeSpawnLevel() * 5) + "$";
+                }
+                statLifePrice->setString("  " +price);
+                if (_plr->getMoney() < _plr->getLifeSpawnLevel() * 5 || _plr->getLifeSpawnLevel() == 300)
+                {
+                    buttonAddLS->setEnabled(false);
+                }
             }
             else {
                 CCLOG("Not enough money!");
             }
         }
         });
-
+    if (_plr->getMoney() < _plr->getLifeSpawnLevel() * 5 || _plr->getLifeSpawnLevel() == 300)
+    {
+        buttonAddLS->setEnabled(false);
+    }
     //button + block speed
 
     auto buttonAddBS = upgradeLayer->getChildByName<ui::Button*>("Button_3_0_0_0");
@@ -272,23 +432,55 @@ bool UpgradeLayer::init(Player* _plr) {
                 for (int i = 0; i < 10; ++i) {
                     loadingBlockSpeed.at(i)->setTexture("popup/fb_popup_upgrade_cell_b.png");
                 }
-                for (int i = 0; i < levelBlockSpeed % 10; ++i) {
+                if (levelBlockSpeed % 10 != 0)
+                {
+                    levelBlockSpeed = levelBlockSpeed % 10;
+                }
+                else
+                {
+                    if (levelBlockSpeed > 0)
+                    {
+                        levelBlockSpeed = 10;
+                    }
+                    else
+                    {
+                        levelBlockSpeed = 0;
+                    }
+                }
+                for (int i = 0; i < levelBlockSpeed; ++i) {
                     loadingBlockSpeed.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
                 }
-                textBlockSpeed->setString("    " + std::to_string(_plr->getBlockSpeedLevel()) + " / 300");
+                textBlockSpeed->setString("   " + std::to_string(_plr->getBlockSpeedLevel()) + " / 300");
                 textCoin->setString(std::to_string(_plr->getMoney()));
                 std::stringstream ss2;
-                ss2 << std::fixed << std::setprecision(1) << (static_cast<float>((_plr->getBlockSpeedLevel())) / 6);
+                ss2 << std::fixed << std::setprecision(2) << (static_cast<float>((_plr->getBlockSpeedLevel())) / 6);
                 std::string formattedString2 = ss2.str();
-                statBlockSpeed->setString("  -" + formattedString2 + "%");
-                statBlockPrice->setString("  " + std::to_string(_plr->getBlockSpeedLevel() * 5) + "$");
+                statBlockSpeed->setString("-" + formattedString2 + "%");
+                auto a = _plr->getBlockSpeedLevel();
+                std::string b = "MAX";
+                std::string price;
+                if (a == 300)
+                {
+                    price = b;
+                }
+                else {
+                    price = std::to_string(_plr->getBlockSpeedLevel() * 5) + "$";
+                }
+                statBlockPrice->setString("  " + price);
+                if (_plr->getMoney() < _plr->getBlockSpeedLevel() * 5 || _plr->getBlockSpeedLevel() == 300)
+                {
+                    buttonAddBS->setEnabled(false);
+                }
             }
             else {
                 CCLOG("Not enough money!");
             }
         }
         });
-
+    if (_plr->getMoney() < _plr->getBlockSpeedLevel() * 5 || _plr->getBlockSpeedLevel() == 300)
+    {
+        buttonAddBS->setEnabled(false);
+    }
     //button + skill duration
 
     auto buttonAddSD = upgradeLayer->getChildByName<ui::Button*>("Button_3_0_0_0_0");
@@ -301,22 +493,54 @@ bool UpgradeLayer::init(Player* _plr) {
                 for (int i = 0; i < 10; ++i) {
                     loadingSkillDuration.at(i)->setTexture("popup/fb_popup_upgrade_cell_b.png");
                 }
-                for (int i = 0; i < levelSkillDuration % 10; ++i) {
+                if (levelSkillDuration % 10 != 0)
+                {
+                    levelSkillDuration = levelSkillDuration % 10;
+                }
+                else
+                {
+                    if (levelSkillDuration > 0)
+                    {
+                        levelSkillDuration = 10;
+                    }
+                    else
+                    {
+                        levelSkillDuration = 0;
+                    }
+                }
+                for (int i = 0; i < levelSkillDuration; ++i) {
                     loadingSkillDuration.at(i)->setTexture("popup/fb_popup_upgrade_cell_a.png");
                 }
                 textSkillDuration->setString("    " + std::to_string(_plr->getSkillDurationLevel()) + " / 300");
                 textCoin->setString(std::to_string(_plr->getMoney()));
                 std::stringstream ss3;
-                ss3 << std::fixed << std::setprecision(1) << (static_cast<float>((_plr->getSkillDurationLevel())) / 40);
+                ss3 << std::fixed << std::setprecision(2) << (static_cast<float>((_plr->getSkillDurationLevel())) / 40);
                 std::string formattedString3 = ss3.str();
-                statSkillDuration->setString("  -" + formattedString3 + "s");
-                statSkillPrice->setString("  " + std::to_string(_plr->getSkillDurationLevel() * 5) + "$");
+                statSkillDuration->setString("   -" + formattedString3 + "s");
+                auto a = _plr->getSkillDurationLevel();
+                std::string b = "MAX";
+                std::string price;
+                if (a == 300)
+                {
+                    price = b;
+                }
+                else {
+                    price = std::to_string(_plr->getSkillDurationLevel() * 5) + "$";
+                }
+                statSkillPrice->setString("  " +price);
+                if (_plr->getMoney() < _plr->getSkillDurationLevel() * 5 || _plr->getSkillDurationLevel() == 300)
+                {
+                    buttonAddSD->setEnabled(false);
+                }
             }
             else {
                 CCLOG("Not enough money!");
             }
         }
         });
-
+    if (_plr->getMoney() < _plr->getSkillDurationLevel() * 5 || _plr->getSkillDurationLevel() == 300)
+    {
+        buttonAddSD->setEnabled(false);
+    }
     return true;
 }

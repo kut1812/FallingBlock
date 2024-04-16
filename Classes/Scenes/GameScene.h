@@ -24,7 +24,7 @@ public:
     void spawnCoins(float dt);
     void setDynamicAllBlock(bool x);
 private:
-    Audio* audioEngine;
+    Utilities* audioEngine;
     SQLiteManager* dbManager;
     float currentMeter = 0;
     float limitMeter = 25;

@@ -6,7 +6,7 @@
 #include "Scenes/MainMenuScene.h"
 #include "StatsManager/StatsManager.h"
 #include "WorkingWithData/SQLiteManager.h"
-
+#include "Utilities/Utilities.h"
 LayerManager* LayerManager::_instance;
 
 LayerManager* LayerManager::getInstance()
@@ -22,6 +22,7 @@ LayerManager* LayerManager::getInstance()
 Node* LayerManager::settingLayer()
 {
     Node* settingLayer = CSLoader::getInstance()->createNode("csb/Setting.csb");
+    auto audio = Utilities::getInstance();
     
     auto cancel = settingLayer->getChildByName<ui::Button*>("Button_3");
     cancel->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
@@ -31,29 +32,41 @@ Node* LayerManager::settingLayer()
         });
 
     auto checkboxSFX = settingLayer->getChildByName<ui::CheckBox*>("Button_4");
+    if (audio->getSFXVolume()==0)
+    {
+        checkboxSFX->setSelected(true);
+    }
     checkboxSFX->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             if (checkboxSFX->isSelected() == true)
             {
-            checkboxSFX->setSelected(false);
+                audio->setSFXVolume(0.5f);
+                checkboxSFX->setSelected(false);
             }
             else
             {
-            checkboxSFX->setSelected(true);
+                audio->setSFXVolume(0);
+                checkboxSFX->setSelected(true);
             }
         }
         });
 
     auto checkboxMusic = settingLayer->getChildByName<ui::CheckBox*>("Button_5");
+    if (audio->getMusicVolume() == 0)
+    {
+        checkboxMusic->setSelected(true);
+    }
     checkboxMusic->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             if (checkboxMusic->isSelected() == true)
             {
                 checkboxMusic->setSelected(false);
+                audio->setMusicVolume(0.5f);
             }
             else
             {
                 checkboxMusic->setSelected(true);
+                audio->setMusicVolume(0);
             }
         }
         });
@@ -65,7 +78,7 @@ Node* LayerManager::pauseLayer()
 {
     Node* pauseLayer = CSLoader::getInstance()->createNode("csb/Pause.csb");
     Director::getInstance()->pause();
-
+    auto audio = Utilities::getInstance();
     auto cancel = pauseLayer->getChildByName<ui::Button*>("Button_3");
     cancel->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
@@ -79,29 +92,41 @@ Node* LayerManager::pauseLayer()
         });
 
     auto checkboxSFX = pauseLayer->getChildByName<ui::CheckBox*>("Button_4");
+    if (audio->getSFXVolume()==0)
+    {
+        checkboxSFX->setSelected(true);
+    }
     checkboxSFX->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             if (checkboxSFX->isSelected() == true)
             {
                 checkboxSFX->setSelected(false);
+                audio->setSFXVolume(0.5f);
             }
             else
             {
                 checkboxSFX->setSelected(true);
+                audio->setSFXVolume(0);
             }
         }
         });
 
     auto checkboxMusic = pauseLayer->getChildByName<ui::CheckBox*>("Button_5");
+    if (audio->getMusicVolume()==0)
+    {
+        checkboxMusic->setSelected(true);
+    }
     checkboxMusic->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             if (checkboxMusic->isSelected() == true)
             {
                 checkboxMusic->setSelected(false);
+                audio->setMusicVolume(0.5f);
             }
             else
             {
                 checkboxMusic->setSelected(true);
+                audio->setMusicVolume(0);
             }
         }
         });

@@ -1,0 +1,130 @@
+<Solution>
+  <PropertyGroup Name="pro.design" Version="3.10.0.0" Type="CocosStudio" />
+  <SolutionFolder>
+    <Group ctype="ResourceGroup">
+      <RootFolder Name=".">
+        <Folder Name="big_button">
+          <Image Name="fb_button_big_play.png" />
+          <Image Name="fb_button_big_setting.png" />
+          <Image Name="fb_button_big_store.png" />
+          <Image Name="fb_button_big_top_list.png" />
+          <Image Name="fb_button_big_tutorial.png" />
+          <Image Name="fb_button_big_upgrade.png" />
+        </Folder>
+        <Folder Name="button">
+          <Image Name="11.png" />
+          <Image Name="12.png" />
+          <Image Name="21.png" />
+          <Image Name="22.png" />
+          <Image Name="fb_button_back_a.png" />
+          <Image Name="fb_button_back_b.png" />
+          <Image Name="fb_button_buy_a.png" />
+          <Image Name="fb_button_buy_b.png" />
+          <Image Name="fb_button_cancel.png" />
+          <Image Name="fb_button_home.png" />
+          <Image Name="fb_button_leaderboard.png" />
+          <Image Name="fb_button_music_off.png" />
+          <Image Name="fb_button_music_on.png" />
+          <Image Name="fb_button_next_a.png" />
+          <Image Name="fb_button_next_b.png" />
+          <Image Name="fb_button_pause.png" />
+          <Image Name="fb_button_play.png" />
+          <Image Name="fb_button_replay.png" />
+          <Image Name="fb_button_setting.png" />
+          <Image Name="fb_button_shop.png" />
+          <Image Name="fb_button_sound_off.png" />
+          <Image Name="fb_button_sound_on.png" />
+          <Image Name="fb_button_tutorial.png" />
+          <Image Name="fb_button_upgrade.png" />
+          <Image Name="fb_button_watch_a.png" />
+          <Image Name="fb_button_watch_b.png" />
+        </Folder>
+        <Folder Name="control">
+          <Image Name="fb_ctrl_jump.png" />
+          <Image Name="fb_ctrl_move.png" />
+          <Image Name="fb_ctrl_pad.png" />
+          <Image Name="fb_ctrl_skill_dup_coin.png" />
+          <Image Name="fb_ctrl_skill_dup_coin_block.png" />
+          <Image Name="fb_ctrl_skill_dup_coin_wait.png" />
+          <Image Name="fb_ctrl_skill_dup_jump.png" />
+          <Image Name="fb_ctrl_skill_dup_jump_block.png" />
+          <Image Name="fb_ctrl_skill_dup_jump_wait.png" />
+          <Image Name="fb_ctrl_skill_sheild.png" />
+          <Image Name="fb_ctrl_skill_sheild_block.png" />
+          <Image Name="fb_ctrl_skill_sheild_wait.png" />
+        </Folder>
+        <Folder Name="csb">
+          <Project Name="Lose.csd" Type="Layer" />
+          <Project Name="Store.csd" Type="Layer" />
+          <Project Name="Upgrade.csd" Type="Layer" />
+          <Project Name="LeaderBoard.csd" Type="Layer" />
+          <Project Name="MainMenu.csd" Type="Layer" />
+        </Folder>
+        <Folder Name="font">
+          <Folder Name="Baloo2">
+            <TTF Name="Baloo2-Bold.ttf" />
+            <TTF Name="Baloo2-ExtraBold.ttf" />
+            <TTF Name="Baloo2-Medium.ttf" />
+            <TTF Name="Baloo2-Regular.ttf" />
+            <TTF Name="Baloo2-SemiBold.ttf" />
+          </Folder>
+          <Folder Name="Dumpling">
+            <File Name="SVN-Dumpling.otf" />
+          </Folder>
+          <Folder Name="Poetsen One">
+            <TTF Name="TUV-PoetsenOne.ttf" />
+          </Folder>
+        </Folder>
+        <Folder Name="object">
+          <Image Name="fb_object_block_1.png" />
+          <Image Name="fb_object_block_2.png" />
+          <Image Name="fb_object_block_3.png" />
+          <Image Name="fb_object_block_4.png" />
+          <Image Name="fb_object_coin.png" />
+          <Image Name="fb_object_skull.png" />
+        </Folder>
+        <Folder Name="popup">
+          <Image Name="fb_popup_leaderboard.png" />
+          <Image Name="fb_popup_leaderboard_lebel.png" />
+          <Image Name="fb_popup_lose.png" />
+          <Image Name="fb_popup_pause.png" />
+          <Image Name="fb_popup_setting.png" />
+          <Image Name="fb_popup_shop.png" />
+          <Image Name="fb_popup_shop_ads.png" />
+          <Image Name="fb_popup_shop_coin.png" />
+          <Image Name="fb_popup_shop_jump.png" />
+          <Image Name="fb_popup_shop_sheild.png" />
+          <Image Name="fb_popup_tutorial_1.png" />
+          <Image Name="fb_popup_tutorial_2.png" />
+          <Image Name="fb_popup_upgrade.png" />
+          <Image Name="fb_popup_upgrade_block_speed.png" />
+          <Image Name="fb_popup_upgrade_box.png" />
+          <Image Name="fb_popup_upgrade_cell_a.png" />
+          <Image Name="fb_popup_upgrade_cell_b.png" />
+          <Image Name="fb_popup_upgrade_lebel.png" />
+          <Image Name="fb_popup_upgrade_life_spawn.png" />
+          <Image Name="fb_popup_upgrade_plus_a.png" />
+          <Image Name="fb_popup_upgrade_plus_b.png" />
+          <Image Name="fb_popup_upgrade_skill_time.png" />
+          <Image Name="fb_popup_upgrade_skull_speed.png" />
+        </Folder>
+        <Folder Name="ui">
+          <Image Name="fb_ui_coin.png" />
+          <Image Name="fb_ui_height.png" />
+          <Image Name="fb_ui_item_dup_coin.png" />
+          <Image Name="fb_ui_item_dup_jump.png" />
+          <Image Name="fb_ui_item_sheild.png" />
+          <Image Name="fb_ui_life.png" />
+        </Folder>
+        <Image Name="background_home.png" />
+        <Image Name="background_play.png" />
+        <Image Name="block.png" />
+        <Image Name="fb_loading_a.png" />
+        <Image Name="fb_loading_b.png" />
+        <Image Name="logo.png" />
+        <Image Name="nenden (1).png" />
+        <Image Name="nenden.png" />
+      </RootFolder>
+    </Group>
+  </SolutionFolder>
+</Solution>

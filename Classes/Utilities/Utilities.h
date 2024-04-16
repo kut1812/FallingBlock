@@ -24,7 +24,7 @@ public:
 private:
 	static Utilities* _instance;
 
-	float _musicVolume = 0.5f, _sfxVolume = 0.5f;
+	float _musicVolume = 0.0f, _sfxVolume = 0.5f;
 
 	int _bgmID;
 };

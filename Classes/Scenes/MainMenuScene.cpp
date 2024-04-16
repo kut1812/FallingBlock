@@ -14,15 +14,15 @@ Scene* MainMenuScene::createScene()
 	SQLiteManager* dbManager = SQLiteManager::getInstance();
 	Audio* audioEngine = Audio::getInstance();
 	if (dbManager->init()) {
-	
-			dbManager->setPlayerInfo(1, 50, 500000, 50, 50, 50, 10, 10, 10); // set or reset player 
-		/*	dbManager->addScore(1, 3222);
-			dbManager->addScore(1, 2222);
-			dbManager->addScore(1, 31222);
-			dbManager->addScore(1, 53222);
-			dbManager->addScore(1, 63222);
-			dbManager->addScore(1, 73222);*/
-		
+		if (dbManager->getPlayerById(1).id == -1) {
+			dbManager->setPlayerInfo(1, 3, 5000, 3, 2, 5, 0, 0, 0); // set or reset player 
+			/*	dbManager->addScore(1, 3222);
+				dbManager->addScore(1, 2222);
+				dbManager->addScore(1, 31222);
+				dbManager->addScore(1, 53222);
+				dbManager->addScore(1, 63222);
+				dbManager->addScore(1, 73222);*/
+		}
 			/*SQLiteManager::PlayerInfo playerI4 = dbManager->getPlayerById(1);
 			CCLOG("player id %d\nmoney %d\nmovement speed %f\nskill duration %f\nlife spawn %d", playerI4.id, playerI4.money, playerI4.movement_speed, playerI4.skill_duration, playerI4.life_spawn);*/
 			/*for (auto i : dbManager->getTop10Highscore())

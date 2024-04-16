@@ -26,11 +26,10 @@ bool Coin::init()
         CCLOG("add physics coin failed");
     }
 
-
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "coin_normal");
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "coin_double");
-    auto coinAnimation = Utilities::createAnimation("coin_normal", 20, 0.1f);
-    auto coinDoubleAnim = Utilities::createAnimation("coin_double", 20, 0.1f);
+    auto coinAnimation = Utilities::createAnimation("coin_normal", 20, 0.05f);
+    auto coinDoubleAnim = Utilities::createAnimation("coin_double", 20, 0.05);
     AnimationCache::getInstance()->addAnimation(coinAnimation, "COIN NORMAL");
     AnimationCache::getInstance()->addAnimation(coinDoubleAnim, "COIN DOUBLE");
 

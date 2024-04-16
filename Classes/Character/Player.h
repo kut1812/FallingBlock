@@ -91,7 +91,7 @@ private:
 	Audio* audioEngine;
 	float skillDuration = 1;
 	float currentLifeSpawnTime = 50.0f;
-	int currentSpawnLife = 100;
+	int currentSpawnLife = 2;
 	int skillDurationLevel = 0;
 	int lifeSpawnLevel = 0;
 	int blockSpeedLv = 0;

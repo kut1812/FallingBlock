@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 #include "Scenes/GameScene.h"
 #include "Scenes/MainMenuScene.h"
+#include "Utilities/Utilities.h"
 #if USE_AUDIO_ENGINE
 #include "audio/include/AudioEngine.h"
 using namespace cocos2d::experimental;
@@ -81,6 +82,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // create a scene. it's an autorelease object
     auto scene1 = MainMenuScene::createScene();
     // run
+    Utilities::getInstance()->playMusic("Sounds/bg_music.mp3");
     director->runWithScene(scene1);
 
     return true;
