@@ -31,7 +31,7 @@ bool GameScene::init(Player* _plr)
     {
         return false;
     }
-     this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    // this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     visibleSize = Director::getInstance()->getVisibleSize();
     audioEngine = Utilities::getInstance();
@@ -438,10 +438,9 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
         {
             if(_player->getSpawnLife() <= 1) {
                 audioEngine->playSFX("Sounds/6.mp3");
-                this->setDynamicAllBlock(false);
+              //  this->setDynamicAllBlock(false);
                 if (_player->getShield()) {
                     _player->getShield()->~ShieldSkill();
-
                     _player->resetSkill();
                 }
                 if (_player->getX2Jump()) {

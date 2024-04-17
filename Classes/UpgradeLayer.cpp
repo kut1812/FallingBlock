@@ -107,9 +107,9 @@ bool UpgradeLayer::init(Player* _plr) {
     statSkillDuration->setColor(Color3B::GREEN);
     statSkillDuration->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(statSkillDuration);
-    float level = static_cast<float>(_plr->getLifeSpawnLevel()) / 3;
+    float level = static_cast<float>(_plr->getLifeSpawnLevel()) / 15;
     std::ostringstream ss4;
-    float result = 330.0f - level;
+    float result = 30.0f - level;
     ss4 << std::fixed << std::setprecision(2) << result;
     std::string formattedString4 = ss4.str();
     auto statLifeSpawn = Label::createWithTTF("   " + formattedString4 + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
