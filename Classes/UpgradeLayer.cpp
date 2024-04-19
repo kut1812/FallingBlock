@@ -107,9 +107,9 @@ bool UpgradeLayer::init(Player* _plr) {
     statSkillDuration->setColor(Color3B::GREEN);
     statSkillDuration->setAnchorPoint(Vec2(0, 0.5));
     upgradeLayer->addChild(statSkillDuration);
-    float level = static_cast<float>(_plr->getLifeSpawnLevel()) / 15;
+    float level = static_cast<float>(_plr->getLifeSpawnLevel()) / 3;
     std::ostringstream ss4;
-    float result = 30.0f - level;
+    float result = 330.0f - level;
     ss4 << std::fixed << std::setprecision(2) << result;
     std::string formattedString4 = ss4.str();
     auto statLifeSpawn = Label::createWithTTF("   " + formattedString4 + "s", "font/Baloo2/Baloo2-Bold.ttf", 20);
@@ -209,7 +209,7 @@ bool UpgradeLayer::init(Player* _plr) {
     Vector<Sprite*> loadingLifeSpawn;
     for (int i = 0; i < 10; ++i) {
         auto section = Sprite::create("popup/fb_popup_upgrade_cell_b.png"); // Hình ảnh mặc định là màu đen
-        section->setPosition(Vec2(visibleSize.width * 0.55 + (i * visibleSize.width * 0.013), visibleSize.height * 0.62)); // Đặt vị trí cho từng khúc
+        section->setPosition(Vec2(visibleSize.width * 0.555 + (i * visibleSize.width * 0.013), visibleSize.height * 0.62)); // Đặt vị trí cho từng khúc
         section->setScale(0.5);
         upgradeLayer->addChild(section);
         loadingLifeSpawn.pushBack(section);
@@ -271,7 +271,7 @@ bool UpgradeLayer::init(Player* _plr) {
     Vector<Sprite*> loadingSkillDuration;
     for (int i = 0; i < 10; ++i) {
         auto section = Sprite::create("popup/fb_popup_upgrade_cell_b.png"); // Hình ảnh mặc định là màu đen
-        section->setPosition(Vec2(visibleSize.width * 0.55 + (i * visibleSize.width * 0.013), visibleSize.height * 0.40)); // Đặt vị trí cho từng khúc
+        section->setPosition(Vec2(visibleSize.width * 0.555 + (i * visibleSize.width * 0.013), visibleSize.height * 0.40)); // Đặt vị trí cho từng khúc
         section->setScale(0.5);
         upgradeLayer->addChild(section);
         loadingSkillDuration.pushBack(section);

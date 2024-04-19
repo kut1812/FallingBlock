@@ -54,11 +54,11 @@
           <Image Name="fb_ctrl_skill_sheild_wait.png" />
         </Folder>
         <Folder Name="csb">
+          <Project Name="LeaderBoard.csd" Type="Layer" />
           <Project Name="Lose.csd" Type="Layer" />
+          <Project Name="MainMenu.csd" Type="Layer" />
           <Project Name="Store.csd" Type="Layer" />
           <Project Name="Upgrade.csd" Type="Layer" />
-          <Project Name="LeaderBoard.csd" Type="Layer" />
-          <Project Name="MainMenu.csd" Type="Layer" />
         </Folder>
         <Folder Name="font">
           <Folder Name="Baloo2">

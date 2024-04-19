@@ -39,10 +39,10 @@
             <FileData Type="Normal" Path="popup/fb_popup_upgrade_box.png" Plist="" />
             <BlendFunc Src="1" Dst="771" />
           </AbstractNodeData>
-          <AbstractNodeData Name="fb_popup_upgrade_lebel_1" ActionTag="1472031996" Tag="98" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="239.6500" RightMargin="530.3500" TopMargin="170.1804" BottomMargin="299.8196" ctype="SpriteObjectData">
+          <AbstractNodeData Name="fb_popup_upgrade_lebel_1" ActionTag="1472031996" Tag="98" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="239.6500" RightMargin="530.3500" TopMargin="170.2000" BottomMargin="299.8000" ctype="SpriteObjectData">
             <Size X="370.0000" Y="70.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="424.6500" Y="334.8196" />
+            <Position X="424.6500" Y="334.8000" />
             <Scale ScaleX="0.5000" ScaleY="0.5000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.3725" Y="0.6200" />
@@ -83,24 +83,24 @@
             <FileData Type="Normal" Path="popup/fb_popup_upgrade_box.png" Plist="" />
             <BlendFunc Src="1" Dst="771" />
           </AbstractNodeData>
-          <AbstractNodeData Name="fb_popup_upgrade_lebel_1_0" ActionTag="-529363931" Tag="99" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="493.3000" RightMargin="276.7000" TopMargin="170.2000" BottomMargin="299.8000" ctype="SpriteObjectData">
+          <AbstractNodeData Name="fb_popup_upgrade_lebel_1_0" ActionTag="-529363931" Tag="99" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="496.1500" RightMargin="273.8500" TopMargin="170.2000" BottomMargin="299.8000" ctype="SpriteObjectData">
             <Size X="370.0000" Y="70.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="678.3000" Y="334.8000" />
+            <Position X="681.1500" Y="334.8000" />
             <Scale ScaleX="0.5000" ScaleY="0.5000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.5950" Y="0.6200" />
+            <PrePosition X="0.5975" Y="0.6200" />
             <PreSize X="0.3246" Y="0.1296" />
             <FileData Type="Normal" Path="popup/fb_popup_upgrade_lebel.png" Plist="" />
             <BlendFunc Src="1" Dst="771" />
           </AbstractNodeData>
-          <AbstractNodeData Name="fb_popup_upgrade_lebel_1_0_0" ActionTag="-1268810795" Tag="100" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="493.3000" RightMargin="276.7000" TopMargin="289.0000" BottomMargin="181.0000" ctype="SpriteObjectData">
+          <AbstractNodeData Name="fb_popup_upgrade_lebel_1_0_0" ActionTag="-1268810795" Tag="100" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="496.1500" RightMargin="273.8500" TopMargin="289.0000" BottomMargin="181.0000" ctype="SpriteObjectData">
             <Size X="370.0000" Y="70.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="678.3000" Y="216.0000" />
+            <Position X="681.1500" Y="216.0000" />
             <Scale ScaleX="0.5000" ScaleY="0.5000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.5950" Y="0.4000" />
+            <PrePosition X="0.5975" Y="0.4000" />
             <PreSize X="0.3246" Y="0.1296" />
             <FileData Type="Normal" Path="popup/fb_popup_upgrade_lebel.png" Plist="" />
             <BlendFunc Src="1" Dst="771" />

@@ -27,7 +27,7 @@ bool Player::init() {
     this->lifeSpawnLevel = playerInfo.life_spawn;
     this->skillDurationLevel = playerInfo.skill_duration;
     this->movementSpeed = 140 + (movementLevel / 3);
-    this->currentLifeSpawnTime = 30.0f - this->lifeSpawnLevel / 15;
+    this->currentLifeSpawnTime = 320.0f - this->lifeSpawnLevel / 3;
     this->jumpAmount = playerInfo.x2JumpActive;
     this->coinAmount = playerInfo.x2CoinActive;
     this->shieldAmount = playerInfo.shieldActive;

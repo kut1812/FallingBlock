@@ -31,7 +31,7 @@ bool GameScene::init(Player* _plr)
     {
         return false;
     }
-    // this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+     //this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     visibleSize = Director::getInstance()->getVisibleSize();
     audioEngine = Utilities::getInstance();
@@ -72,7 +72,14 @@ bool GameScene::init(Player* _plr)
     coinDouble->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type) {
         case ui::Button::TouchEventType::BEGAN: {
+            if (_player->getX2Coin() && _player->getCoinAmount() > 0 && _player->getX2Coin()->getSkillCooldown()<=0)
+            {
+
             coinDouble->setScale(0.55f);
+            }
+            break;
+        }
+        case ui::Button::TouchEventType::ENDED:
             if (_player->getX2Coin() && _player->getCoinAmount() > 0 && _player->getX2Coin()->use()) {
                 audioEngine->playSFX("Sounds/tap_digits.mp3");
                 _player->decreaseCoinAmount(1);
@@ -97,9 +104,6 @@ bool GameScene::init(Player* _plr)
                     }
                     }, label, 0.1f, kRepeatForever, 0.0f, false, "cooldown_scheduler1");
             }
-            break;
-        }
-        case ui::Button::TouchEventType::ENDED:
             coinDouble->setScale(0.5);
             break;
         default:
@@ -113,7 +117,15 @@ bool GameScene::init(Player* _plr)
     shield->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type) {
         case ui::Button::TouchEventType::BEGAN: {
+            if (_player->getShield() && _player->getShieldAmount() > 0 && _player->getShield()->getSkillCooldown()<=0)
+            {
+
             shield->setScale(0.55f);
+            }
+            break;
+        }
+        case ui::Button::TouchEventType::ENDED:
+            shield->setScale(0.5);
             if (_player->getShield() && _player->getShieldAmount() > 0 && _player->getShield()->use()) {
                 audioEngine->playSFX("Sounds/tap_digits.mp3");
                 _player->decreaseShieldAmount(1);
@@ -140,10 +152,6 @@ bool GameScene::init(Player* _plr)
                     }, label, 0.1f, kRepeatForever, 0.0f, false, "cooldown_scheduler2");
             }
             break;
-        }
-        case ui::Button::TouchEventType::ENDED:
-            shield->setScale(0.5);
-            break;
         default:
             break;
         }
@@ -155,7 +163,14 @@ bool GameScene::init(Player* _plr)
     doubleJump->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type) {
         case ui::Button::TouchEventType::BEGAN: {
+            if (_player->getX2Jump() && _player->getJumpAmount() > 0 && _player->getX2Jump()->getSkillCooldown()<=0) {
+
             doubleJump->setScale(0.55f);
+            }
+            break;
+        }
+        case ui::Button::TouchEventType::ENDED:
+            doubleJump->setScale(0.5);
             if (_player->getX2Jump() && _player->getJumpAmount() > 0 && _player->getX2Jump()->use()) {
                 audioEngine->playSFX("Sounds/tap_digits.mp3");
                 _player->decreaseJumpAmount(1);
@@ -180,10 +195,6 @@ bool GameScene::init(Player* _plr)
                     }
                     }, label, 0.1f, kRepeatForever, 0.0f, false, "cooldown_scheduler3");
             }
-            break;
-        }
-        case ui::Button::TouchEventType::ENDED:
-            doubleJump->setScale(0.5);
             break;
         default:
             break;
@@ -348,6 +359,7 @@ void GameScene::spawnBlocks(float dt) {
             block = Block::create("fb_object_block_4");
             block->setBlockSpeedLevel(_player->getBlockSpeedLevel());
         }
+        block->setTag(randomNum);
         auto spawnX = columnWidth / 2 + block->getContentSize().width / 2 * randomNum;
         blockSize = Size(block->getContentSize());
         block->setPosX(spawnX);
@@ -388,7 +400,7 @@ void GameScene::spawnCoins(float dt)
 void GameScene::setDynamicAllBlock(bool x)
 {
     for (auto i : listOfBlocks) {
-        if (i != nullptr)
+        if (i != nullptr&&i->getPhysicsBody()!=nullptr && _player->getParent()==this && i->getParent()==this)
         {
             i->getPhysicsBody()->setDynamic(x);
         }
@@ -432,15 +444,36 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
     auto bodyB = contact.getShapeB()->getBody()->getNode();
 
     if (bodyA && bodyB) {
+        if (_player->getParent() == this && bodyA != nullptr && bodyA->getPhysicsBody() != nullptr && bodyB != nullptr && bodyB->getPhysicsBody() != nullptr)
+        {
+            if (bodyA->getPosition().x > 1 && bodyB->getPosition().x > 1)
+            {
+
+                if (bodyA->getPhysicsBody()->getCollisionBitmask() == 30 && bodyB->getPhysicsBody()->getCollisionBitmask() == 10 ||
+                    bodyA->getPhysicsBody()->getCollisionBitmask() == 10 && bodyB->getPhysicsBody()->getCollisionBitmask() == 30
+                    )
+                {
+
+                    _player->getPhysicsBody()->setVelocity(Vec2(0, 0));
+                    CCLOG("having contact %f %f", _player->getDirection().x, _player->getDirection().y);
+                }
+            }
+        }
         if (bodyA->getPhysicsBody() && bodyB->getPhysicsBody() && bodyA->getPhysicsBody()->getCollisionBitmask() == 30 && bodyB->getPhysicsBody()->getCollisionBitmask() == 11 ||
             bodyA->getPhysicsBody() && bodyB->getPhysicsBody() && bodyA->getPhysicsBody()->getCollisionBitmask() == 11 && bodyB->getPhysicsBody()->getCollisionBitmask() == 30
             )
         {
             if(_player->getSpawnLife() <= 1) {
                 audioEngine->playSFX("Sounds/6.mp3");
-              //  this->setDynamicAllBlock(false);
+                for (auto i : listOfBlocks) {
+                    if (i != nullptr && i->getPhysicsBody() != nullptr && _player->getParent() == this && i->getParent() == this)
+                    {
+                        i->removeAllComponents();
+                    }
+                }
                 if (_player->getShield()) {
                     _player->getShield()->~ShieldSkill();
+
                     _player->resetSkill();
                 }
                 if (_player->getX2Jump()) {
@@ -455,15 +488,8 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
                 this->removeChild(_player);
                 this->unscheduleAllCallbacks();
                 // Trong hàm hiển thị layer "Lose"
-                const auto& allCharacters = this->getChildren(); // Lấy tất cả các nhân vật trong scene
-                for (const auto& character : allCharacters) {
-                    if (dynamic_cast<Block*>(character))
-                    {
-                        character->removeAllComponents();
-                    }
-                }
 
-
+                this->pause();
                 auto score = MileageCounter::create("font/Baloo2/Baloo2-Bold.ttf", mileageCounter->getString(), 20);
                 auto loseLayer = LayerManager::getInstance()->loseLayer(std::stoi(mileageCounter->getString()), _player);
                 this->addChild(loseLayer, 4);
@@ -474,29 +500,26 @@ bool GameScene::OnContactBegan(cocos2d::PhysicsContact& contact)
                 _player->decreaseSpawnLife();
                 audioEngine->playSFX("Sounds/6.mp3");
                 if (bodyA->getPhysicsBody()->getCollisionBitmask() == 30) {
-                    bodyA->getPhysicsBody()->removeFromWorld();
+                    bodyA->getPhysicsBody()->onRemove();
                     bodyA->setVisible(false);
+                    listPositionYBlock[bodyA->getTag()] -= 1;
                     auto it = std::find(listOfBlocks.begin(), listOfBlocks.end(), static_cast<Block*>(bodyA));
                     if (it != listOfBlocks.end()) {
                         listOfBlocks.erase(it);
                     }
+                    bodyA->removeFromParent();
                 }
                 else if (bodyB->getPhysicsBody()->getCollisionBitmask() == 30) {
-                    bodyB->getPhysicsBody()->removeFromWorld();
+                    bodyB->getPhysicsBody()->onRemove();
                     bodyB->setVisible(false);
+                    listPositionYBlock[bodyB->getTag()] -= 1;
                     auto it = std::find(listOfBlocks.begin(), listOfBlocks.end(), static_cast<Block*>(bodyB));
                     if (it != listOfBlocks.end()) {
                         listOfBlocks.erase(it);
                     }
+                    bodyB->removeFromParent();
                 }
             }
-        }
-        if (bodyA->getPhysicsBody()->getCollisionBitmask() == 30 && bodyB->getPhysicsBody()->getCollisionBitmask() == 10 ||
-            bodyA->getPhysicsBody()->getCollisionBitmask() == 10 && bodyB->getPhysicsBody()->getCollisionBitmask() == 30
-            )
-        {
-            _player->getPhysicsBody()->setVelocity(Vec2(0, 0));
-            CCLOG("having contact %f %f", _player->getDirection().x, _player->getDirection().y);
         }
     }
 
@@ -554,6 +577,7 @@ void GameScene::updatePlayer(float dt) {
                         + (_player->getDirection().x > 0 ? Vec2(i->getContentSize().width / 7, 0) : Vec2(-i->getContentSize().width / 7, 0)))) {
                         _player->getPhysicsBody()->setVelocity(Vec2(0, _player->getPhysicsBody()->getVelocity().y));
                         _player->setIsCanMove(false);
+                        _player->setPositionX(_player->getPositionX() - (_player->getDirection().x/2));
                     }
                 }
               
