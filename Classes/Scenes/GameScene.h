@@ -11,6 +11,7 @@
 #include "../CoinManager/CoinManager.h"
 #include "WorkingWithData/SQLiteManager.h"
 #include "AudioEngine/AudioEngine.h"
+#include "../Actor/Life.h"
 class GameScene : public cocos2d::Scene
 {
 public:
@@ -22,6 +23,7 @@ public:
     void setupPhysicBorder();
     void spawnBlocks(float dt);
     void spawnCoins(float dt);
+    void spawnLife(float dt);
     void setDynamicAllBlock(bool x);
 private:
     Utilities* audioEngine;
@@ -36,6 +38,7 @@ private:
     Joystick* _joystick;
     JumpButton* _jumpButton;
     Player* _player ;
+    Life* lifeSpawn;
     cocos2d::PhysicsWorld* world;
     float columnWidth;
     

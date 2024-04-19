@@ -66,7 +66,7 @@ public:
 	void decreaseSpawnLife() { currentSpawnLife--; }
 	void setBlockSpeedLevel(int newlv) { this->blockSpeedLv = newlv; };
 	int getBlockSpeedLevel() const { return this->blockSpeedLv; };
-	void spawnLife(float dt); 
+	void spawnLife(); 
 	void resetSkill() {
 		x2CoinSkill = nullptr;
 		x2JumpSkill = nullptr;
@@ -81,7 +81,7 @@ public:
 	int getJumpAmount() { return jumpAmount; };
 	int getCoinAmount() { return coinAmount; };
 	int getShieldAmount() { return shieldAmount; };
-
+	float getSpawnTime() const { return currentLifeSpawnTime; };
 
 
 	int money = 0;

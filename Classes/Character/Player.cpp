@@ -35,12 +35,13 @@ bool Player::init() {
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "block_falled");
     auto sfx_block_falled = Utilities::createAnimation("block_falled", 19, 0.05f);
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "skull_relax");
+    Utilities::getInstance()->loadSpriteFrameCache("animation/", "skull_move");
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "shield");
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "wing");
 
     AnimationCache::getInstance()->addAnimation(sfx_block_falled, "block_falled");
-    auto walkAnimation = Utilities::createAnimation("skull_relax", 20, 0.1f);
-    auto idleAnimation = Utilities::createAnimation("skull_move", 20, 0.1f);
+    auto idleAnimation = Utilities::createAnimation("skull_relax", 20, 0.1f);
+    auto walkAnimation = Utilities::createAnimation("skull_move", 20, 0.1f);
     auto shieldAnimation = Utilities::createAnimationPng("skill_sheild", 20, 0.05f);
     auto wingAnimation = Utilities::createAnimationPng("double_jump", 20, 0.05f);
     characterSprite = Sprite::createWithSpriteFrameName("skull_relax (1)");
@@ -103,7 +104,7 @@ bool Player::init() {
     listener->onKeyPressed = CC_CALLBACK_2(Player::onKeyPressed, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
     
-    this->schedule(CC_SCHEDULE_SELECTOR(Player::spawnLife), currentLifeSpawnTime, CC_REPEAT_FOREVER, 0.0f);
+   // this->schedule(CC_SCHEDULE_SELECTOR(Player::spawnLife), currentLifeSpawnTime, CC_REPEAT_FOREVER, 0.0f);
 
     return true;
 }
@@ -115,7 +116,7 @@ void Player::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
     }
 }
 
-void Player::spawnLife(float dt) {
+void Player::spawnLife() {
     currentSpawnLife++;
 }
 
