@@ -25,9 +25,11 @@ public:
 		MOVE_RIGHT,
 		JUMPING
 	};
+	Animate* idleAnimation;
+	Animate* walkAnimation;
 	void update(float dt, float leftBorder, float rightBorder);
 	void changeState(PlayerState newState);
-	Sprite* getSprite() const { return characterSprite; };
+	Sprite* getSprite() { return characterSprite; };
 	void setDirection(Vec2 dir) { this->direction = dir; };
 	Vec2 getDirection() const { return direction; };
 	void setJump(bool isTrue) { isJumping = isTrue; };

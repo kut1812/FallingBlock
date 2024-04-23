@@ -180,14 +180,14 @@ if(NOT ANDROID)
     add_executable(${APP_NAME} ${all_code_files})
 else()
     add_library(${APP_NAME} SHARED ${all_code_files})
-   # add_library(sqlite3 STATIC ${COCOS2DX_ROOT_PATH}/external/wxsqlite/sqlite3.c)
+    add_library(sqlite3 STATIC ${COCOS2DX_ROOT_PATH}/external/wxsqlite/sqlite3.c)
     add_subdirectory(${COCOS2DX_ROOT_PATH}/cocos/platform/android ${ENGINE_BINARY_PATH}/cocos/platform)
     target_link_libraries(${APP_NAME} -Wl,--whole-archive cpp_android_spec -Wl,--no-whole-archive)
 endif()
 
-target_link_libraries(${APP_NAME} cocos2d)
-#target_link_libraries(${APP_NAME} cocos2d
-#                                  sqlite3)
+#target_link_libraries(${APP_NAME} cocos2d)
+target_link_libraries(${APP_NAME} cocos2d
+                                  sqlite3)
 target_include_directories(${APP_NAME}
         PRIVATE Classes
         PRIVATE ${COCOS2DX_ROOT_PATH}/cocos/audio/include/

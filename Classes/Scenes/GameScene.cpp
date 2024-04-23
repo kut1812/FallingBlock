@@ -597,6 +597,14 @@ void GameScene::updatePlayer(float dt) {
         }
 
         if (lifeSpawn && lifeSpawn->getBoundingBox().containsPoint(_player->getPosition())) {
+            audioEngine->playSFX("Sounds/clickCommodity.mp3");
+            auto animCoin = Sprite::create("animation/spark/spark (1).png");
+            animCoin->setPosition(lifeSpawn->getPosition());
+            Utilities::loadSpriteFrameCache("animation/", "spark");
+            auto aniMove = Utilities::createAnimation("spark", 99, 0.1f);
+            Animate* animate_Move = Animate::create(aniMove);
+            animCoin->runAction(animate_Move);
+            this->addChild(animCoin, 5);
             lifeSpawn->removeFromParentAndCleanup(true); lifeSpawn = nullptr;
             _player->spawnLife();
         }

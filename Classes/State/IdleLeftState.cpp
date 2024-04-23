@@ -1,9 +1,7 @@
 #include "IdleLeftState.h"
 #include "../Character/Player.h"
 void IdleLeftState::enter() {
-	if (player) {
-		player->getSprite()->runAction(RepeatForever::create(Animate::create(AnimationCache::getInstance()->getAnimation("IDLE_ANIM"))));
-	}
+		player->getSprite()->runAction(RepeatForever::create(player->idleAnimation));
 }
 
 void IdleLeftState::exit() {

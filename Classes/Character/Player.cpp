@@ -39,29 +39,17 @@ bool Player::init() {
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "shield");
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "wing");
 
-    Utilities::loadSpriteFrameCache("animation/", "skull_relax");
-    auto aniRelax = Utilities::createAnimation( "skull_relax", 99, 0.1f);
-    Animate* animate_Relax = Animate::create(aniRelax);
-    animateRelax = RepeatForever::create(animate_Relax);
-    animateRelax->retain();
-    
-    Utilities::loadSpriteFrameCache("animation/", "skull_move");
-    auto aniMove = Utilities::createAnimation( "skull_move", 99, 0.1f);
-    Animate* animate_Move = Animate::create(aniMove);
-    animateMove = RepeatForever::create(animate_Move);
-    animateMove->retain();
-
     AnimationCache::getInstance()->addAnimation(sfx_block_falled, "block_falled");
-    auto idleAnimation = Utilities::createAnimation("skull_relax", 20, 0.1f);
-    auto walkAnimation = Utilities::createAnimation("skull_move", 20, 0.1f);
+    idleAnimation = Animate::create(Utilities::createAnimation("skull_relax", 20, 0.1f));
+    walkAnimation = Animate::create(Utilities::createAnimation("skull_move", 20, 0.1f));
+    idleAnimation->retain();
+    walkAnimation->retain();
     auto shieldAnimation = Utilities::createAnimationPng("skill_sheild", 20, 0.05f);
     auto wingAnimation = Utilities::createAnimationPng("double_jump", 20, 0.05f);
     characterSprite = Sprite::createWithSpriteFrameName("skull_relax (1)");
 
-    AnimationCache::getInstance()->addAnimation(idleAnimation, "IDLE_ANIM");
-    AnimationCache::getInstance()->addAnimation(walkAnimation, "MOVE_ANIM");
 
-    characterSprite->runAction(RepeatForever::create(Animate::create(idleAnimation)));
+    characterSprite->runAction(RepeatForever::create(idleAnimation));
     characterSprite->retain();
     this->addChild(characterSprite);
 
@@ -169,8 +157,8 @@ void Player::update(float dt, float leftBorder, float rightBorder) {
 }
 
 void Player::changeState(PlayerState newState) {
-    if (currentState != nullptr)
-        currentState->exit();
+    //if (currentState != nullptr)
+        //currentState->exit();
 
     switch (newState) {
     case PlayerState::IDLE:
