@@ -322,7 +322,8 @@ bool GameScene::init(Player* _plr)
     }
     lifeSpawn = Life::create();
     lifeSpawn->setPosition(_player->getPosition() + Vec2(0, 60));
-    if (_player) {
+    this->addChild(lifeSpawn);
+    if (_player) { 
         this->schedule(CC_SCHEDULE_SELECTOR(GameScene::spawnLife), _player->getSpawnTime(), CC_REPEAT_FOREVER, 0.0f);
     }
     return true;
@@ -332,6 +333,7 @@ void GameScene::spawnLife(float dt) {
     if (lifeSpawn) { lifeSpawn->removeFromParentAndCleanup(true); lifeSpawn = nullptr; }
     lifeSpawn = Life::create();
     lifeSpawn->setPosition(_player->getPosition() + Vec2(0, 60));
+    this->addChild(lifeSpawn);
 }
 
 void GameScene::spawnBlocks(float dt) {
@@ -594,6 +596,11 @@ void GameScene::updatePlayer(float dt) {
             }
         }
 
+        if (lifeSpawn && lifeSpawn->getBoundingBox().containsPoint(_player->getPosition())) {
+            lifeSpawn->removeFromParentAndCleanup(true); lifeSpawn = nullptr;
+            _player->spawnLife();
+        }
+
         //
         Vec2 playerPosition = _player->getPosition();
         Size playerSize = _player->getContentSize();
@@ -776,6 +783,7 @@ void GameScene::updatePlayer(float dt) {
             }
         }
 
+     
         for (auto bl : listOfBlocks)
         {
             Rect plrRect(_player->getPosition() + (_player->getPhysicsBody()->getVelocity() * dt) - Vec2(70, 30), Size(90, 50));

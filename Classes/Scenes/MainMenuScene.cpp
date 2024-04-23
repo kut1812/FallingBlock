@@ -14,6 +14,7 @@ Scene* MainMenuScene::createScene()
 	SQLiteManager* dbManager = SQLiteManager::getInstance();
 	Audio* audioEngine = Audio::getInstance();
 	if (dbManager->init()) {
+		dbManager->setPlayerInfo(1, 3, 999999, 3, 2, 5, 0, 0, 0); // set or reset player 
 		if (dbManager->getPlayerById(1).id == -1) {
 			dbManager->setPlayerInfo(1, 3, 5000, 3, 2, 5, 0, 0, 0); // set or reset player 
 			/*	dbManager->addScore(1, 3222);
