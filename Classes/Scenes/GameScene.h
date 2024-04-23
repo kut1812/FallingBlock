@@ -38,7 +38,7 @@ private:
     Joystick* _joystick;
     JumpButton* _jumpButton;
     Player* _player ;
-    Life* lifeSpawn;
+    Life* lifeSpawn = nullptr;
     cocos2d::PhysicsWorld* world;
     float columnWidth;
     

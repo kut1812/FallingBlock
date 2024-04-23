@@ -580,14 +580,14 @@ void GameScene::updatePlayer(float dt) {
             if (_player && _player->getPosition().y > i->getPosition().y && _player->getPosition().y <= i->getPosition().y + i->getContentSize().height) {
                 if (_player && _player->getPositionX() > i->getPositionX() || _player->getPositionX() < i->getPositionX() + i->getContentSize().width) {
                     auto collisionRect = i->getBoundingBox();
-                    collisionRect.size.width = i->getContentSize().width * 0.5;
-                    collisionRect.size.height = i->getContentSize().height * 0.5;
+                    collisionRect.size.width = i->getContentSize().width * 0.48;
+                    collisionRect.size.height = i->getContentSize().height * 0.48;
      
-                    if (_player && collisionRect.containsPoint(_player->getPosition() + (_player->getDirection() * (150 + (_player->getMovementLevel() / 3)) * dt)
+                    if (_player && collisionRect.containsPoint(_player->getPosition() + (_player->getDirection() * (130 + (_player->getMovementLevel() / 3)) * dt)
                         + (_player->getDirection().x > 0 ? Vec2(i->getContentSize().width / 7, 0) : Vec2(-i->getContentSize().width / 7, 0)))) {
                         _player->getPhysicsBody()->setVelocity(Vec2(0, _player->getPhysicsBody()->getVelocity().y));
                         _player->setIsCanMove(false);
-                        _player->setPositionX(_player->getPositionX() - (_player->getDirection().x/2));
+                        _player->setPositionX(_player->getPositionX() - (_player->getDirection().x/10));
                     }
                 }
               
@@ -745,6 +745,14 @@ void GameScene::updatePlayer(float dt) {
             for (auto c : listOfCoins) {
                 if (c->getBoundingBox().containsPoint(_player->getPosition())) {
                     audioEngine->playSFX("Sounds/clickCommodity.mp3");
+            auto animCoin = Sprite::create("animation/spark/spark (1).png");
+            animCoin->setPosition(c->getPosition());
+            Utilities::loadSpriteFrameCache("animation/", "spark");
+            auto aniMove = Utilities::createAnimation("spark", 99, 0.1f);
+            Animate* animate_Move = Animate::create(aniMove);
+            animCoin->runAction(animate_Move);
+            this->addChild(animCoin, 5);
+            
                     c->removeFromParentAndCleanup(true);
                     listRemoveCoin.push_back(c);
                     if (!_player->isX2Coin()) {
@@ -780,7 +788,7 @@ void GameScene::updatePlayer(float dt) {
         }
 
         Rect plrRect(_player->getPosition() + (_player->getPhysicsBody()->getVelocity() * dt) - Vec2(70, 30), Size(90, 50));
-        if (plrRect.containsPoint(lifeSpawn->getPosition())) {
+        /*if (plrRect.containsPoint(lifeSpawn->getPosition())) {
             lifeSpawn->removeFromParentAndCleanup(true);
             lifeSpawn = nullptr;
             _player->spawnLife();
@@ -789,7 +797,7 @@ void GameScene::updatePlayer(float dt) {
             lifeSpawn->removeFromParentAndCleanup(true);
             lifeSpawn = nullptr;
             _player->spawnLife();
-        }
+        }*/
 
       /*  Rect leftRect(leftColumnNode->getPosition(), leftColumnNode->getContentSize());
         if (leftRect.containsPoint(_player->getPosition() + (_player->getPhysicsBody()->getVelocity() * dt))) {

@@ -39,6 +39,18 @@ bool Player::init() {
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "shield");
     Utilities::getInstance()->loadSpriteFrameCache("animation/", "wing");
 
+    Utilities::loadSpriteFrameCache("animation/", "skull_relax");
+    auto aniRelax = Utilities::createAnimation( "skull_relax", 99, 0.1f);
+    Animate* animate_Relax = Animate::create(aniRelax);
+    animateRelax = RepeatForever::create(animate_Relax);
+    animateRelax->retain();
+    
+    Utilities::loadSpriteFrameCache("animation/", "skull_move");
+    auto aniMove = Utilities::createAnimation( "skull_move", 99, 0.1f);
+    Animate* animate_Move = Animate::create(aniMove);
+    animateMove = RepeatForever::create(animate_Move);
+    animateMove->retain();
+
     AnimationCache::getInstance()->addAnimation(sfx_block_falled, "block_falled");
     auto idleAnimation = Utilities::createAnimation("skull_relax", 20, 0.1f);
     auto walkAnimation = Utilities::createAnimation("skull_move", 20, 0.1f);

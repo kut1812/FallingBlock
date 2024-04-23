@@ -83,6 +83,8 @@ public:
 	int getShieldAmount() { return shieldAmount; };
 	float getSpawnTime() const { return currentLifeSpawnTime; };
 
+	void runActionRelax() { this->runAction(animateRelax); }
+	void runActionMove() { this->runAction(animateMove); }
 
 	int money = 0;
 	int movementLevel = 0;
@@ -123,6 +125,9 @@ private:
 	cocos2d::Node* playerHand;
 	cocos2d::Node* playerRightHand;
 	Vec2 prevDirection = Vec2(0,0);
+	public:
+	RepeatForever* animateRelax;
+	RepeatForever* animateMove;
 };
 
 #endif // !__PLAYER__
